@@ -12,7 +12,8 @@ import {
   ShopModelId,
 } from '@/constants/shop'
 import { USE_MOCK_DATA } from '@/lib/env'
-import { shopifyClient } from '@/lib/shopify'
+import type { ClientResponse } from '@shopify/storefront-api-client'
+import { getShopifyClient } from '@/lib/shopify'
 import { CATALOG_PAGE_SIZE, CATALOG_QUERY } from '@/services/products.queries'
 import type { ProductSummary } from '@/types/product.types'
 
@@ -85,8 +86,8 @@ async function getShopifyCatalog(): Promise<ProductSummary[]> {
   let after: string | null = null
 
   do {
-    const response: Awaited<ReturnType<typeof shopifyClient.request<ShopifyCatalogData>>> =
-      await shopifyClient.request<ShopifyCatalogData>(CATALOG_QUERY, {
+    const response: ClientResponse<ShopifyCatalogData> =
+      await getShopifyClient().request<ShopifyCatalogData>(CATALOG_QUERY, {
         variables: { first: CATALOG_PAGE_SIZE, after },
       })
     if (response.errors) throw new Error(response.errors.message ?? 'Could not load products')
