@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — single source of truth for the theme (taken from Figma).
+ * Utilities are generated from these: `bg-primary`, `text-ink`, `font-body`,
+ * `shadow-glass-hero`, `max-w-page`, ...
+ */
+@theme {
+  /* Colors */
+  --color-primary: #c82028;
+  --color-ink: #141416;
+  --color-ink-deep: #0a0a0b;
+  --color-canvas: #f2f2f3;
+  --color-paper: #f6f7f5;
+  --color-primary-deep: #8c0002;
+
+  /* Fonts: Plus Jakarta Sans = UI/headings (default), Montserrat = body copy */
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+
+  /* Extra breakpoint between xl (1280) and 2xl (1536): 4-column product grid */
+  --breakpoint-hd: 87.5rem;
+
+  /* Layout: 1264px content + 2 x 24px gutters */
+  --container-page: 82rem;
+
+  /* Elevation (drop shadows) */
+  --shadow-header:
+    0 18px 40px rgb(20 20 22 / 0.09), inset 0 1px 0 rgb(255 255 255 / 0.05),
+    inset 0 0 0 1px rgb(20 20 22 / 0.09);
+  --shadow-glass-hero: 0 24px 60px rgb(20 20 22 / 0.09), 0 1px 2px rgb(20 20 22 / 0.05);
+  --shadow-glass-promo: 0 18px 44px rgb(20 20 22 / 0.09), 0 24px 60px rgb(200 32 40 / 0.09);
+  --shadow-glass-soft: 0 18px 44px rgb(20 20 22 / 0.07);
+  --shadow-primary: 0 10px 28px rgb(200 32 40 / 0.4), inset 0 1px 0 rgb(255 255 255 / 0.24);
+  --shadow-primary-soft: 0 8px 22px rgb(200 32 40 / 0.09), inset 0 1px 0 rgb(255 255 255 / 0.22);
+  --shadow-newsletter: 0 24px 60px rgb(20 20 22 / 0.1), inset 0 0 0 1px rgb(200 32 40 / 0.3);
+  --shadow-banner: 0 18px 44px rgb(200 32 40 / 0.16), inset 0 0 0 1px rgb(20 20 22 / 0.14);
+
+  /* Hairline rings (inner strokes) */
+  --shadow-ring: inset 0 0 0 1px rgb(20 20 22 / 0.09);
+  --shadow-ring-primary: inset 0 0 0 1px rgb(200 32 40 / 0.1);
+  --shadow-inset-glass: inset 0 1px 0 rgb(255 255 255 / 0.92), inset 0 0 0 1px rgb(20 20 22 / 0.08);
+  --shadow-inset-promo: inset 0 1px 0 rgb(255 255 255 / 0.92), inset 0 0 0 1px rgb(200 32 40 / 0.24);
+}
+
+/*
+ * Icon hover animations. An icon wrapped in <AnimatedIcon animation="..."> plays
+ * its animation while the nearest `data-hover-scope` ancestor (Button, IconButton,
+ * or a card that opts in) is hovered or keyboard-focused.
+ */
+@layer components {
+  [data-icon-animation] {
+    display: inline-flex;
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Arrow pointing up-right turns to point straight right */
+    [data-hover-scope]:is(:hover, :focus-visible) [data-icon-animation='point-right'] {
+      transform: rotate(45deg);
+    }
+    [data-hover-scope]:is(:hover, :focus-visible) [data-icon-animation='nudge-right'] {
+      transform: translateX(3px);
+    }
+    [data-hover-scope]:is(:hover, :focus-visible) [data-icon-animation='nudge-up-right'] {
+      transform: translate(2px, -2px);
+    }
+    [data-hover-scope]:is(:hover, :focus-visible) [data-icon-animation='spin'] {
+      transform: rotate(360deg);
+    }
+    [data-hover-scope]:is(:hover, :focus-visible) [data-icon-animation='grow'] {
+      transform: scale(1.2);
+    }
+  }
+}
+
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(20 20 22 / 0.2) transparent;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+
+  /* Text must never escape its box: a very long unbroken word wraps instead of overflowing. */
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  blockquote {
+    overflow-wrap: anywhere;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+  }
+}
