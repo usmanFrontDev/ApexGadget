@@ -2,7 +2,7 @@ import type { ElementType, HTMLAttributes, ReactNode, Ref } from 'react'
 import { TypographyAlign, TypographyTone, TypographyVariant } from '@/constants/ui'
 import { cn } from '@/lib/cn'
 
-type TypographyTag = 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span' | 'div' | 'blockquote'
+type TypographyTag = 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span' | 'div' | 'blockquote' | 'dt' | 'dd'
 
 export interface TypographyProps extends Omit<HTMLAttributes<HTMLElement>, 'className' | 'children'> {
   children: ReactNode

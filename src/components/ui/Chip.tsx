@@ -21,6 +21,7 @@ const variantClasses: Record<ChipVariant, string> = {
   [ChipVariant.Default]: 'text-ink',
   [ChipVariant.Label]: 'font-bold uppercase tracking-[1.2px] text-ink/66',
   [ChipVariant.Tint]: 'bg-primary/8 font-semibold text-primary shadow-none',
+  [ChipVariant.Solid]: 'bg-primary font-bold text-white shadow-none',
   [ChipVariant.Dark]:
     'bg-ink-deep/62 font-bold uppercase tracking-[0.4px] text-white backdrop-blur-sm',
 }

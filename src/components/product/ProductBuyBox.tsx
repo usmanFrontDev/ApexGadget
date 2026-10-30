@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react'
-import { ArrowUpRightIcon, CheckIcon } from '@/components/icons'
+import { ArrowUpRightIcon } from '@/components/icons'
 import { ChoiceChips } from '@/components/form/ChoiceChips'
 import { ConditionReport } from '@/components/product/ConditionReport'
 import { PRODUCT_DETAILS_ID } from '@/constants/product'
+import { ROUTES } from '@/constants/routes'
 import { WishlistButton } from '@/components/common/WishlistButton'
 import { fieldLabelId } from '@/components/form/fieldIds'
 import { FormField } from '@/components/form/FormField'
@@ -19,16 +20,15 @@ import {
   ChipVariant,
   GlassCardVariant,
   IconAnimation,
-  IconPosition,
   TypographyAlign,
   TypographyTone,
   TypographyVariant,
 } from '@/constants/ui'
-import { useAddToCart, useRemoveCartLine, useSetCartLineQuantity } from '@/hooks/useAddToCart'
+import { useCartLineForVariant } from '@/hooks/useCart'
+import { useAddToCart, useRemoveCartLine, useUpdateCartLine } from '@/hooks/useCartMutations'
 import { formatPrice } from '@/lib/format'
 import { firstParagraphText, truncateText } from '@/lib/html'
 import { findVariant, getMetaLine } from '@/lib/productView'
-import { useCartLine } from '@/store/useCartStore'
 import type { ProductDetail } from '@/types/product.types'
 
 const BLURB_MAX = 200
@@ -41,7 +41,7 @@ export interface ProductBuyBoxProps {
 export function ProductBuyBox({ product }: ProductBuyBoxProps) {
   const [selection, setSelection] = useState<Record<string, string>>({})
   const addToCart = useAddToCart()
-  const setQuantity = useSetCartLineQuantity()
+  const setQuantity = useUpdateCartLine()
   const removeLine = useRemoveCartLine()
 
   const variant = useMemo(() => findVariant(product, selection), [product, selection])
@@ -55,20 +55,11 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
 
   const onAdd = () => {
     if (!variant) return
-    addToCart.mutate({
-      variantId: variant.id,
-      productHandle: product.handle,
-      productTitle: product.title,
-      variantTitle: variant.title,
-      image: variant.image ?? product.image,
-      unitPrice: { amount: variant.priceAmount, currencyCode: variant.currencyCode },
-      quantity: 1,
-      quantityAvailable: variant.quantityAvailable,
-    })
+    addToCart.mutate({ variantId: variant.id, productHandle: product.handle, quantity: 1 })
   }
 
-  // Already in the cart: "Add to Cart" is replaced by a disabled "In your cart" and a quantity stepper.
-  const line = useCartLine(variant?.id)
+  // Already in the cart: "Add to Cart" becomes "View cart" (plus a quantity stepper when more than one unit exists).
+  const line = useCartLineForVariant(variant?.id)
   const stockLimit = line?.quantityAvailable ?? variant?.quantityAvailable ?? Number.POSITIVE_INFINITY
   const atLimit = line !== undefined && line.quantity >= stockLimit
 
@@ -174,23 +165,25 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
             </Button>
           ) : line ? (
             <>
-              <QuantityStepper
-                value={line.quantity}
-                max={stockLimit}
-                label={`${PRODUCT_CONTENT.quantityOf} ${product.title}`}
-                onChange={(quantity) => setQuantity.mutate({ variantId: line.variantId, quantity })}
-                className="max-sm:w-full max-sm:justify-between"
-              />
+              {stockLimit > 1 && (
+                <QuantityStepper
+                  value={line.quantity}
+                  max={stockLimit}
+                  label={`${PRODUCT_CONTENT.quantityOf} ${product.title}`}
+                  disabled={setQuantity.isPending}
+                  onChange={(quantity) => setQuantity.mutate({ lineId: line.id, quantity })}
+                  className="max-sm:w-full max-sm:justify-between"
+                />
+              )}
               <Button
-                type="button"
-                variant={ButtonVariant.Secondary}
+                to={ROUTES.cart}
                 size={ButtonSize.Lg}
-                icon={<CheckIcon width={16} height={16} className="text-primary" />}
-                iconPosition={IconPosition.Start}
-                disabled
+                icon={<ArrowUpRightIcon />}
+                iconAnimation={IconAnimation.PointRight}
                 blockOnMobile
+                className="sm:min-w-[210px]"
               >
-                {PRODUCT_CONTENT.inCart}
+                {PRODUCT_CONTENT.viewCart}
               </Button>
             </>
           ) : (
@@ -225,7 +218,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
               : PRODUCT_CONTENT.inCartHint}{' '}
             <button
               type="button"
-              onClick={() => removeLine.mutate(line.variantId)}
+              onClick={() => removeLine.mutate(line.id)}
               className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               {PRODUCT_CONTENT.removeFromCart}

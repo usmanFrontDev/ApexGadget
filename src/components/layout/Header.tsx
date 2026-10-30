@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import logo from '@/assets/images/logo.png'
 import { BagIcon, CloseIcon, HeartIcon, MenuIcon, SwapIcon } from '@/components/icons'
 import { Container } from '@/components/ui/Container'
@@ -8,6 +8,7 @@ import { IconButton } from '@/components/ui/IconButton'
 import { NAV_ITEMS } from '@/constants/navigation'
 import { ROUTES } from '@/constants/routes'
 import { cn } from '@/lib/cn'
+import { useCartStore } from '@/store/useCartStore'
 import { useWishlistCount } from '@/store/useWishlistStore'
 
 export interface HeaderProps {
@@ -21,6 +22,8 @@ const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
 export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const wishlistCount = useWishlistCount()
+  const openCartDrawer = useCartStore((state) => state.openDrawer)
+  const onCartPage = useLocation().pathname === ROUTES.cart
   const closeMenu = () => setMenuOpen(false)
 
   return (
@@ -64,7 +67,12 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
               </span>
 
               <span className="relative inline-flex">
-                <IconButton label={`Cart, ${cartCount} items`}>
+                {/* Opens the mini-cart; on /cart itself it is a plain link to the current page. */}
+                <IconButton
+                  label={`Cart, ${cartCount} items`}
+                  data-cart-trigger=""
+                  {...(onCartPage ? { to: ROUTES.cart, 'aria-current': 'page' as const } : { onClick: openCartDrawer })}
+                >
                   <BagIcon />
                 </IconButton>
                 {cartCount > 0 && (

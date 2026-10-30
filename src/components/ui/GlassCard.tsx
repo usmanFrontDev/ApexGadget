@@ -7,6 +7,7 @@ export interface GlassCardProps {
   variant?: GlassCardVariant
   as?: 'div' | 'section' | 'article'
   className?: string
+  'aria-busy'?: boolean
   [dataAttribute: `data-${string}`]: string | undefined
 }
 

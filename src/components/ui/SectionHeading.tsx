@@ -4,7 +4,7 @@ import { TypographyAlign, TypographyTone, TypographyVariant } from '@/constants/
 import { cn } from '@/lib/cn'
 
 export interface SectionHeadingProps {
-  eyebrow: string
+  eyebrow?: string
   title: string
   /** Optional slot beside the title on desktop, full-width under it on phones (e.g. "All categories"). */
   action?: ReactNode
@@ -21,18 +21,20 @@ export function SectionHeading({ eyebrow, title, action, className }: SectionHea
       )}
     >
       <div className="min-w-0">
-        <Typography
-          variant={TypographyVariant.Eyebrow}
-          tone={TypographyTone.Muted}
-          align={TypographyAlign.CenterBelowLg}
-        >
-          {eyebrow}
-        </Typography>
+        {eyebrow && (
+          <Typography
+            variant={TypographyVariant.Eyebrow}
+            tone={TypographyTone.Muted}
+            align={TypographyAlign.CenterBelowLg}
+          >
+            {eyebrow}
+          </Typography>
+        )}
         <Typography
           as="h2"
           variant={TypographyVariant.Heading}
           align={TypographyAlign.CenterBelowLg}
-          className="mt-1.5"
+          className={eyebrow ? 'mt-1.5' : undefined}
         >
           {title}
         </Typography>

@@ -1,9 +1,11 @@
 import { Outlet } from 'react-router-dom'
+import { CartDrawer } from '@/components/cart/CartDrawer'
+import { CartLiveRegion } from '@/components/cart/CartLiveRegion'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
 import { MOCK_USER_INITIALS } from '@/constants/mock'
-import { useCartCount } from '@/store/useCartStore'
+import { useCartCount } from '@/hooks/useCart'
 import { NewsletterSection } from '@/sections/NewsletterSection'
 
 /** App shell: page canvas, decorative glows, header and the routed page. */
@@ -24,6 +26,8 @@ export function RootLayout() {
       </main>
       <NewsletterSection />
       <Footer />
+      <CartDrawer />
+      <CartLiveRegion />
     </div>
   )
 }
