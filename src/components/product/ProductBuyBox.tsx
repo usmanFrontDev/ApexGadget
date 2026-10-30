@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { ArrowUpRightIcon } from '@/components/icons'
 import { CartQuantityControl } from '@/components/cart/CartQuantityControl'
 import { ChoiceChips } from '@/components/form/ChoiceChips'
@@ -162,21 +163,8 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
               {PRODUCT_CONTENT.soldOut}
             </Button>
           ) : line ? (
-            <>
-              {/* More than one unit (accessories): the shared quantity control. A single phone has nothing to choose. */}
-              {stockLimit > 1 && (
-                <CartQuantityControl line={line} removable className="max-sm:w-full max-sm:justify-between" />
-              )}
-              <Button
-                to={ROUTES.cart}
-                size={ButtonSize.Lg}
-                icon={<ArrowUpRightIcon />}
-                iconAnimation={IconAnimation.PointRight}
-                blockOnMobile
-              >
-                {PRODUCT_CONTENT.viewCart}
-              </Button>
-            </>
+            // Added: the button turns into the quantity control, like on the product cards (trash at 1).
+            <CartQuantityControl line={line} removable className="max-sm:w-full max-sm:justify-between" />
           ) : (
             <Button
               type="button"
@@ -205,7 +193,13 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
               ? stockLimit === 1
                 ? PRODUCT_CONTENT.onlyOneHint
                 : PRODUCT_CONTENT.stockLimitHint.replace('{n}', String(stockLimit))
-              : PRODUCT_CONTENT.inCartHint}
+              : PRODUCT_CONTENT.inCartHint}{' '}
+            <Link
+              to={ROUTES.cart}
+              className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              {PRODUCT_CONTENT.viewCart}
+            </Link>
           </Typography>
         )}
 

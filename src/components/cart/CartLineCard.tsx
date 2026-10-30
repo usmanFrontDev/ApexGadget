@@ -48,14 +48,13 @@ export function CartLineCard({ line, pending = false, onRemove }: CartLineCardPr
       aria-busy={pending || undefined}
       className={cn('rounded-[24px] p-4 transition-opacity sm:p-5', pending && 'opacity-70')}
     >
-      {/* Both columns are as tall as the taller one: the picture tile stretches to the details' height. */}
-      <div className="flex items-stretch gap-4 sm:gap-5">
-        <div className="flex w-[88px] shrink-0 flex-col gap-3 sm:w-[112px] lg:w-[132px]">
+      <div className="flex items-start gap-4 sm:gap-5">
+        <div className="flex w-[88px] shrink-0 flex-col gap-3 sm:w-[128px] lg:w-[160px]">
           <Link
             to={to}
             tabIndex={-1}
             aria-hidden="true"
-            className="block min-h-[88px] flex-1 overflow-clip rounded-[20px] bg-canvas sm:min-h-[112px] lg:min-h-[132px]"
+            className="block aspect-square w-full overflow-clip rounded-[20px] bg-canvas"
           >
             {line.image ? (
               <img
@@ -71,7 +70,7 @@ export function CartLineCard({ line, pending = false, onRemove }: CartLineCardPr
           <CartLinePrice line={line} className="sm:hidden" />
         </div>
 
-        <div className="relative flex min-w-0 flex-1 flex-col">
+        <div className="relative flex min-w-0 flex-1 flex-col self-stretch">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0 pr-9 sm:pr-0">
               {line.grade && (
