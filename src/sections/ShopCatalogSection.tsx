@@ -10,7 +10,15 @@ import { Pagination } from '@/components/ui/Pagination'
 import { SelectMenu } from '@/components/ui/SelectMenu'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { DESKTOP_FILTERS_QUERY, SORT_OPTIONS } from '@/constants/shop'
-import { ButtonSize, ButtonVariant, GlassCardVariant, IconPosition } from '@/constants/ui'
+import { Typography } from '@/components/ui/Typography'
+import {
+  ButtonSize,
+  ButtonVariant,
+  GlassCardVariant,
+  IconPosition,
+  TypographyTone,
+  TypographyVariant,
+} from '@/constants/ui'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import type { useShopFilters } from '@/hooks/useShopFilters'
 import { useShopCatalog } from '@/hooks/useShopCatalog'
@@ -119,7 +127,9 @@ export function ShopCatalogSection({ shop }: ShopCatalogSectionProps) {
             className="flex max-h-[calc(100dvh-8rem)] flex-col rounded-[18px]"
           >
             <div className="flex shrink-0 items-center justify-between border-b border-ink/8 px-5 py-4">
-              <h2 className="text-base font-bold">Filters</h2>
+              <Typography as="h2" variant={TypographyVariant.CardTitle}>
+                Filters
+              </Typography>
               {clearButton}
             </div>
             {/* Direct flex child of the card: it shrinks to the card's max height and scrolls. */}
@@ -149,9 +159,14 @@ export function ShopCatalogSection({ shop }: ShopCatalogSectionProps) {
 
       <div id={RESULTS_ID} className="min-w-0 scroll-mt-28">
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="whitespace-nowrap text-[13px] text-ink/60" aria-live="polite">
+          <Typography
+            variant={TypographyVariant.BodySm}
+            tone={TypographyTone.Muted}
+            className="whitespace-nowrap"
+            aria-live="polite"
+          >
             {view ? `Showing ${view.total} ${view.total === 1 ? 'result' : 'results'}` : 'Loading…'}
-          </p>
+          </Typography>
           <div className="flex items-center gap-2.5">
             {!isDesktop && (
               <Button

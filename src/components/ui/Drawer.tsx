@@ -3,7 +3,8 @@ import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CloseIcon } from '@/components/icons'
 import { IconButton } from '@/components/ui/IconButton'
-import { IconButtonSize } from '@/constants/ui'
+import { Typography } from '@/components/ui/Typography'
+import { IconButtonSize, TypographyVariant } from '@/constants/ui'
 
 export interface DrawerProps {
   open: boolean
@@ -87,9 +88,9 @@ export function Drawer({ open, onClose, title, children, footer }: DrawerProps) 
             className="absolute inset-y-0 right-0 flex w-[min(92vw,400px)] flex-col rounded-l-[28px] bg-white/92 shadow-glass-hero outline-none backdrop-blur-[18px]"
           >
             <div className="flex items-center justify-between px-6 pb-3 pt-6">
-              <h2 id={titleId} className="text-xl font-bold tracking-[-0.02em]">
+              <Typography as="h2" id={titleId} variant={TypographyVariant.Subtitle}>
                 {title}
-              </h2>
+              </Typography>
               <IconButton label="Close" size={IconButtonSize.Md} onClick={onClose}>
                 <CloseIcon width={16} height={16} />
               </IconButton>

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/Button'
 import { Chip } from '@/components/ui/Chip'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { IconButton } from '@/components/ui/IconButton'
+import { Typography } from '@/components/ui/Typography'
 import { CONDITION_LABELS, GRADE_LABELS } from '@/constants/shop'
 import {
   ButtonSize,
@@ -11,6 +12,8 @@ import {
   GlassCardVariant,
   IconAnimation,
   IconButtonSize,
+  TypographyTone,
+  TypographyVariant,
 } from '@/constants/ui'
 import { cn } from '@/lib/cn'
 import { formatPrice } from '@/lib/format'
@@ -81,16 +84,28 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
       </div>
 
       <div className="flex flex-1 flex-col px-1 pt-3.5">
-        <h3 className="line-clamp-2 text-[15.5px] font-bold leading-5">{title}</h3>
-        <p className="mt-1 line-clamp-1 font-body text-[13px] leading-[18px] text-ink/60">{subtitle}</p>
+        <Typography variant={TypographyVariant.CardTitle} className="line-clamp-2">
+          {title}
+        </Typography>
+        <Typography
+          variant={TypographyVariant.BodySm}
+          tone={TypographyTone.Muted}
+          className="mt-1 line-clamp-1"
+        >
+          {subtitle}
+        </Typography>
         {meta.length > 0 && (
-          <p className="mt-2.5 line-clamp-1 font-body text-[12.5px] leading-4 text-ink/55">
+          <Typography
+            variant={TypographyVariant.Caption}
+            tone={TypographyTone.Muted}
+            className="mt-2.5 line-clamp-1"
+          >
             {meta.join(' · ')}
-          </p>
+          </Typography>
         )}
-        <p className="mt-auto pt-3 text-xl font-extrabold leading-[26px] tracking-[-0.5px]">
+        <Typography variant={TypographyVariant.Price} className="mt-auto pt-3">
           {formatPrice(priceAmount, currencyCode)}
-        </p>
+        </Typography>
       </div>
 
       <Button

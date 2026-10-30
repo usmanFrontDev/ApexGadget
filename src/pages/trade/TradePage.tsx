@@ -1,9 +1,11 @@
 import { Container } from '@/components/ui/Container'
+import { Typography } from '@/components/ui/Typography'
+import { TypographyVariant } from '@/constants/ui'
 
 export default function TradePage() {
   return (
     <Container className="py-20">
-      <h1 className="text-4xl font-bold">Trade</h1>
+      <Typography variant={TypographyVariant.Display}>Trade</Typography>
     </Container>
   )
 }

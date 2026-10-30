@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { GlassCard } from '@/components/ui/GlassCard'
-import { GlassCardVariant } from '@/constants/ui'
+import { Typography } from '@/components/ui/Typography'
+import { GlassCardVariant, TypographyTone, TypographyVariant } from '@/constants/ui'
 
 export interface EmptyStateProps {
   icon: ReactNode
@@ -18,10 +19,16 @@ export function EmptyState({ icon, title, description, action }: EmptyStateProps
       >
         {icon}
       </span>
-      <h3 className="mt-5 text-xl font-bold tracking-[-0.02em]">{title}</h3>
-      <p className="mx-auto mt-2 max-w-[420px] font-body text-sm leading-6 text-ink/60">
+      <Typography variant={TypographyVariant.Subtitle} className="mt-5">
+        {title}
+      </Typography>
+      <Typography
+        variant={TypographyVariant.Body}
+        tone={TypographyTone.Muted}
+        className="mx-auto mt-2 max-w-[420px]"
+      >
         {description}
-      </p>
+      </Typography>
       {action && <div className="mt-6 flex justify-center">{action}</div>}
     </GlassCard>
   )

@@ -9,8 +9,8 @@ import { WhyShopSection } from '@/sections/WhyShopSection'
 
 export default function HomePage() {
   return (
-    <Container className="pt-5">
-      <div className="flex flex-col gap-[18px]">
+    <Container className="pt-3 sm:pt-5">
+      <div className="flex flex-col gap-3 sm:gap-[18px]">
         <HeroSection />
         <PromoCardsSection />
       </div>

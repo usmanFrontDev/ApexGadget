@@ -5,10 +5,10 @@ import { TESTIMONIALS } from '@/constants/home'
 
 export function TestimonialsSection() {
   return (
-    <section className="mt-14 lg:mt-[88px]">
+    <section className="mt-10 sm:mt-14 lg:mt-[88px]">
       <SectionHeading eyebrow="From real customers" title="What people say" />
 
-      <ul className="mt-6 grid gap-3 md:grid-cols-3 lg:gap-[18px]">
+      <ul className="mt-5 grid gap-3 sm:mt-6 md:grid-cols-3 lg:gap-[18px]">
         {TESTIMONIALS.map((testimonial, index) => (
           <li key={testimonial.id} className="h-full">
             <Reveal delay={index * 0.08} className="h-full">

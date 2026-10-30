@@ -9,7 +9,7 @@ import { ButtonSize, ButtonVariant, IconAnimation } from '@/constants/ui'
 
 export function CategoriesSection() {
   return (
-    <section id={CATEGORIES_SECTION_ID} className="mt-14 scroll-mt-28 lg:mt-[78px]">
+    <section id={CATEGORIES_SECTION_ID} className="mt-10 scroll-mt-28 sm:mt-14 lg:mt-[78px]">
       <SectionHeading
         eyebrow="Find your fit"
         title="Shop By Category"
@@ -20,15 +20,16 @@ export function CategoriesSection() {
             size={ButtonSize.Sm}
             icon={<ArrowUpRightIcon />}
             iconAnimation={IconAnimation.PointRight}
+            className="max-sm:w-full"
           >
             All categories
           </Button>
         }
       />
 
-      <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:gap-[18px]">
+      <ul className="mt-5 grid grid-cols-2 gap-2.5 sm:mt-6 sm:grid-cols-3 sm:gap-3 lg:grid-cols-5 lg:gap-[18px]">
         {CATEGORIES.map((category, index) => (
-          <li key={category.id} className="h-full">
+          <li key={category.id} className="h-full max-sm:odd:last:col-span-2">
             <Reveal delay={index * 0.06} className="h-full">
               <CategoryCard category={category} />
             </Reveal>

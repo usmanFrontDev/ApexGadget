@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/Button'
 import { Chip } from '@/components/ui/Chip'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { IconButton } from '@/components/ui/IconButton'
+import { Typography } from '@/components/ui/Typography'
 import {
   ButtonSize,
   ChipSize,
@@ -10,6 +11,9 @@ import {
   GlassCardVariant,
   IconAnimation,
   IconButtonSize,
+  TypographyAlign,
+  TypographyTone,
+  TypographyVariant,
 } from '@/constants/ui'
 import { cn } from '@/lib/cn'
 import { formatPrice } from '@/lib/format'
@@ -24,10 +28,10 @@ export function ProductCard({ product }: ProductCardProps) {
   const soldOut = availableForSale === false
 
   return (
-    <GlassCard as="article" variant={GlassCardVariant.Soft} className="group flex h-full flex-col p-[15px]">
+    <GlassCard as="article" variant={GlassCardVariant.Soft} className="group flex h-full flex-col p-3 sm:p-[15px]">
       <div
         className={cn(
-          'relative h-[170px] overflow-hidden rounded-[16px]',
+          'relative h-[210px] overflow-hidden rounded-[18px] sm:h-[170px] sm:rounded-[16px]',
           // Real image: no panel, just the soft glow. Placeholder: striped box.
           !image &&
             'bg-[repeating-linear-gradient(135deg,#e9e9eb_0_7px,#f1f1f3_7px_13px)] shadow-[inset_0_0_0_1px_rgb(255_255_255/0.92)]',
@@ -74,12 +78,29 @@ export function ProductCard({ product }: ProductCardProps) {
         </IconButton>
       </div>
 
-      <div className="flex flex-1 flex-col px-1 pt-4">
-        <h3 className="line-clamp-2 text-base font-bold leading-[20px]">{title}</h3>
-        <p className="mt-[7px] line-clamp-2 font-body text-[13px] leading-[18px] text-ink/70">{subtitle}</p>
-        <p className="mt-auto pt-3 text-xl font-extrabold leading-[25px] tracking-[-0.5px]">
+      <div className="flex flex-1 flex-col items-center px-1 pt-4 sm:items-stretch">
+        <Typography
+          variant={TypographyVariant.CardTitle}
+          align={TypographyAlign.CenterBelowSm}
+          className="line-clamp-2"
+        >
+          {title}
+        </Typography>
+        <Typography
+          variant={TypographyVariant.BodySm}
+          tone={TypographyTone.Soft}
+          align={TypographyAlign.CenterBelowSm}
+          className="mt-1.5 line-clamp-2"
+        >
+          {subtitle}
+        </Typography>
+        <Typography
+          variant={TypographyVariant.Price}
+          align={TypographyAlign.CenterBelowSm}
+          className="mt-auto pt-3"
+        >
           {formatPrice(priceAmount, currencyCode)}
-        </p>
+        </Typography>
       </div>
 
       <Button
@@ -88,6 +109,7 @@ export function ProductCard({ product }: ProductCardProps) {
         fullWidth
         icon={<ArrowUpRightIcon width={13} height={13} />}
         iconAnimation={IconAnimation.PointRight}
+        blockOnMobile
         className="mt-4 shadow-primary-soft"
       >
         View details

@@ -6,10 +6,10 @@ import { WHY_SHOP_ITEMS } from '@/constants/home'
 
 export function WhyShopSection() {
   return (
-    <section className="mt-14 lg:mt-[88px]">
+    <section className="mt-10 sm:mt-14 lg:mt-[88px]">
       <SectionHeading eyebrow="The fine print, made simple" title="Why shop with us" />
 
-      <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-[18px]">
+      <ul className="mt-5 grid gap-3 sm:mt-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-[18px]">
         {WHY_SHOP_ITEMS.map((item, index) => (
           <li key={item.id} className="h-full">
             <Reveal delay={index * 0.06} className="h-full">

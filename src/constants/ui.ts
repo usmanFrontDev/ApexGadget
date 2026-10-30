@@ -76,3 +76,49 @@ export const IconAnimation = {
   Grow: 'grow',
 } as const
 export type IconAnimation = (typeof IconAnimation)[keyof typeof IconAnimation]
+
+/**
+ * Text styles. Every size is responsive (phone -> tablet -> desktop) and lives in
+ * `components/ui/Typography.tsx`; never hand-write font sizes in pages or cards.
+ */
+export const TypographyVariant = {
+  /** Page hero headline (h1). */
+  Display: 'display',
+  /** Section headline (h2). */
+  Heading: 'heading',
+  /** Big card headline (promo, newsletter). */
+  Title: 'title',
+  /** Small headline (feature card, drawer, empty state). */
+  Subtitle: 'subtitle',
+  /** Product / category name. */
+  CardTitle: 'card-title',
+  /** Intro paragraph under a page headline. */
+  Lead: 'lead',
+  /** Default paragraph. */
+  Body: 'body',
+  BodySm: 'body-sm',
+  Caption: 'caption',
+  /** Small uppercase label above a headline. */
+  Eyebrow: 'eyebrow',
+  Price: 'price',
+  Quote: 'quote',
+} as const
+export type TypographyVariant = (typeof TypographyVariant)[keyof typeof TypographyVariant]
+
+export const TypographyTone = {
+  Default: 'default',
+  Muted: 'muted',
+  Soft: 'soft',
+  Inverse: 'inverse',
+  InverseMuted: 'inverse-muted',
+} as const
+export type TypographyTone = (typeof TypographyTone)[keyof typeof TypographyTone]
+
+/** `Center*` values centre on small screens and go back to start-aligned above the breakpoint. */
+export const TypographyAlign = {
+  Start: 'start',
+  Center: 'center',
+  CenterBelowSm: 'center-below-sm',
+  CenterBelowLg: 'center-below-lg',
+} as const
+export type TypographyAlign = (typeof TypographyAlign)[keyof typeof TypographyAlign]

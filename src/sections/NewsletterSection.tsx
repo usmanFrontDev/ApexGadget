@@ -2,8 +2,9 @@ import type { SubmitEventHandler } from 'react'
 import toast from 'react-hot-toast'
 import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
+import { Typography } from '@/components/ui/Typography'
 import { NEWSLETTER_CONTENT } from '@/constants/home'
-import { ButtonSize } from '@/constants/ui'
+import { ButtonSize, TypographyAlign, TypographyTone, TypographyVariant } from '@/constants/ui'
 
 export function NewsletterSection() {
   const { titleLines, description, placeholder, submitLabel, successMessage } = NEWSLETTER_CONTENT
@@ -16,28 +17,40 @@ export function NewsletterSection() {
   }
 
   return (
-    <section className="mt-14 lg:mt-20">
+    <section className="mt-10 sm:mt-14 lg:mt-20">
       <Container>
-        <div className="relative flex flex-col gap-6 overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#17070a_0%,#0c0c0e_62%)] px-6 py-8 shadow-newsletter sm:px-12 sm:py-[45px] lg:flex-row lg:items-center lg:justify-between">
+        <div className="relative flex flex-col gap-5 overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#17070a_0%,#0c0c0e_62%)] px-4 py-7 shadow-newsletter sm:gap-6 sm:px-12 sm:py-[45px] lg:flex-row lg:items-center lg:justify-between">
           <span
             aria-hidden="true"
             className="pointer-events-none absolute -left-20 -top-[140px] size-[420px] rounded-full bg-[radial-gradient(closest-side,rgb(200_32_40/0.08),transparent_95%)]"
           />
 
-          <div className="relative text-paper">
-            <h2 className="text-[26px] font-bold leading-[1.04] tracking-[-0.035em] sm:text-[34px] sm:leading-[35.4px]">
+          <div className="relative">
+            <Typography
+              variant={TypographyVariant.Title}
+              tone={TypographyTone.Inverse}
+              align={TypographyAlign.CenterBelowLg}
+              className="sm:text-[30px] lg:text-[34px] lg:leading-[35.4px]"
+            >
               {titleLines.map((line) => (
                 <span key={line} className="block">
                   {line}
                 </span>
               ))}
-            </h2>
-            <p className="mt-3 font-body text-[14.5px] leading-5 text-paper/62">{description}</p>
+            </Typography>
+            <Typography
+              variant={TypographyVariant.Body}
+              tone={TypographyTone.InverseMuted}
+              align={TypographyAlign.CenterBelowLg}
+              className="mt-2.5 sm:mt-3"
+            >
+              {description}
+            </Typography>
           </div>
 
           <form
             onSubmit={handleSubmit}
-            className="relative flex h-[60px] w-full items-center rounded-full bg-white/92 pl-[23px] pr-[9px] shadow-ring lg:w-[552px]"
+            className="relative flex w-full flex-col gap-2.5 sm:h-[60px] sm:flex-row sm:items-center sm:gap-0 sm:rounded-full sm:bg-white/92 sm:pl-[23px] sm:pr-[9px] sm:shadow-ring lg:w-[552px]"
           >
             <label htmlFor="newsletter-email" className="sr-only">
               Email address
@@ -49,9 +62,9 @@ export function NewsletterSection() {
               required
               placeholder={placeholder}
               autoComplete="email"
-              className="min-w-0 flex-1 bg-transparent text-[14.5px] text-ink outline-none placeholder:text-ink/62"
+              className="h-[50px] w-full min-w-0 rounded-full bg-white/92 px-5 text-center text-[14.5px] text-ink shadow-ring outline-none placeholder:text-ink/62 sm:h-auto sm:flex-1 sm:rounded-none sm:bg-transparent sm:px-0 sm:text-left sm:shadow-none"
             />
-            <Button type="submit" size={ButtonSize.Xs} className="font-body">
+            <Button type="submit" size={ButtonSize.Xs} className="font-body max-sm:h-[50px] max-sm:w-full">
               {submitLabel}
             </Button>
           </form>

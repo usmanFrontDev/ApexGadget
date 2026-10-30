@@ -6,7 +6,7 @@ export interface ContainerProps {
   className?: string
 }
 
-/** Page column: full width with small side gutters (no max-width cap). */
+/** Page column: full width with gutters that grow with the screen (no max-width cap). */
 export function Container({ children, className }: ContainerProps) {
-  return <div className={cn('mx-auto w-full max-w-full px-4 sm:px-8', className)}>{children}</div>
+  return <div className={cn('mx-auto w-full max-w-full px-3 sm:px-6 lg:px-8', className)}>{children}</div>
 }

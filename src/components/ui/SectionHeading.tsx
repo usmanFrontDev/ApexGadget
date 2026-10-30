@@ -1,26 +1,43 @@
 import type { ReactNode } from 'react'
+import { Typography } from '@/components/ui/Typography'
+import { TypographyAlign, TypographyTone, TypographyVariant } from '@/constants/ui'
 import { cn } from '@/lib/cn'
 
 export interface SectionHeadingProps {
   eyebrow: string
   title: string
-  /** Optional right-aligned slot (e.g. an "All categories" button). */
+  /** Optional slot beside the title on desktop, full-width under it on phones (e.g. "All categories"). */
   action?: ReactNode
   className?: string
 }
 
+/** Centred on phones and tablets, split (title left, action right) from `lg`. */
 export function SectionHeading({ eyebrow, title, action, className }: SectionHeadingProps) {
   return (
-    <div className={cn('flex flex-wrap items-end justify-between gap-x-4 gap-y-3', className)}>
-      <div>
-        <p className="font-body text-[11.5px] font-bold uppercase tracking-[1.61px] text-ink/62">
+    <div
+      className={cn(
+        'flex flex-col items-center gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-x-4',
+        className,
+      )}
+    >
+      <div className="min-w-0">
+        <Typography
+          variant={TypographyVariant.Eyebrow}
+          tone={TypographyTone.Muted}
+          align={TypographyAlign.CenterBelowLg}
+        >
           {eyebrow}
-        </p>
-        <h2 className="mt-[7px] text-[30px] font-bold leading-[1.04] tracking-[-0.035em] sm:text-[40px]">
+        </Typography>
+        <Typography
+          as="h2"
+          variant={TypographyVariant.Heading}
+          align={TypographyAlign.CenterBelowLg}
+          className="mt-1.5"
+        >
           {title}
-        </h2>
+        </Typography>
       </div>
-      {action}
+      {action && <div className="flex w-full justify-center sm:w-auto">{action}</div>}
     </div>
   )
 }

@@ -19,7 +19,7 @@ export function BannerCarousel({ slides, autoPlayMs, className }: BannerCarousel
     <GlassCard
       as="section"
       variant={GlassCardVariant.Hero}
-      className={cn('rounded-[32px] px-3 py-3.5 sm:rounded-[56px] sm:px-6 sm:py-7', className)}
+      className={cn('rounded-[32px] px-2.5 py-2.5 sm:rounded-[56px] sm:px-6 sm:py-7', className)}
     >
       <span
         aria-hidden="true"
@@ -38,7 +38,7 @@ export function BannerCarousel({ slides, autoPlayMs, className }: BannerCarousel
         onMouseLeave={() => setPaused(false)}
         onFocus={() => setPaused(true)}
         onBlur={() => setPaused(false)}
-        className="relative aspect-[1215/531] min-h-[200px] overflow-hidden rounded-[22px] bg-[#1a0407] shadow-banner sm:rounded-[56px]"
+        className="relative aspect-[4/3] overflow-hidden rounded-[22px] bg-[#1a0407] shadow-banner sm:aspect-[1215/531] sm:rounded-[56px]"
       >
         <AnimatePresence initial={false}>
           <motion.img
@@ -49,7 +49,7 @@ export function BannerCarousel({ slides, autoPlayMs, className }: BannerCarousel
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="absolute inset-0 size-full object-cover"
+            className="absolute inset-0 size-full object-cover object-[62%_center] sm:object-center"
           />
         </AnimatePresence>
 
@@ -58,8 +58,8 @@ export function BannerCarousel({ slides, autoPlayMs, className }: BannerCarousel
           className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgb(10_2_4/0.72),rgb(10_2_4/0.3)_48%,transparent_78%)]"
         />
 
-        <div className="absolute bottom-3 left-1/2 flex h-[50px] w-[387px] max-w-[calc(100%-2rem)] -translate-x-1/2 items-center justify-center rounded-full bg-black/32 backdrop-blur-[24px] sm:bottom-[17px]">
-          <div className="flex items-center gap-4">
+        <div className="absolute bottom-3 left-1/2 flex h-10 w-fit max-w-[calc(100%-1.5rem)] -translate-x-1/2 items-center justify-center rounded-full bg-black/32 px-5 backdrop-blur-[24px] sm:bottom-[17px] sm:h-[50px] sm:w-[387px] sm:px-0">
+          <div className="flex items-center gap-3 sm:gap-4">
             {slides.map((slide, i) => {
               const isActive = i === index
               return (

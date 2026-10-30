@@ -23,6 +23,8 @@ export interface ButtonProps extends ActionElementProps {
   iconAnimation?: IconAnimation
   /** Stretch to the container; label and icon sit at opposite edges. */
   fullWidth?: boolean
+  /** Phones only (< sm): full width, label centred, icon pinned to the right edge. */
+  blockOnMobile?: boolean
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
@@ -79,6 +81,7 @@ export function Button({
   iconStyle,
   iconAnimation = IconAnimation.None,
   fullWidth = false,
+  blockOnMobile = false,
   className,
   children,
   ...actionProps
@@ -92,6 +95,8 @@ export function Button({
     <span
       className={cn(
         'inline-flex shrink-0 items-center justify-center',
+        blockOnMobile &&
+          cn('max-sm:absolute max-sm:inset-y-0 max-sm:my-auto', iconAtStart ? 'max-sm:left-2' : 'max-sm:right-2'),
         hasCircle && cn('rounded-full bg-ink-deep text-white', sizing.circle),
       )}
     >
@@ -110,6 +115,7 @@ export function Button({
       className={cn(
         'inline-flex shrink-0 items-center whitespace-nowrap rounded-full transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60',
         fullWidth ? 'w-full justify-between' : 'justify-center',
+        blockOnMobile && 'max-sm:relative max-sm:w-full max-sm:justify-center max-sm:px-14',
         hasCircle ? 'gap-[13px]' : 'gap-2',
         sizing.root,
         padding,
@@ -118,7 +124,7 @@ export function Button({
       )}
     >
       {iconAtStart && iconNode}
-      {children}
+      {blockOnMobile ? <span className="min-w-0 truncate">{children}</span> : children}
       {!iconAtStart && iconNode}
     </ActionElement>
   )

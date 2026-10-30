@@ -9,7 +9,7 @@ import { ButtonSize, ButtonVariant, IconAnimation } from '@/constants/ui'
 
 export function BestsellersSection() {
   return (
-    <section className="mt-14 lg:mt-[70px]">
+    <section className="mt-10 sm:mt-14 lg:mt-[70px]">
       <SectionHeading
         eyebrow="Handpicked"
         title="Bestsellers this week"
@@ -20,15 +20,16 @@ export function BestsellersSection() {
             size={ButtonSize.Sm}
             icon={<ArrowUpRightIcon />}
             iconAnimation={IconAnimation.PointRight}
+            className="max-sm:w-full"
           >
             View all
           </Button>
         }
       />
 
-      <ul className="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6 xl:gap-7">
+      <ul className="mt-5 grid gap-4 sm:mt-6 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6 xl:gap-7">
         {BESTSELLERS.map((product, index) => (
-          <li key={product.id} className="h-full">
+          <li key={product.id} className="mx-auto h-full w-full max-w-[340px] sm:max-w-none">
             <Reveal delay={index * 0.06} className="h-full">
               <ProductCard product={product} />
             </Reveal>

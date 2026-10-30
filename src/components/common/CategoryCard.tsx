@@ -2,7 +2,14 @@ import { Link } from 'react-router-dom'
 import { ArrowUpRightIcon } from '@/components/icons'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { IconCircle } from '@/components/ui/IconCircle'
-import { GlassCardVariant, IconAnimation } from '@/constants/ui'
+import { Typography } from '@/components/ui/Typography'
+import {
+  GlassCardVariant,
+  IconAnimation,
+  TypographyAlign,
+  TypographyTone,
+  TypographyVariant,
+} from '@/constants/ui'
 import type { CategoryItem } from '@/types/home.types'
 
 export interface CategoryCardProps {
@@ -17,9 +24,9 @@ export function CategoryCard({ category }: CategoryCardProps) {
       as="article"
       variant={GlassCardVariant.Soft}
       data-hover-scope=""
-      className="group h-full px-[21px] pb-[21px] pt-3 transition-transform duration-300 hover:-translate-y-1"
+      className="group h-full px-3 pb-4 pt-2.5 transition-transform sm:px-[21px] sm:pb-[21px] sm:pt-3 duration-300 hover:-translate-y-1"
     >
-      <div className="relative flex h-[136px] items-center justify-center">
+      <div className="relative flex h-[116px] items-center justify-center sm:h-[136px]">
         <span
           aria-hidden="true"
           className="absolute inset-0 rounded-full bg-[radial-gradient(closest-side,rgb(200_32_40/0.15),transparent_96%)]"
@@ -30,12 +37,16 @@ export function CategoryCard({ category }: CategoryCardProps) {
           loading="lazy"
           width={120}
           height={120}
-          className="relative size-[120px] object-contain"
+          className="relative size-[100px] object-contain sm:size-[120px]"
         />
       </div>
 
-      <div className="mt-4 pr-[50px]">
-        <h3 className="truncate text-[15.5px] font-bold leading-[19.5px]">
+      <div className="mt-3 min-w-0 sm:mt-4 sm:pr-[50px]">
+        <Typography
+          variant={TypographyVariant.CardTitle}
+          align={TypographyAlign.CenterBelowSm}
+          className="truncate"
+        >
           {/* Stretched link: the whole card is clickable */}
           <Link
             to={to}
@@ -43,15 +54,20 @@ export function CategoryCard({ category }: CategoryCardProps) {
           >
             {name}
           </Link>
-        </h3>
-        <p className="mt-[4.5px] truncate font-body text-[12.5px] leading-[18px] text-ink/70">
+        </Typography>
+        <Typography
+          variant={TypographyVariant.Caption}
+          tone={TypographyTone.Soft}
+          align={TypographyAlign.CenterBelowSm}
+          className="mt-1 truncate"
+        >
           {productCount} products
-        </p>
+        </Typography>
       </div>
 
       <IconCircle
         iconAnimation={IconAnimation.PointRight}
-        className="absolute bottom-[21px] right-[21px] transition group-hover:bg-white"
+        className="absolute bottom-[21px] right-[21px] transition group-hover:bg-white max-sm:hidden"
       >
         <ArrowUpRightIcon width={13} height={13} />
       </IconCircle>
