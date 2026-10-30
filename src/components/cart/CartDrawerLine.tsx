@@ -49,25 +49,26 @@ export function CartDrawerLine({ line, pending = false, onRemove, onNavigate }: 
           <Typography variant={TypographyVariant.BodySm} tone={availableForSale ? TypographyTone.Default : TypographyTone.Muted} className="mt-1 font-sans font-bold">
             {formatPrice(line.total.amount, line.total.currencyCode)}
           </Typography>
-          <div className="mt-2.5 flex items-center gap-2">
-            {availableForSale ? (
-              <CartQuantityControl line={line} size={QuantityStepperSize.Sm} removable />
-            ) : (
-              <>
-                <Chip size={ChipSize.Xs} variant={ChipVariant.Solid}>
-                  {CART_CONTENT.line.sold}
-                </Chip>
-                <IconButton
-                  label={CART_CONTENT.line.removeLabel.replace('{title}', line.productTitle)}
-                  size={IconButtonSize.Md}
-                  disabled={pending}
-                  onClick={() => onRemove(line)}
-                >
-                  <TrashIcon width={15} height={15} />
-                </IconButton>
-              </>
-            )}
-          </div>
+        </div>
+        {/* Right column: the control sits beside the details instead of leaving the row's right side empty. */}
+        <div className="flex shrink-0 flex-col items-end justify-center gap-2">
+          {availableForSale ? (
+            <CartQuantityControl line={line} size={QuantityStepperSize.Xs} removable />
+          ) : (
+            <>
+              <Chip size={ChipSize.Xs} variant={ChipVariant.Solid}>
+                {CART_CONTENT.line.sold}
+              </Chip>
+              <IconButton
+                label={CART_CONTENT.line.removeLabel.replace('{title}', line.productTitle)}
+                size={IconButtonSize.Md}
+                disabled={pending}
+                onClick={() => onRemove(line)}
+              >
+                <TrashIcon width={15} height={15} />
+              </IconButton>
+            </>
+          )}
         </div>
       </div>
       {!availableForSale && (
