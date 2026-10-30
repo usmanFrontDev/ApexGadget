@@ -24,7 +24,7 @@ Docs revised 2026-10-30 (v2 brief). Sources: shopify.dev versioning, filter-prod
 | R15 | Pagination = **Load more** (Q3). | code ✔ |
 | R16 | Launch newsletter = WhatsApp "drop alerts" button from `apex_site_settings` (`drop_alerts_*`, `whatsapp_number`); email newsletter function stays post-launch (Q2). Docs ✔, code in plan step 4b. | 02, 06 §8 |
 | R17 | SEO stays **Option A as a recommendation only**, not implemented (Q1). | 09 |
-| R18 | `yarn shopify:audit` built (`scripts/`), `yarn test` (vitest) added: 47 tests (codec, mappers with fixtures, mock engine, audit rules, contract-vs-app drift). | code ✔ |
+| R18 | `yarn shopify:audit` built (`scripts/`). The unit tests (vitest) written during the build were **removed** before the branch was pushed (decision of the owner); fixtures are in git history of branch `feat/shopify-server-side-catalogue` / earlier commits of this branch if tests are wanted again. | code ✔ |
 
 ## Open conflicts between the brief/contract and current code (code untouched unless listed above)
 
@@ -32,7 +32,7 @@ Docs revised 2026-10-30 (v2 brief). Sources: shopify.dev versioning, filter-prod
 |---|---|---|
 | K1 | ~~Shop was client-side.~~ **Fixed in step 3** (R13). | done |
 | K2 | ~~Numbered pagination vs cursors.~~ **Load more** (R15). Result count: `search.totalCount`, or the sum of the availability filter's counts for collections; hidden/“N+ products” when unknown. | done |
-| K3 | `ShopCategoryId` now has all categories and the home category cards / footer link to them; `CategoryItem.productCount` is optional and the card shows none. **Remaining:** home categories still come from `constants/home.ts` until step 4. | mostly done |
+| K3 | `ShopCategoryId` has all categories and the home cards/footer link to them. **Category counts are back** on the cards: derived from the availability filter (`getCategoryCounts`; mock = catalogue). Home categories still come from `constants/home.ts` until step 4. | done |
 | K4 | `ProductSummary` facet fields are plain strings; unknown values are kept and humanised (`lib/filterLabels.ts`). | done |
 | K5 | `ProductSummary.to` is still `ROUTES.shop`; no PDP, cart, search, account routes; cart count/avatar are mocks (`constants/mock.ts`). | Phases 5–7. |
 | K6 | ~~Price bounds from the client catalogue.~~ Slider bounds come from the `PRICE_RANGE` group (⚠ U3: input shape unverified). | done |
@@ -47,6 +47,19 @@ Docs revised 2026-10-30 (v2 brief). Sources: shopify.dev versioning, filter-prod
 | K15 | SEO: client-rendered SPA (09). | Q1. |
 | K16 | Marketing claims ("Mercantile certified", "100% original, lab tested", "12 month warranty") must be true and client-owned. | Content. |
 | K17 | Fixed-ratio, absolutely positioned hero/promo art (04); other ratios break the layout. | Designer keeps ratios. |
+| K18 | **Page banners have baked-in text** (`TradeInBanner.png`, `FavBanner.png`: opaque 2172×724 RGB with headline, lead, steps). The brief said "artwork only, text is real HTML". Trade-In art is also dark, the mock hero was light. | Shown in full from `lg` (copy also in the DOM as visually hidden text); below `lg` real HTML copy + a 4:3 crop of the phones. At 1024px the baked small text is ~8–10px. Wanted: text-free exports (same size) for fully editable copy. |
+| K19 | Favorites: visible banner says "Save what you love. Find it anytime."; the page `<h1>` (hidden at lg) is "Your Favorites" as in the brief. | Decide which wording leads. |
+| K20 | The floating "Saved items" card is **not** built on desktop: the banner already contains a baked "Your favorites" chip. The live count is in the toolbar ("n items"), the Header badge and a chip in the phone banner. | Accepted unless text-free art arrives. |
+| K21 | Header: added the wishlist link + badge, the swap icon and "Get a Trade-in Quote" (shown from `lg`, was "Quote Trade In" from `md`). **No search icon**: there is no search UI yet (plan step 7), so it would be a dead button. | Add with step 7. |
+| K22 | `CtaBanner` has no phone art (none supplied): text-only banners on Favorites and Product pages. | Supply `src/assets/images/CtaBanner.png` (04) and pass it as `image`. |
+| K23 | Add to Cart, quantity change and remove work in **mock mode only** (Zustand `apex.cart.v1`, header badge). Shopify mode throws "not connected yet" (`cartLinesAdd/Update/Remove`, plan step 6). No cart page/drawer/checkout (out of scope). | Step 6. |
+| K29 | Product page extras added on review: stock chip ("Only n left" at ≤ 3), condition report (battery meter, grade scale), "Ask on WhatsApp" (reuses `apex_site_settings.whatsapp_number`), sticky gallery. Their texts (`constants/product.ts`) are client-owned copy. | accept / edit copy |
+| K30 | Trade-In has a "Clear all" button (resets fields, draft and step) next to Back/Cancel. | done |
+| K24 | Favorites now uses **list rows** (`WishlistRow`) instead of the mock's 2-column cards (user preference after review); the shop/home cards only got a working heart (Question 1: yes). | done |
+| K25 | The product card is now ONE component (`ShopProductCard`) used by shop, home bestsellers and similar products; its heart saves to the wishlist. The home-only `ProductCard` (centred text, dark chip) and `ProductSummary.badge` were removed. | One-line change in the cards if it should go. |
+| K26 | `ProductSummary.to` is now `/shop/<handle>` (mock, mapper); home BESTSELLERS are now real mock products so their links work. | done |
+| K27 | Mock catalogue: one iPhone 11 (64GB white) is **sold** (to exercise the Sold state); the shop hides it by default (Out-of-stock filter shows it). | done |
+| K28 | `Pagination` (removed in step 3) is back for the Favorites page (local data, numbered pages). Shop stays on Load more. | done |
 
 ## Assumptions (correct me)
 | ID | Assumption |
@@ -74,6 +87,10 @@ Docs revised 2026-10-30 (v2 brief). Sources: shopify.dev versioning, filter-prod
 6. WhatsApp number and the trade-in message wording; trade-in model list.
 7. Customer-facing wording of **JV** (the filter shows "JV" until confirmed).
 8. Whether Google is a main channel (re-opens the SEO option; recommendation A stays).
+10. **Trade-in model list** (iPhone 11–17 + SE is a placeholder in `constants/trade.ts`); **JV** wording; **WhatsApp number** and **message template** (mock number `923357413642` is a temporary test number, mock mode only).
+11. Product **trust-strip claims** ("Free Shipping / On all orders", "7 Days Return / Hassle free", "Secure Payment / 100% secure" in `constants/product.ts`; "100% secure" clashes with COD/bank-transfer at launch) and the **Shipping & Returns** text (Shopify policies; the mock shows PLACEHOLDER text).
+12. Warranty months/note shown in "Detailed Information" (mock: 6 months, PLACEHOLDER).
+13. CtaBanner phone image (K22).
 9. Which marketing claims may be printed.
 
 ## Unverified (could not confirm in official docs; marked ⚠ in the docs)
@@ -92,6 +109,10 @@ Docs revised 2026-10-30 (v2 brief). Sources: shopify.dev versioning, filter-prod
 - U13 `cdn.shopify.com/...?width=` URL param (the GraphQL `transform` argument is documented).
 - U14 That Settings → Custom data can only create `custom.*` definitions from the UI.
 - U15 Shopify Customer Privacy API requirement for headless pixels.
+- U20 Category counts via `collection.products(first:1, filters:[{available:true}]).filters` (availability value count): depends on the Availability filter being enabled in Search & Discovery and on its counts reflecting the applied filter.
+- U17 The batched wishlist lookup (`p0: product(handle: $h0) … p49`) is standard GraphQL but untested on a live store (cost/complexity of 50 aliases; nodes(ids:) is the alternative if GIDs are stored).
+- U18 `productRecommendations` on a new store/with few products (may be empty → falls back to a same-model `collection(iphones)` query), and that `product(handle)` returns a sold listing while it stays Active + published to Headless.
+- U19 DOMPurify profile: Shopify descriptions with iframes/embeds are stripped (intended).
 - U16 `2026-10` as the live version: the versioning table lists it latest stable (released 2026-10-01) but the release-notes page still says 2026-07; no live call was possible (store inactive).
 
 ## Questions that still block

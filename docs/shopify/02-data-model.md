@@ -65,7 +65,7 @@ Shorthand: `text`, `mtext`, `url`, `img`, `int`, `list.text`, `choice` (text wit
 
 ### `apex_category_card` [L] — 6 entries
 `slug` ✔ · `name` ✔ · `shop_category` choice `iphones, audio, wearables, chargers, cases, accessories` ✔ (→ `/shop?category=…`) · `image` img ✔ (480×480) · `sort_order` ✔.
-No product count (the Storefront API has no collection count, 10 §1); the card shows the name only unless a count is derived later.
+The product count on the card is **derived at runtime** (not stored): the Storefront API has no collection count, so `getCategoryCounts` reads the in-stock value of the Availability filter of each category collection (one aliased query, `services/categories.queries.ts`). Needs the Availability filter in Search & Discovery; a category without a count shows no count line.
 
 ### `apex_banner_slide` [L] — 1–6: `image` img ✔ (2800×1184), `alt` ✔, `link_url`, `sort_order` ✔.
 ### `apex_why_us_feature` [L] — 4: `slug`, `title`, `description` ✔, `sort_order` ✔.
@@ -95,4 +95,4 @@ No product count (the Storefront API has no collection count, 10 §1); the card 
 Refund/shipping/privacy/terms from `shop { … Policy }`; warranty text from a Shopify Page `warranty`; FAQ from `apex_faq_item`. All policy wording is **BLOCKED-ON-CLIENT**.
 
 ## 7. Customer data [P]
-Wishlist v1 is localStorage (`apex.wishlist.v1`, array of handles) — itself post-launch. Customer-account sync later.
+Wishlist v1 is localStorage (`apex.wishlist.v1`, Zustand persist `{ state: { items: { handle: string; addedAt: number }[] }, version: 1 }`; `addedAt` feeds "Newest first"). Built now (mock + Shopify batch lookup by handle, doc 05 §4b); customer-account sync is post-launch.

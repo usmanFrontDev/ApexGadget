@@ -25,3 +25,13 @@ Storefront API `Image.url(transform: …)` accepts `maxWidth`, `maxHeight`, `cro
 - Hero: `maxWidth: 1000`; promo: `maxWidth: 800`; banners: `maxWidth: 2000` (desktop) — use the plain `url` with `?width=` for `srcset` (`…jpg?width=800 800w, …?width=1600 1600w`). (`?width=` on cdn.shopify.com URLs is widely used; ⚠ UNVERIFIED in the current docs.)
 
 Always send `width`/`height` from the API (`Image.width/height`) to avoid layout shift. Hero and the first banner are `loading="eager"`, everything else lazy.
+
+## Page banners (Trade-In, Favorites)
+
+| File | Size | Ratio | Notes |
+|---|---|---|---|
+| `src/assets/images/TradeInBanner.png` | 2172 × 724 px, PNG **RGB (no transparency)**, ~1.5 MB | 3:1 (3.0) | dark red scene, phones on the right (x ≈ 60–85 %); headline, lead and the 3 steps are **baked into the picture** |
+| `src/assets/images/FavBanner.png` | 2172 × 724 px, PNG RGB, ~1.6 MB | 3:1 | light scene, red + titanium phones at x ≈ 54–83 %; headline "Save what you love. Find it anytime." and a "Your favorites" chip are baked in |
+
+Rules: shown in full from `lg` (page copy is also in the DOM as visually hidden text); below `lg` the page writes real HTML copy and shows a **4:3 crop** of the phones (`object-position` 90 % / 84 %), so keep the phones inside x 50–90 % and the baked text left of x 45 %. Keep the 3:1 ratio when replacing the files. For real, editable HTML copy on desktop too, export **text-free** versions (same size). Both files are heavy for web: re-export as WebP/JPG under ~300 KB.
+CtaBanner art (red phone, optional): not supplied yet, suggested `src/assets/images/CtaBanner.png`, transparent PNG ≈ 400 × 400 px.

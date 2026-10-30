@@ -1,6 +1,6 @@
 # 06 — Field mapping (CONTRACT)
 
-Mappers live in `services/*.mappers.ts` (pure, fixture-tested). `[done]` = already in code after Phase 0; **NEW** = added in Phase B.
+Mappers live in `services/*.mappers.ts` (pure functions). `[done]` = already in code after Phase 0; **NEW** = added in Phase B.
 
 ## 1. Storefront → `ProductSummary`
 
@@ -98,7 +98,7 @@ Header `cartCount` ← `cart.totalQuantity` (replaces `MOCK_CART_COUNT`). `userE
 export interface HomeContent {
   hero: HeroContent & { image: string }
   promoCards: PromoCardData[]      // layout ← PROMO_LAYOUT_CLASSES[layout_preset] [done]
-  categories: CategoryItem[]       // productCount optional/absent (no Storefront count)
+  categories: CategoryItem[]       // productCount filled by useCategoryCounts (derived from the availability filter, not stored)
   banners: BannerSlide[]; features: FeatureItem[]; testimonials: Testimonial[]
   footerColumns: FooterColumn[]
   settings: SiteSettings
@@ -116,7 +116,7 @@ export interface SiteSettings {
 |---|---|
 | `HeroContent.*` | `badge, description, follow_label`; `titleLines=[title_line_1,title_line_2?]`; `highlights` (JSON list); CTAs `{label, to\|href}` (`/…`⇒`to`, else `href`) |
 | `PromoCardData` | `slug→id, label, title_line_*→titleLines, description, cta_label/cta_url→cta, image, image_alt→imageAlt, layout_preset→layout` |
-| `CategoryItem` | `slug→id, name, image`, `to = getShopPath(shop_category)` |
+| `CategoryItem` | `slug→id, name, image`, `to = getShopPath(shop_category)`; `productCount` ← `useCategoryCounts()[id]` (in-stock products; `accessories` = all non-iPhones) |
 | `BannerSlide` / `FeatureItem` / `Testimonial` | `handle|slug`, `image/alt` · `title/description` · `quote/author/rating` |
 | `FooterColumn` | group `apex_footer_link` by `column` |
 | `SiteSettings.social` | each non-empty `social_*` ⇒ `{label, shortLabel, href}` from a code table |
@@ -128,39 +128,30 @@ All lists sorted by `sort_order`; entries missing a required field are skipped (
 
 `PredictiveResult { products: {id,handle,title,image?,price,available}[]; collections: {handle,title}[]; queries: string[] }` — straight rename of `predictiveSearch`.
 
-## 7. Trade-in contract (WhatsApp only, no backend) — page UI comes later from Figma
+## 7. Trade-in contract (WhatsApp only, no backend) — BUILT (`/trade`)
 
-```ts
-export const TradeInPtaOption = { Pta:'pta', NonPta:'non-pta', Jv:'jv' } as const
-export const TradeInScreen = { NoIssues:'no-issues', Scratches:'scratches', Cracked:'cracked' } as const
-export const TradeInBody   = { NoIssues:'no-issues', Scratches:'scratches', Dents:'dents' } as const
-export interface TradeInForm {
-  model: string; storage: string; color: string
-  ptaStatus: TradeInPtaOption; screen: TradeInScreen; body: TradeInBody
-  battery?: number           // optional, 1–100
-  notes?: string             // "Any other problem?", max 300 chars
-  name: string
-  wantedModel?: string       // "iPhone you want to buy"
-}
-```
-- Required: `model, storage, color, ptaStatus, screen, body, name`. Optional: `battery, notes, wantedModel`. No hardware checklist (speaker/mic/camera/Face ID).
-- The trade-in **model list is separate** from `ShopModelId` (customers trade older phones: 8, X, XR, 11 … 17). It lives in `constants/tradeIn.ts` as labels (page task, not Phase B).
-- Message = `messageTemplate` with `{model} {storage} {color} {ptaStatus} {screen} {body} {battery} {notes} {wantedModel} {name}` replaced by labels; lines whose placeholder is empty are dropped.
-- Link: `https://wa.me/<whatsappNumber>?text=<encodeURIComponent(message)>` (digits only, no `+`). Keep the message < ~1,500 chars. Opens in a new tab; photos are attached by the customer inside WhatsApp.
-- **DRAFT default template** (client may rewrite in Shopify):
-  ```
-  Hi Apex Gadgets, I'd like a trade-in quote.
-  Device: {model} {storage} {color}
-  PTA status: {ptaStatus}
-  Battery health: {battery}
-  Screen: {screen}
-  Body: {body}
-  Other problems: {notes}
-  I want to buy: {wantedModel}
-  Name: {name}
-  I'll send photos here.
-  ```
-- No pricing logic anywhere. Staff quote manually.
+Form (React Hook Form + Zod, `lib/schemas/tradeIn.schema.ts`; every option list lives once in `constants/trade.ts`):
+
+| Field | Values (value → label) | Required |
+|---|---|---|
+| `model` | slug → label, iPhone 11 … 17 + SE (PLACEHOLDER list, BLOCKED-ON-CLIENT) | ✔ |
+| `storage` | `64gb … 1tb` | ✔ |
+| `colour` | `black, white, blue, red, purple, gold, natural-titanium` ("Natural") | ✔ |
+| `ptaStatus` | `pta, non-pta, jv` | ✔ |
+| `condition` | `like-new, good, fair, damaged` | ✔ |
+| `screen` | `no-issues, scratches, cracked` (default `no-issues`) | ✔ |
+| `body` | `no-issues, scratches, dents` (default `no-issues`) | ✔ |
+| `batteryHealth` | `90-plus, 80-89, 70-79, below-70, not-sure` | optional |
+| `notes` | text ≤ 500 | optional |
+| `name` | 2–60 chars, trimmed | ✔ |
+| `wantToBuy` | a model slug | optional |
+
+Nothing is preselected except `screen`/`body`. Draft kept in `sessionStorage` (`apex.tradein.draft.v1`), cleared on success.
+
+Message: `buildTradeInMessage(values, template)` (`lib/tradeInMessage.ts`). Tokens `{name} {model} {storage} {colour} {pta} {condition} {screen} {body} {battery} {notes} {wantToBuy}` are replaced by the option **labels**; a line whose tokens are all empty is dropped; `notes` newlines become spaces. Link: `buildWhatsAppUrl(number, text)` → `https://wa.me/<digits>?text=<encodeURIComponent(text)>` (8–15 digits; `+`, spaces, dashes stripped). Opened with `window.open(url, '_blank', 'noopener,noreferrer')`; the success screen also shows the same URL as a real `<a>`.
+
+Settings (`useTradeInSettings` → `getTradeInSettings`): `apex_site_settings` (`main`) fields `whatsapp_number` (digits, validated) and `trade_in_message_template` (empty → code default). **Mock mode only** falls back to the temporary test number `923357413642` (0335 7413642); Shopify mode has no fallback: no number ⇒ the "Send on WhatsApp" button is disabled with an inline message.
+No pricing logic anywhere; staff quote manually.
 
 ## 8. Drop alerts instead of a newsletter (launch)
 No newsletter form and no backend at launch. The home block becomes a **WhatsApp "drop alerts" button**: copy from `apex_site_settings.drop_alerts_*`, link `https://wa.me/<whatsapp_number>?text=<encodeURIComponent(drop_alerts_message)>`, same number as the trade-in. Empty number ⇒ the block is hidden. The email newsletter function (`api/newsletter`, Admin token) stays **post-launch** (07 #15). Code change: step 4 (Home CMS); `NewsletterSection` is untouched until then.

@@ -8,11 +8,14 @@ Vite · React 19 · TypeScript (strict) · Tailwind CSS v4 (`@tailwindcss/vite`,
 ## Shopify contract (details in `docs/shopify/`)
 - `docs/shopify/02-data-model.md` and `06-field-mapping.md` are the contract; `OPEN-ISSUES.md` lists conflicts, assumptions, unverified and client-blocked items. Any change to `ProductSummary`/`ProductDetail`, filters or Home content must update the docs, mapper, mock data and GraphQL in the **same change**.
 - **Filters are server-side**, driven by Shopify Search & Discovery (`docs/shopify/10-filters-and-search-discovery.md`). Never hardcode facet lists in components; render the `FilterGroup[]` the API returns. A new filterable attribute = metafield definition (filterable) + Search & Discovery setup + doc update + mock fixture.
+- **Trade-in** is WhatsApp-only: `lib/tradeInMessage.ts` (`buildTradeInMessage`, `buildWhatsAppUrl`) is the single source of the message; number and template come from `apex_site_settings` (`useTradeInSettings`). Option lists live ONCE in `constants/trade.ts` and drive the Zod schema (`lib/schemas/tradeIn.schema.ts`) and the form types. No backend, no Admin token. Add/rename an option there, never in a component.
+- **Wishlist**: `store/useWishlistStore.ts`, key `apex.wishlist.v1`, items `{ handle, addedAt }[]`; storage access goes through `lib/safeStorage.ts` (never throws). Cards use `WishlistButton`.
+- **Product page** (`/shop/:handle`) depends on `ProductDetail` (docs/shopify/06 §3): service `productDetail.service.ts` -> `useProduct`; a sold listing still renders (Sold state), only an unknown handle is "not found". Shopify HTML always goes through `lib/sanitizeHtml.ts`. Mock cart (`store/useCartStore.ts`) is mock-mode only until plan step 6.
 - New homepage/CMS section = metaobject definition + doc table (02) + query (05) + mapper (06) + mock fixture + loading/empty/error states.
 - Components never call Shopify; only services do. No Admin token in client code or `VITE_` vars; no serverless functions at launch (trade-in is a WhatsApp `wa.me` link).
 - Mock data must always satisfy the same types as the Shopify mappers. Currency is PKR (`formatPrice`). `ptaStatus` = PTA/Non-PTA/JV, `grade` = condition quality.
 - New env vars go into `.env.example` and `docs/shopify/00-overview.md`.
-- Before finishing a Shopify-related task run `yarn typecheck`, `yarn lint`, `yarn test` and `yarn shopify:audit` (needs the live store's public env; exit 2 = not connected).
+- Before finishing a Shopify-related task run `yarn typecheck`, `yarn lint` and `yarn shopify:audit` (needs the live store's public env; exit 2 = not connected).
 - When you learn something about the project structure while working, update the relevant md file in the same change.
 
 ## Folder structure (`@/` alias = `src/`)
@@ -26,7 +29,7 @@ src/
     icons/      one SVG icon component per file (currentColor), exported via index.ts
     layout/     Header, Footer, RootLayout, ScrollToTop
     shop/       shop-page parts (ProductGrid, ShopFilterPanel, ActiveFilters, ResultsFooter...)
-    common/     reusable domain-agnostic blocks (ProductCard, SectionHeader...)
+    common/     reusable domain-agnostic blocks (CategoryCard, PromoCard, PageBanner, CtaBanner...)
   hooks/        useXxx.ts — TanStack Query hooks wrapping services
   services/     <feature>.service.ts — API calls + GraphQL (no React here)
   store/        Zustand stores (useCartStore.ts ...)
@@ -47,7 +50,7 @@ src/
 ## Reusable UI building blocks (use these, don't re-create)
 - `Button` (`components/ui/Button.tsx`): props `variant` (Primary|Secondary), `size` (Sm|Md|Lg), `icon` (any node), `iconPosition` (Start|End), `iconStyle` (Circle|Plain), plus `to` (router link) / `href` (anchor) / `onClick`. All option values come from `constants/ui.ts`.
 - `Button` also has `fullWidth` (label left, icon right) and sizes Xs|Sm|Md|Lg; `Chip` sizes Xs|Sm|Md|Lg, variants Default|Label|Dark; `GlassCard` variants Hero|Promo|Soft (override radius via `className`).
-- `IconButton` (round, `label` required for a11y), `IconCircle` (decorative round badge), `Chip`, `GlassCard`, `SectionHeading`, `Container`, `Reveal` (scroll animation). Cards: `ProductCard`, `CategoryCard`, `PromoCard`, `FeatureCard`, `TestimonialCard`; `BannerCarousel` (+ `useCarousel` hook). Link/anchor/button switching is handled by `ActionElement`.
+- `IconButton` (round, `label` required for a11y), `IconCircle` (decorative round badge), `Chip`, `GlassCard`, `SectionHeading`, `Container`, `Reveal` (scroll animation). Cards: `ShopProductCard` (the ONE product card for shop, home and similar products; no add-to-cart on cards, only "View details" + the heart), `CategoryCard`, `PromoCard`, `FeatureCard`, `TestimonialCard`; `BannerCarousel` (+ `useCarousel` hook). Link/anchor/button switching is handled by `ActionElement`.
 - **Typography**: all text goes through `Typography` (`components/ui/Typography.tsx`) with `variant` (`TypographyVariant`: Display, Heading, Title, Subtitle, CardTitle, Lead, Body, BodySm, Caption, Eyebrow, Price, Quote), `tone` and `align` (`TypographyAlign.CenterBelowLg` = centred on phone/tablet, left on desktop). Sizes are responsive per variant (phone -> `sm` -> `lg` -> `xl`) and live only there; don't write `text-[..px]` on headings/paragraphs. Override per use only through `className`.
 - **Phone/tablet layout (< lg)**: centred approach: centred headings/text, full-width CTAs (`Button blockOnMobile` = full width, label centred, icon pinned right), one product card per row, tight gutters (`Container` px-3 -> sm:px-6 -> lg:px-8), odd last grid item spans the row.
 - **Icon hover animations**: `Button`, `IconButton`, `IconCircle` take `iconAnimation` (`IconAnimation.PointRight` = up-right arrow rotates to point right, plus NudgeRight, NudgeUpRight, Spin, Grow). Animations live in `index.css` (`[data-icon-animation]` inside a `[data-hover-scope]` ancestor; reduced-motion safe). Every arrow-icon button/link should pass `iconAnimation`. To animate on a card hover, put `data-hover-scope` on the card.

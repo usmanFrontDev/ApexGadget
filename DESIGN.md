@@ -66,13 +66,13 @@ Tones: Default, Muted, Soft, Inverse, InverseMuted. Align: Start, Center, Center
 
 | Component | Variants / props | Notes |
 |---|---|---|
-| `Button` | `variant` Primary (red, `shadow-primary`) / Secondary (white/92, ring); `size` Xs 42 · Sm 46 · Md 50 · Lg 52px; `icon`, `iconPosition`, `iconStyle` Circle (dark round badge) / Plain; `iconAnimation`; `fullWidth`; `blockOnMobile` | Full pill. `blockOnMobile` = full width < sm, label centred, icon pinned right. Single line, `whitespace-nowrap`. Use `active:scale-none` when stretched-link. |
+| `Button` | `variant` Primary (red, `shadow-primary`) / Secondary (white/92, ring); `size` Xs 42 · Sm 46 · Md 50 · Lg 52px; `icon`, `iconPosition`, `iconStyle` Circle (dark round badge) / Plain; `iconAnimation`; `fullWidth`; `blockOnMobile` | Full pill. Both variants use the same weight (bold) so a Primary and a Secondary side by side read as the same size. `blockOnMobile` = full width < sm, label centred, icon pinned right. Single line, `whitespace-nowrap`. Use `active:scale-none` when stretched-link. |
 | `IconButton` | `size` Sm/Md/Lg, `label` required | Round, white glass, hover scope; header uses Md → `sm:size-11`. |
 | `Chip` | `size` Xs 26 · Sm 30 · Md 34 · Lg 40; `variant` Default / Label (uppercase) / Dark (over imagery, "PTA APPROVED") / Tint (soft red, grade) | White/92 pill with ring; text `truncate`. |
 | `GlassCard` | Hero / Promo / Soft | see §5 |
 | `SectionHeading` | eyebrow + Heading + optional action | column centred < lg, row with action right on lg. |
 | `Typography`, `Container`, `Reveal` (scroll-in), `Drawer`, `SelectMenu`, `Checkbox`, `RangeSlider`, `Pagination`, `FilterChip`, `Skeleton`, `EmptyState`, `Breadcrumb` | – | see AGENTS.md |
-| Cards | `ProductCard`, `ShopProductCard`, `CategoryCard`, `PromoCard`, `FeatureCard`, `TestimonialCard` | equal heights (`h-full`), price + CTA pinned bottom (`mt-auto`), titles `line-clamp`. |
+| Cards | **one product card everywhere: `ShopProductCard`** (shop, home bestsellers, similar products), `CategoryCard`, `PromoCard`, `FeatureCard`, `TestimonialCard` | equal heights (`h-full`), price + CTA pinned bottom (`mt-auto`), titles `line-clamp`. |
 
 Header: sticky glass bar (`shadow-header`), `h-14` phone → larger on `sm`, logo `h-7`/`sm:h-8`, nav (Shop, Trade, Support), search/cart/account icon buttons, account pill with initials avatar, cart badge capped `99+`.
 Footer: brand + description, 3 link columns (Shop, Support, Company), copyright + payment chips; centred on phone.
@@ -98,7 +98,25 @@ Plain, honest, specific: "PTA approved and non-approved iPhones, tested before t
 and warranty on every listing. No unverifiable superlatives; certification claims must be owned by the client.
 Currency is PKR, whole rupees, formatted by `formatPrice` ("Rs 359,500").
 
-## 11. Rules for new UI
+## 11. Page patterns: Trade-In, Favorites, Product
+
+| Piece | Where | Notes |
+|---|---|---|
+| `PageBanner` | Trade-In, Favorites | glass card. `lg+`: the finished artwork (copy baked in, 3:1) + the copy as visually hidden text; below `lg`: centred chip + `h1` + lead + optional content, a 4:3 crop of the phones (`artPositionClassName`), optional action. `tone` = Light / Dark (panel colour behind the crop). |
+| `CtaBanner` | Favorites, Product | dark gradient link banner (newsletter gradient, `shadow-banner`), title + caption, circular arrow (`PointRight`), optional `image` on the left. |
+| `WishlistButton` | all product cards, PDP | heart `IconButton`, `aria-pressed`, filled red when saved, label "Add/Remove {title} to/from favorites". |
+| Form kit | Trade-In | `FormField` (label, hint, error, `aria-describedby` via `fieldIds.ts`), `TextInput`, `TextArea`, `RadioGroup` (roving tabindex, arrows/Home/End) → `ChoiceChips`, `SegmentedControl`, `SwatchPicker`, `ChoiceCardGroup`; `Stepper` (pills from `sm`, "Step n of m" + progress bar on phones); errors are shown ONLY inline under each field (no summary box), the first invalid field gets focus and a visually hidden live region announces how many fields need attention. `SelectMenu` got a `field` look (full-width rounded input, `placeholder`, `icon`, `invalid`, scrolling list). |
+| Selected state | choice controls | token `shadow-ring-selected` (1.5px red inset ring) + `bg-primary/8` + red text; hit height ≥ 42px. |
+| `WishlistRow` | Favorites | list row instead of a card: picture, title + "subtitle · PTA · battery", price, red "View details" and "Remove" on one line (desktop); picture + details with the price under them and the actions below (phones). Left-aligned on purpose (it is a list). |
+| Product buy box | PDP | ONE card, in decision order: stock chip → title + meta → price (+ compare-at, "Save Rs X") → short description (+ "Full details" link to the tabs) → condition report (4 tiles + box) → options → **buttons last** (Add to Cart + Save, or "In your cart" + quantity stepper). Full-width buttons are a phone pattern only. |
+| `QuantityStepper` | PDP (in cart) | − 1 + pill, same 52px height as a large Button; `max` = stock limit (used phones: 1, so + is disabled and a hint says why). Once a variant is in the cart, "Add to Cart" becomes a disabled "In your cart" + the stepper + a "Remove" link. |
+| `ConditionReport` | inside the buy box | four equal tiles (battery ring gauge, coloured by health: green ≥ 80 %, amber 70–79 %, red below; condition, network, warranty; 2 × 2 on every width) + box contents; no card of its own; only tiles with data. |
+| `AskOnWhatsApp` | PDP, above the trust strip | pre-filled `wa.me` message about the product (number from `apex_site_settings`; hidden without one). |
+| Product gallery | PDP | thumbnail rail (vertical from `lg`, horizontal row below), big image (fixed aspect, arrows, dots, swipe), grade/Sold chip. `ProductHighlights` (2–4 key specs, rendered through the gallery's `below` slot so it lines up with the main picture, not the thumbnail rail), `TrustStrip` (3 promises), `Tabs` (accessible tablist), "Detailed Information" card, `.rich-text` styles for Shopify HTML (sanitised). |
+| PDP layout (lg) | `/shop/:handle` | two columns of **equal height, no sticky**: left = big picture (grows to fill) + key-spec strip, one width. Desktop: the **thumbnails are a vertical rail INSIDE the picture** (left edge, vertically centred) and prev / dots / next share one line at the bottom of the picture on every screen size; below `lg` the thumbnails are a row under the picture; right = buy box (grows) + WhatsApp card + trust strip. The two bottom strips share one height (120px) so they line up. Phones: gallery, specs, buy box, WhatsApp, trust. |
+| Sold | PDP, cards | "Sold" chip, disabled "Sold out" button, similar items stay prominent; the page never 404s. |
+
+## 12. Rules for new UI
 1. Reuse components; extend a variant map + `constants/ui.ts` instead of forking.
 2. Tokens first; arbitrary px values only for one-off exact measurements.
 3. Mobile-first; verify phone/tablet centred layout and desktop untouched.
