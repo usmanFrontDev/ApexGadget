@@ -78,10 +78,14 @@ export async function getProductsByHandles(handles: readonly string[]): Promise<
 }
 
 /** Up to 5 similar products (one row): Shopify recommendations first, then same model; mock: same model/category. */
-export async function getSimilarProducts(handle: string, model?: string): Promise<ProductSummary[]> {
+export async function getSimilarProducts(
+  handle: string,
+  model?: string,
+  limit = SIMILAR_LIMIT,
+): Promise<ProductSummary[]> {
   if (USE_MOCK_DATA) {
     await wait(MOCK_LATENCY_MS)
-    return getMockSimilarProducts(handle, SIMILAR_LIMIT)
+    return getMockSimilarProducts(handle, limit)
   }
 
   const recommended = await request<{ productRecommendations: ShopifyProductNode[] | null }>(
@@ -89,7 +93,7 @@ export async function getSimilarProducts(handle: string, model?: string): Promis
     { handle },
   )
   const fromRecommendations = (recommended?.productRecommendations ?? []).map(mapProduct)
-  if (fromRecommendations.length > 0) return fromRecommendations.slice(0, SIMILAR_LIMIT)
+  if (fromRecommendations.length > 0) return fromRecommendations.slice(0, limit)
   if (!model) return []
 
   const filters = [
@@ -103,7 +107,7 @@ export async function getSimilarProducts(handle: string, model?: string): Promis
   return (similar?.collection?.products.nodes ?? [])
     .filter((node) => node.handle !== handle)
     .map(mapProduct)
-    .slice(0, SIMILAR_LIMIT)
+    .slice(0, limit)
 }
 
 export interface ShopPolicies {

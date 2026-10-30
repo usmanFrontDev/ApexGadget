@@ -4,6 +4,7 @@ export const ROUTES = {
   product: '/shop/:handle',
   trade: '/trade',
   wishlist: '/wishlist',
+  cart: '/cart',
   support: '/support',
 } as const
 

@@ -1,4 +1,4 @@
-import { MOCK_PRODUCTS } from '@/constants/mockProducts'
+import { MOCK_PRODUCT_COLOURS, MOCK_PRODUCTS } from '@/constants/mockProducts'
 import { ShopCategoryId, ShopModelId } from '@/constants/shop'
 import { labelFor } from '@/lib/filterLabels'
 import type { ProductDetail, ProductSpec, ProductSummary, ProductVariant } from '@/types/product.types'
@@ -63,15 +63,11 @@ function accessoryDescription(product: ProductSummary): string {
     </ul>`
 }
 
-/** Products with real options, to exercise the option selector. */
-const MOCK_OPTIONS: Record<string, string[]> = {
-  'magsafe-case': ['Black', 'Blue'],
-}
 
 export function buildMockProductDetail(product: ProductSummary): ProductDetail {
   const isPhone = product.category === ShopCategoryId.Iphones
   const sold = product.availableForSale === false
-  const colours = MOCK_OPTIONS[product.handle]
+  const colours = MOCK_PRODUCT_COLOURS[product.handle]
   const quantity = sold ? 0 : isPhone ? 1 : 5
 
   const variants: ProductVariant[] = colours

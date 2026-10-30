@@ -54,6 +54,8 @@ export const ChipVariant = {
   Dark: 'dark',
   /** Soft red tag (e.g. product grade "Excellent"). */
   Tint: 'tint',
+  /** Solid red tag (e.g. "Sold"). */
+  Solid: 'solid',
 } as const
 export type ChipVariant = (typeof ChipVariant)[keyof typeof ChipVariant]
 
@@ -129,3 +131,17 @@ export const PageBannerTone = {
   Dark: 'dark',
 } as const
 export type PageBannerTone = (typeof PageBannerTone)[keyof typeof PageBannerTone]
+
+/** Red-tint message boxes: `Unavailable` is announced as an alert, `Error` politely (the parent is a live region). */
+export const NoticeVariant = {
+  Unavailable: 'unavailable',
+  Error: 'error',
+} as const
+export type NoticeVariant = (typeof NoticeVariant)[keyof typeof NoticeVariant]
+
+/** `Md` = the 52px pill next to a large Button; `Sm` = the compact one inside cart lines. */
+export const QuantityStepperSize = {
+  Md: 'md',
+  Sm: 'sm',
+} as const
+export type QuantityStepperSize = (typeof QuantityStepperSize)[keyof typeof QuantityStepperSize]
