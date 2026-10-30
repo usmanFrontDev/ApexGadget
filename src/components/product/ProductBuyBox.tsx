@@ -1,15 +1,17 @@
 import { useMemo, useState } from 'react'
-import { ArrowUpRightIcon, CheckIcon } from '@/components/icons'
+import { Link } from 'react-router-dom'
+import { ArrowUpRightIcon } from '@/components/icons'
+import { CartQuantityControl } from '@/components/cart/CartQuantityControl'
 import { ChoiceChips } from '@/components/form/ChoiceChips'
 import { ConditionReport } from '@/components/product/ConditionReport'
 import { PRODUCT_DETAILS_ID } from '@/constants/product'
+import { ROUTES } from '@/constants/routes'
 import { WishlistButton } from '@/components/common/WishlistButton'
 import { fieldLabelId } from '@/components/form/fieldIds'
 import { FormField } from '@/components/form/FormField'
 import { Button } from '@/components/ui/Button'
 import { Chip } from '@/components/ui/Chip'
 import { GlassCard } from '@/components/ui/GlassCard'
-import { QuantityStepper } from '@/components/ui/QuantityStepper'
 import { Typography } from '@/components/ui/Typography'
 import { LOW_STOCK_MAX, PRODUCT_CONTENT } from '@/constants/product'
 import {
@@ -19,16 +21,15 @@ import {
   ChipVariant,
   GlassCardVariant,
   IconAnimation,
-  IconPosition,
   TypographyAlign,
   TypographyTone,
   TypographyVariant,
 } from '@/constants/ui'
-import { useAddToCart, useRemoveCartLine, useSetCartLineQuantity } from '@/hooks/useAddToCart'
+import { useCartLineForVariant } from '@/hooks/useCart'
+import { useAddToCart } from '@/hooks/useCartMutations'
 import { formatPrice } from '@/lib/format'
 import { firstParagraphText, truncateText } from '@/lib/html'
 import { findVariant, getMetaLine } from '@/lib/productView'
-import { useCartLine } from '@/store/useCartStore'
 import type { ProductDetail } from '@/types/product.types'
 
 const BLURB_MAX = 200
@@ -41,8 +42,6 @@ export interface ProductBuyBoxProps {
 export function ProductBuyBox({ product }: ProductBuyBoxProps) {
   const [selection, setSelection] = useState<Record<string, string>>({})
   const addToCart = useAddToCart()
-  const setQuantity = useSetCartLineQuantity()
-  const removeLine = useRemoveCartLine()
 
   const variant = useMemo(() => findVariant(product, selection), [product, selection])
   const needsOptions = product.options.length > 0
@@ -55,20 +54,11 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
 
   const onAdd = () => {
     if (!variant) return
-    addToCart.mutate({
-      variantId: variant.id,
-      productHandle: product.handle,
-      productTitle: product.title,
-      variantTitle: variant.title,
-      image: variant.image ?? product.image,
-      unitPrice: { amount: variant.priceAmount, currencyCode: variant.currencyCode },
-      quantity: 1,
-      quantityAvailable: variant.quantityAvailable,
-    })
+    addToCart.mutate({ variantId: variant.id, productHandle: product.handle, quantity: 1 })
   }
 
-  // Already in the cart: "Add to Cart" is replaced by a disabled "In your cart" and a quantity stepper.
-  const line = useCartLine(variant?.id)
+  // Already in the cart: "Add to Cart" becomes "View cart" (plus a quantity stepper when more than one unit exists).
+  const line = useCartLineForVariant(variant?.id)
   const stockLimit = line?.quantityAvailable ?? variant?.quantityAvailable ?? Number.POSITIVE_INFINITY
   const atLimit = line !== undefined && line.quantity >= stockLimit
 
@@ -169,30 +159,12 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
         {/* Actions come last (the decision). Full width only on phones (Button blockOnMobile); side by side from sm. */}
         <div className="flex flex-col gap-3 border-t border-ink/8 pt-6 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-start">
           {sold ? (
-            <Button type="button" variant={ButtonVariant.Secondary} size={ButtonSize.Lg} disabled blockOnMobile className="sm:min-w-[200px]">
+            <Button type="button" variant={ButtonVariant.Secondary} size={ButtonSize.Lg} disabled blockOnMobile>
               {PRODUCT_CONTENT.soldOut}
             </Button>
           ) : line ? (
-            <>
-              <QuantityStepper
-                value={line.quantity}
-                max={stockLimit}
-                label={`${PRODUCT_CONTENT.quantityOf} ${product.title}`}
-                onChange={(quantity) => setQuantity.mutate({ variantId: line.variantId, quantity })}
-                className="max-sm:w-full max-sm:justify-between"
-              />
-              <Button
-                type="button"
-                variant={ButtonVariant.Secondary}
-                size={ButtonSize.Lg}
-                icon={<CheckIcon width={16} height={16} className="text-primary" />}
-                iconPosition={IconPosition.Start}
-                disabled
-                blockOnMobile
-              >
-                {PRODUCT_CONTENT.inCart}
-              </Button>
-            </>
+            // Added: the button turns into the quantity control, like on the product cards (trash at 1).
+            <CartQuantityControl line={line} removable className="max-sm:w-full max-sm:justify-between" />
           ) : (
             <Button
               type="button"
@@ -202,7 +174,6 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
               disabled={!variant || addToCart.isPending}
               onClick={onAdd}
               blockOnMobile
-              className="sm:min-w-[210px]"
             >
               {PRODUCT_CONTENT.addToCart}
             </Button>
@@ -223,13 +194,12 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
                 ? PRODUCT_CONTENT.onlyOneHint
                 : PRODUCT_CONTENT.stockLimitHint.replace('{n}', String(stockLimit))
               : PRODUCT_CONTENT.inCartHint}{' '}
-            <button
-              type="button"
-              onClick={() => removeLine.mutate(line.variantId)}
+            <Link
+              to={ROUTES.cart}
               className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
-              {PRODUCT_CONTENT.removeFromCart}
-            </button>
+              {PRODUCT_CONTENT.viewCart}
+            </Link>
           </Typography>
         )}
 

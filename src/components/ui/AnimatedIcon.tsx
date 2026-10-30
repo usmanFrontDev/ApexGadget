@@ -9,7 +9,7 @@ export interface AnimatedIconProps {
 /** Wraps an icon so it plays a CSS hover animation (see `index.css`). */
 export function AnimatedIcon({ children, animation = IconAnimation.None }: AnimatedIconProps) {
   return (
-    <span data-icon-animation={animation === IconAnimation.None ? undefined : animation}>
+    <span className="inline-flex" data-icon-animation={animation === IconAnimation.None ? undefined : animation}>
       {children}
     </span>
   )

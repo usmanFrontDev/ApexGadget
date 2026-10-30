@@ -13,19 +13,23 @@ export interface DrawerProps {
   children: ReactNode
   /** Sticky bottom area (e.g. an "Apply" button). */
   footer?: ReactNode
+  /** Focus goes back to this element on close (default: whatever had focus when it opened). */
+  returnFocusSelector?: string
 }
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 /** Right-hand glass sheet: Esc / backdrop to close, scroll lock, focus trap + restore. */
-export function Drawer({ open, onClose, title, children, footer }: DrawerProps) {
+export function Drawer({ open, onClose, title, children, footer, returnFocusSelector }: DrawerProps) {
   const panelRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef(onClose)
+  const returnFocusRef = useRef(returnFocusSelector)
   const titleId = useId()
 
   useEffect(() => {
     closeRef.current = onClose
+    returnFocusRef.current = returnFocusSelector
   })
 
   useEffect(() => {
@@ -58,7 +62,8 @@ export function Drawer({ open, onClose, title, children, footer }: DrawerProps) 
     return () => {
       document.removeEventListener('keydown', onKeyDown)
       document.body.style.overflow = previousOverflow
-      previouslyFocused?.focus()
+      const target = returnFocusRef.current ? document.querySelector<HTMLElement>(returnFocusRef.current) : null
+      ;(target ?? previouslyFocused)?.focus()
     }
   }, [open])
 

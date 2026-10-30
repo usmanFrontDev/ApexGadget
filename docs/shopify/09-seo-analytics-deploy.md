@@ -30,3 +30,6 @@ Basics (launch regardless of option, step 10):
 - Allowed domains: storefront domain + `*.vercel.app` previews. Customer Account API callbacks **[P]** need fixed HTTPS URLs (previews can't be registered).
 - CI: `yarn typecheck && yarn lint && yarn build`; add `yarn shopify:audit` when the Shopify env is present.
 - **[P] Later:** `api/newsletter.ts`, `api/trade-in.ts` (+ photo upload), `api/reviews.ts` — Vercel Node functions holding `SHOPIFY_ADMIN_TOKEN`/app tokens server-side, `Origin` allow-list, Turnstile, rate limit; exclude `/api/*` from the SPA rewrite.
+
+## Cart
+`/cart` is private: the page sets `robots: noindex, nofollow` (`useSeo({ noindex: true })`) and is NOT in the sitemap or `robots.txt` allow list.

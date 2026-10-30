@@ -41,6 +41,8 @@ export interface ShopifyProductNode {
   priceRange: { minVariantPrice: MoneyNode }
   compareAtPriceRange?: { minVariantPrice: MoneyNode | null } | null
   featuredImage: { url: string; altText: string | null } | null
+  /** First two variants: only needed to know whether there is exactly one. */
+  variants?: { nodes: { id: string }[] } | null
   deviceModel?: MetafieldNode | null
   storage?: MetafieldNode | null
   color?: MetafieldNode | null
@@ -108,6 +110,7 @@ export function mapProduct(node: ShopifyProductNode): ProductSummary {
       clean(node.ptaStatus?.value) ??
       Object.values(ProductPtaStatus).find((status) => tags.includes(SHOPIFY_PTA_TAGS[status])),
     to: productPath(node.handle),
+    variantId: node.variants?.nodes.length === 1 ? node.variants.nodes[0].id : undefined,
   }
 }
 

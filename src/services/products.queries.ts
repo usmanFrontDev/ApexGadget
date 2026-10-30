@@ -16,6 +16,7 @@ export const PRODUCT_CARD_FRAGMENT = `
     description
     priceRange { minVariantPrice { amount currencyCode } }
     compareAtPriceRange { minVariantPrice { amount currencyCode } }
+    variants(first: 2) { nodes { id } }
     featuredImage { url(transform: { maxWidth: 640, preferredContentType: WEBP }) altText }
     ${metafield('deviceModel', ProductMetafield.DeviceModel)}
     ${metafield('storage', ProductMetafield.Storage)}

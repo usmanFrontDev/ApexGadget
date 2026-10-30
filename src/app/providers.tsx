@@ -13,7 +13,7 @@ export function AppProviders({ children }: AppProvidersProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <MotionConfig reducedMotion="user">{children}</MotionConfig>
-      <Toaster position="top-right" />
+      <Toaster position="top-center" />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )

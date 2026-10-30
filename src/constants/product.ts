@@ -14,6 +14,9 @@ export const PRODUCT_TABS: readonly { id: ProductTabId; label: string }[] = [
   { id: ProductTabId.Shipping, label: 'Shipping & Returns' },
 ]
 
+/** Days of the returns promise (client-owned, BLOCKED-ON-CLIENT); shared by the product trust strip and the cart. */
+export const RETURN_WINDOW_DAYS = 7
+
 export const TrustIconKey = { Truck: 'truck', Return: 'return', Card: 'card' } as const
 export type TrustIconKey = (typeof TrustIconKey)[keyof typeof TrustIconKey]
 
@@ -24,7 +27,7 @@ export type TrustIconKey = (typeof TrustIconKey)[keyof typeof TrustIconKey]
  */
 export const TRUST_ITEMS: readonly { id: string; icon: TrustIconKey; title: string; caption: string }[] = [
   { id: 'shipping', icon: TrustIconKey.Truck, title: 'Free Shipping', caption: 'On all orders' },
-  { id: 'returns', icon: TrustIconKey.Return, title: '7 Days Return', caption: 'Hassle free' },
+  { id: 'returns', icon: TrustIconKey.Return, title: `${RETURN_WINDOW_DAYS} Days Return`, caption: 'Hassle free' },
   { id: 'payment', icon: TrustIconKey.Card, title: 'Secure Payment', caption: '100% secure' },
 ]
 
@@ -40,12 +43,10 @@ export const PRODUCT_CONTENT = {
   soldChip: 'Sold',
   fullDetails: 'Full details',
   inStock: 'In stock',
-  inCart: 'In your cart',
+  viewCart: 'View cart',
   inCartHint: 'Added to your cart.',
-  removeFromCart: 'Remove',
   onlyOneHint: 'Only 1 available, so the quantity can’t be increased.',
   stockLimitHint: 'Only {n} available.',
-  quantityOf: 'Quantity of',
   report: { title: 'Condition report', battery: 'Battery health', grade: 'Condition', network: 'Network', warranty: 'Warranty', box: 'In the box' },
   ask: { title: 'Questions about this phone?', text: 'Chat with us on WhatsApp before you buy.', button: 'Ask on WhatsApp' },
   lowStock: 'Only {n} left',

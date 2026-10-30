@@ -10,6 +10,7 @@ fragment MoneyFields on MoneyV2 { amount currencyCode }
 
 fragment ProductCardFields on Product {
   id handle title productType tags availableForSale createdAt description
+  variants(first: 2) { nodes { id } }   # exactly one => ProductSummary.variantId (card "Add to Cart")
   priceRange { minVariantPrice { ...MoneyFields } }
   compareAtPriceRange { minVariantPrice { ...MoneyFields } }
   featuredImage { url(transform: { maxWidth: 640, preferredContentType: WEBP }) altText width height }

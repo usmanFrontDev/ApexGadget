@@ -35,7 +35,7 @@ export function Pagination({ page, pageCount, onChange }: PaginationProps) {
         aria-label="Previous page"
         disabled={page === 1}
         onClick={() => onChange(page - 1)}
-        className={cn(circle, 'bg-white/92 shadow-ring hover:bg-white disabled:pointer-events-none disabled:opacity-40')}
+        className={cn(circle, 'bg-white/92 shadow-ring hover:bg-canvas disabled:pointer-events-none disabled:opacity-40')}
       >
         <ChevronLeftIcon />
       </button>
@@ -56,7 +56,7 @@ export function Pagination({ page, pageCount, onChange }: PaginationProps) {
               circle,
               item === page
                 ? 'bg-primary text-white shadow-primary-soft'
-                : 'bg-white/92 text-ink shadow-ring hover:bg-white',
+                : 'bg-white/92 text-ink shadow-ring hover:bg-canvas',
             )}
           >
             {item}
@@ -69,7 +69,7 @@ export function Pagination({ page, pageCount, onChange }: PaginationProps) {
         aria-label="Next page"
         disabled={page === pageCount}
         onClick={() => onChange(page + 1)}
-        className={cn(circle, 'bg-white/92 shadow-ring hover:bg-white disabled:pointer-events-none disabled:opacity-40')}
+        className={cn(circle, 'bg-white/92 shadow-ring hover:bg-canvas disabled:pointer-events-none disabled:opacity-40')}
       >
         <ChevronRightIcon />
       </button>

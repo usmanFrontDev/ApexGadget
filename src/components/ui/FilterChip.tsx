@@ -19,7 +19,7 @@ export function FilterChip({ children, selected = false, onClick, className }: F
         'inline-flex h-10 items-center whitespace-nowrap rounded-full px-5 text-[13px] font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
         selected
           ? 'bg-primary text-white shadow-primary-soft'
-          : 'bg-white/92 text-ink shadow-ring hover:bg-white',
+          : 'bg-white/92 text-ink shadow-ring hover:bg-canvas',
         className,
       )}
     >

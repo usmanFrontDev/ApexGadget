@@ -28,7 +28,7 @@ export interface WishlistRowProps {
 }
 
 /**
- * A saved product as a list row: picture, details, price and actions on one line (stacked on phones).
+ * A saved product as a list row: picture, details, and a right column with the price over the two buttons (stacked on phones).
  * Everything in the row is a saved item, so there is no heart: "Remove" takes it out.
  */
 export function WishlistRow({ product, onRemove }: WishlistRowProps) {
@@ -40,7 +40,7 @@ export function WishlistRow({ product, onRemove }: WishlistRowProps) {
     <GlassCard
       as="article"
       variant={GlassCardVariant.Soft}
-      className="group grid grid-cols-[92px_minmax(0,1fr)] items-center gap-x-4 gap-y-3 rounded-[18px] p-3 sm:grid-cols-[132px_minmax(0,1fr)_auto_auto] sm:gap-x-6 sm:p-4"
+      className="group grid grid-cols-[92px_minmax(0,1fr)] items-center gap-x-4 gap-y-3 rounded-[18px] p-3 sm:grid-cols-[132px_minmax(0,1fr)_auto] sm:gap-x-6 sm:p-4"
     >
       <Link
         to={to}
@@ -89,11 +89,12 @@ export function WishlistRow({ product, onRemove }: WishlistRowProps) {
         </Typography>
       </div>
 
-      <Typography variant={TypographyVariant.Price} className="hidden whitespace-nowrap text-right sm:block">
-        {formatPrice(priceAmount, currencyCode)}
-      </Typography>
-
-      <div className="col-span-2 flex items-center justify-between gap-3 sm:col-span-1 sm:justify-end">
+      {/* sm+: price on top, the two buttons under it (a narrow right column leaves the room to the details). */}
+      <div className="col-span-2 flex flex-col gap-3 sm:col-span-1 sm:items-end">
+        <Typography variant={TypographyVariant.Price} className="hidden whitespace-nowrap sm:block">
+          {formatPrice(priceAmount, currencyCode)}
+        </Typography>
+        <div className="flex items-center justify-between gap-3 sm:justify-end">
         <Button
           to={to}
           size={ButtonSize.Xs}
@@ -114,6 +115,7 @@ export function WishlistRow({ product, onRemove }: WishlistRowProps) {
         >
           {WISHLIST_CONTENT.remove}
         </Button>
+        </div>
       </div>
     </GlassCard>
   )

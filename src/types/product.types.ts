@@ -21,6 +21,8 @@ export interface ProductSummary {
   /** Alt text from Shopify; falls back to the title. */
   imageAlt?: string
   to: string
+  /** The variant "Add to Cart" on a card buys: set only when the product has a single variant (none: "View details" only). */
+  variantId?: string
   /** Defaults to true when omitted. */
   availableForSale?: boolean
   category?: ShopCategoryId

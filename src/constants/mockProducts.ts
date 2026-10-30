@@ -11,6 +11,14 @@ import {
 import { getBatteryRange } from '@/lib/battery'
 import type { ProductSummary } from '@/types/product.types'
 
+/** Mock products with real options (a colour picker): their cards have no one-click "Add to Cart". */
+export const MOCK_PRODUCT_COLOURS: Readonly<Record<string, string[]>> = {
+  'magsafe-case': ['Black', 'Blue'],
+}
+
+export const mockVariantId = (handle: string) =>
+  handle in MOCK_PRODUCT_COLOURS ? undefined : `gid://mock/ProductVariant/${handle}`
+
 let created = 0
 const nextDate = () => new Date(Date.UTC(2026, 9, 1 - created++)).toISOString()
 
@@ -40,6 +48,7 @@ const iphone = (input: IphoneInput): ProductSummary => {
     currencyCode: 'PKR',
     image: headphonesImage,
     to: productPath(handle),
+    variantId: mockVariantId(handle),
     category: ShopCategoryId.Iphones,
     model: input.model,
     storage: input.storage,
@@ -73,6 +82,7 @@ const accessory = (input: AccessoryInput): ProductSummary => ({
   currencyCode: 'PKR',
   image: input.image,
   to: productPath(slug(input.title)),
+  variantId: mockVariantId(slug(input.title)),
   category: input.category,
   grade: input.grade,
   ptaStatus: input.ptaStatus,

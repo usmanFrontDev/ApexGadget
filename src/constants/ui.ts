@@ -54,6 +54,8 @@ export const ChipVariant = {
   Dark: 'dark',
   /** Soft red tag (e.g. product grade "Excellent"). */
   Tint: 'tint',
+  /** Solid red tag (e.g. "Sold"). */
+  Solid: 'solid',
 } as const
 export type ChipVariant = (typeof ChipVariant)[keyof typeof ChipVariant]
 
@@ -129,3 +131,34 @@ export const PageBannerTone = {
   Dark: 'dark',
 } as const
 export type PageBannerTone = (typeof PageBannerTone)[keyof typeof PageBannerTone]
+
+/** Red-tint message boxes: `Unavailable` is announced as an alert, `Error` politely (the parent is a live region). */
+export const NoticeVariant = {
+  Unavailable: 'unavailable',
+  Error: 'error',
+} as const
+export type NoticeVariant = (typeof NoticeVariant)[keyof typeof NoticeVariant]
+
+/** `Md` = the 52px pill next to a large Button; `Sm` = compact (cart lines, mini-cart); `Xs` = product cards. */
+export const QuantityStepperSize = {
+  Md: 'md',
+  Sm: 'sm',
+  /** Product cards. */
+  Xs: 'xs',
+} as const
+export type QuantityStepperSize = (typeof QuantityStepperSize)[keyof typeof QuantityStepperSize]
+
+/** `Primary` = solid red round button (e.g. the card's add-to-cart). */
+export const IconButtonVariant = {
+  Default: 'default',
+  Primary: 'primary',
+} as const
+export type IconButtonVariant = (typeof IconButtonVariant)[keyof typeof IconButtonVariant]
+
+/** Look of a toast: the icon badge. Every toast has a title, an optional text and a close button (`AppToast`). */
+export const ToastVariant = {
+  Success: 'success',
+  Error: 'error',
+  Info: 'info',
+} as const
+export type ToastVariant = (typeof ToastVariant)[keyof typeof ToastVariant]

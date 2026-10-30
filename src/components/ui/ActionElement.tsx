@@ -13,7 +13,11 @@ export interface ActionElementProps {
   onClick?: MouseEventHandler<HTMLElement>
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
+  id?: string
   'aria-label'?: string
+  'aria-current'?: 'page'
+  'aria-disabled'?: boolean
+  'aria-describedby'?: string
   'aria-expanded'?: boolean
   'aria-pressed'?: boolean
   'aria-controls'?: string

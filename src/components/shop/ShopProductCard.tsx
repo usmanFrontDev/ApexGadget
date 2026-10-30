@@ -1,4 +1,5 @@
 import { ArrowUpRightIcon } from '@/components/icons'
+import { ProductCardCartControl } from '@/components/cart/ProductCardCartControl'
 import { WishlistButton } from '@/components/common/WishlistButton'
 import { Button } from '@/components/ui/Button'
 import { Chip } from '@/components/ui/Chip'
@@ -92,9 +93,11 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
             {meta.join(' · ')}
           </Typography>
         )}
-        <Typography variant={TypographyVariant.Price} className="mt-auto pt-3">
-          {formatPrice(priceAmount, currencyCode)}
-        </Typography>
+        {/* Price on the left, the cart control (add / quantity) on the right; wraps instead of overflowing. */}
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-x-2 gap-y-2 pt-3">
+          <Typography variant={TypographyVariant.Price}>{formatPrice(priceAmount, currencyCode)}</Typography>
+          <ProductCardCartControl product={product} />
+        </div>
       </div>
 
       <Button

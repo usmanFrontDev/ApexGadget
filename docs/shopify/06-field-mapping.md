@@ -14,6 +14,7 @@ Mappers live in `services/*.mappers.ts` (pure functions). `[done]` = already in 
 | `compareAtAmount` [done, optional] | `compareAtPriceRange.minVariantPrice.amount` | only if > `priceAmount` |
 | `image` / `imageAlt` [done] | `featuredImage.url` (w 640, WebP) / `altText ?? title` | missing ⇒ striped placeholder |
 | `badge` | derived from `ptaStatus` (`PTA_STATUS_LABELS`) or `Sold` when `availableForSale=false` | not stored |
+| `variantId` **NEW** | `variants(first: 2).nodes[0].id` **only when there is exactly one variant** | enables the one-click "Add to Cart" on cards; products with options only get "View details" |
 | `to` | `/shop/${handle}` (route added in Phase B; today `ROUTES.shop`) | |
 | `availableForSale` | `Product.availableForSale` | `false` ⇒ "Sold" |
 | `category` | `productType` → `ShopCategoryId`: `iPhones→iphones, Audio→audio, Wearables→wearables, Chargers→chargers, Cases→cases`, else `accessories` | **NEW values** (today only `iphones`/`accessories`) |
@@ -78,18 +79,27 @@ export interface ProductVariant {
 ```
 `descriptionHtml` sanitised (DOMPurify) before render; `boxContents`/`specs` `JSON.parse` guarded; `sold = !availableForSale`.
 
-## 4. Cart and collection (NEW)
+## 4. Cart and collection (NEW) — types in `src/types/cart.types.ts`
 
 ```ts
 export interface Money { amount: number; currencyCode: string }
-export interface Cart { id: string; checkoutUrl: string; note?: string; totalQuantity: number
-  subtotal: Money; total: Money; tax?: Money
-  discountCodes: { code: string; applicable: boolean }[]; attributes: { key: string; value: string }[]; lines: CartLine[] }
 export interface CartLine { id: string; quantity: number; total: Money; variantId: string; variantTitle: string
-  productHandle: string; productTitle: string; image?: string; unitPrice: Money
-  availableForSale: boolean; quantityAvailable?: number }
+  productHandle: string; productTitle: string; subtitle: string; image?: string; imageAlt?: string
+  unitPrice: Money; compareAtAmount?: number            // per unit, only when > unit price
+  availableForSale: boolean; quantityAvailable?: number  // phones: 1 => single unit, no stepper
+  grade?: string; ptaStatus?: string; batteryHealth?: number }
+export interface Cart { id: string; checkoutUrl: string; note?: string
+  totalQuantity: number            // ALL lines (header badge, page title), sold ones included
+  subtotal: Money; total: Money    // AVAILABLE lines only; total = subtotal - discount
+  tax?: Money; discountCodes: { code: string; applicable: boolean }[]
+  discount?: { code: string; amount: Money }   // only when a code applies and amount > 0
+  attributes: { key: string; value: string }[]; lines: CartLine[] }
+export interface CartResult { cart: Cart; warnings: CartWarning[] }   // every mutation; warning = quantity clamped to stock
+export interface CartValidation { cart: Cart; valid: boolean }       // validateForCheckout
+export class CartError extends Error { code: CartErrorCode }          // message is safe to show
 export interface Collection { id: string; handle: string; title: string; description: string; image?: string }
 ```
+Service: `CartService` (`getCart, createCart, addLines, updateLines, removeLines, updateDiscountCodes, updateNote, validateForCheckout`); mock = `services/mock/cartMock.ts`, Shopify = `TODO(shopify)` (11). `lib/cartTotals.ts` is the one place for totals (sold lines excluded). Card/line meta needs `grade`, `ptaStatus`, `batteryHealth` on the merchandise's product (metafields in the cart query).
 Header `cartCount` ← `cart.totalQuantity` (replaces `MOCK_CART_COUNT`). `userErrors` ⇒ thrown `CartError`, toast from the mutation hook.
 
 ## 5. Metaobjects → `HomeContent` (NEW)

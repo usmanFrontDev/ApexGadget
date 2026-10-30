@@ -151,7 +151,7 @@ export function SelectMenu<T extends string>({
               )
             : compact
               ? 'h-10 rounded-xl bg-ink/5 pl-3.5 pr-3 text-[13px] hover:bg-ink/8'
-              : 'h-12 rounded-full bg-white/92 pl-5 pr-4 shadow-ring hover:bg-white',
+              : 'h-12 rounded-full bg-white/92 pl-5 pr-4 shadow-ring hover:bg-canvas',
         )}
       >
         {icon && <span className="shrink-0 text-ink/55">{icon}</span>}
