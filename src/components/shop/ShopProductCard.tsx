@@ -1,5 +1,5 @@
 import { ArrowUpRightIcon } from '@/components/icons'
-import { ProductCardCartButton } from '@/components/cart/ProductCardCartButton'
+import { ProductCardCartIcon } from '@/components/cart/ProductCardCartIcon'
 import { WishlistButton } from '@/components/common/WishlistButton'
 import { Button } from '@/components/ui/Button'
 import { Chip } from '@/components/ui/Chip'
@@ -7,7 +7,6 @@ import { GlassCard } from '@/components/ui/GlassCard'
 import { Typography } from '@/components/ui/Typography'
 import {
   ButtonSize,
-  ButtonVariant,
   ChipSize,
   ChipVariant,
   GlassCardVariant,
@@ -29,7 +28,6 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
   const { title, subtitle, priceAmount, currencyCode, image, grade, to, availableForSale, handle } = product
   const soldOut = availableForSale === false
   const meta = getCardMetaParts(product)
-  const addable = Boolean(product.variantId) && !soldOut
 
   return (
     <GlassCard
@@ -68,11 +66,11 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
           </Chip>
         )}
 
-        <WishlistButton
-          handle={handle}
-          title={title}
-          className="absolute right-0 top-0 bg-transparent shadow-none hover:bg-ink/5"
-        />
+        {/* Round actions top right: add to cart (when it can be bought in one click) and the heart. */}
+        <div className="absolute right-0 top-0 flex items-center">
+          <ProductCardCartIcon product={product} className="bg-transparent shadow-none hover:bg-ink/5" />
+          <WishlistButton handle={handle} title={title} className="bg-transparent shadow-none hover:bg-ink/5" />
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col px-1 pt-3.5">
@@ -100,16 +98,13 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
         </Typography>
       </div>
 
-      {/* Buttons last: "Add to Cart" (primary, when the product can be bought in one click), then "View details". */}
-      <ProductCardCartButton product={product} />
       <Button
         to={to}
         size={ButtonSize.Xs}
-        variant={addable ? ButtonVariant.Secondary : ButtonVariant.Primary}
         fullWidth
         icon={<ArrowUpRightIcon width={12} height={12} />}
         iconAnimation={IconAnimation.PointRight}
-        className={cn('mt-2', !addable && 'mt-3 shadow-primary-soft')}
+        className="mt-3 shadow-primary-soft"
       >
         View details
       </Button>

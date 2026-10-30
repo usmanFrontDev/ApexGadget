@@ -61,6 +61,10 @@ Docs revised 2026-10-30 (v2 brief). Sources: shopify.dev versioning, filter-prod
 | K27 | Mock catalogue: one iPhone 11 (64GB white) is **sold** (to exercise the Sold state); the shop hides it by default (Out-of-stock filter shows it). | done |
 | K28 | `Pagination` (removed in step 3) is back for the Favorites page (local data, numbered pages). Shop stays on Load more. | done |
 
+| K31 | **Cart built on mock data** (`/cart`, mini-cart, `CartService`). Deviations from the design: Checkout is blocked and totals exclude sold lines; a Discount row was added; no × on the sticky bar; generic payment icons instead of brand logos. | accepted |
+| K32 | **Add to Cart now exists on every product card** as a round bag icon beside the heart (user decision; AGENTS said "no add-to-cart on cards"). Adding only toasts; the mini-cart opens only from the header icon. Products with options (mock: MagSafe Case) show only "View details". `ProductSummary.variantId` added (mapper, mock, GraphQL, docs). | done |
+| K33 | Cart "You may also like" = one row of up to 5 `ShopProductCard`s (same as the product page); hidden below 2 results. | done |
+
 ## Assumptions (correct me)
 | ID | Assumption |
 |---|---|
@@ -92,6 +96,7 @@ Docs revised 2026-10-30 (v2 brief). Sources: shopify.dev versioning, filter-prod
 12. Warranty months/note shown in "Detailed Information" (mock: 6 months, PLACEHOLDER).
 13. CtaBanner phone image (K22).
 9. Which marketing claims may be printed.
+14. **Cart:** payment-method wording and logos (`ACCEPTED_PAYMENTS`), trust-row claims ("Tested before shipping", "Warranty included", "Easy returns (7 days)"), shipping rules, real discount-code rules.
 
 ## Unverified (could not confirm in official docs; marked ⚠ in the docs)
 - U1 Shopify Payments unavailability in Pakistan (third-party sources only) and the official gateway list for Pakistan.
@@ -114,6 +119,10 @@ Docs revised 2026-10-30 (v2 brief). Sources: shopify.dev versioning, filter-prod
 - U18 `productRecommendations` on a new store/with few products (may be empty → falls back to a same-model `collection(iphones)` query), and that `product(handle)` returns a sold listing while it stays Active + published to Headless.
 - U19 DOMPurify profile: Shopify descriptions with iframes/embeds are stripped (intended).
 - U16 `2026-10` as the live version: the versioning table lists it latest stable (released 2026-10-01) but the release-notes page still says 2026-07; no live call was possible (store inactive).
+
+- U21 Where the discount amount comes from in a Storefront cart (`cost` vs line `discountAllocations`).
+- U22 How `warnings` are returned when a quantity is clamped.
+- U23 Whether `totalQuantity` counts unavailable lines (the app counts every line for the badge).
 
 ## Questions that still block
 None for Phase B step 4 onwards. Still open for later: whether the SEO recommendation (A) becomes real work, and real values for the BLOCKED-ON-CLIENT list.
