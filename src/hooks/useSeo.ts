@@ -8,6 +8,8 @@ export interface SeoInput {
   image?: string
   /** `schema.org` JSON-LD object (e.g. a Product). */
   jsonLd?: Record<string, unknown>
+  /** Private pages (cart): `robots: noindex, nofollow`. */
+  noindex?: boolean
 }
 
 const SITE_NAME = 'Apex Gadgets'
@@ -43,7 +45,7 @@ function setCanonical(href: string | undefined) {
 }
 
 /** Per-page `<title>`, description, canonical, Open Graph and JSON-LD (docs/shopify/09). Client-side only, see the SEO notes. */
-export function useSeo({ title, description, canonical, image, jsonLd }: SeoInput) {
+export function useSeo({ title, description, canonical, image, jsonLd, noindex }: SeoInput) {
   const jsonLdText = jsonLd ? JSON.stringify(jsonLd) : undefined
 
   useEffect(() => {
@@ -55,6 +57,7 @@ export function useSeo({ title, description, canonical, image, jsonLd }: SeoInpu
     setMeta('property', 'og:type', 'website')
     setMeta('property', 'og:image', image)
     setCanonical(canonical)
+    setMeta('name', 'robots', noindex ? 'noindex, nofollow' : undefined)
 
     let script: HTMLScriptElement | null = null
     if (jsonLdText) {
@@ -69,5 +72,5 @@ export function useSeo({ title, description, canonical, image, jsonLd }: SeoInpu
       document.title = previousTitle
       script?.remove()
     }
-  }, [title, description, canonical, image, jsonLdText])
+  }, [title, description, canonical, image, jsonLdText, noindex])
 }
