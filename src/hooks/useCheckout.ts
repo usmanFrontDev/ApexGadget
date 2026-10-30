@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
 import { CART_CONTENT } from '@/constants/cart'
 import { cartKeys } from '@/constants/queryKeys'
+import { appToast } from '@/lib/appToast'
 import { USE_MOCK_DATA } from '@/lib/env'
 import { validateForCheckout } from '@/services/cart.service'
 import { announce } from '@/store/useAnnouncerStore'
@@ -18,24 +18,28 @@ export function useCheckout() {
     mutationKey: cartKeys.mutation('checkout'),
     mutationFn: async () => {
       const cartId = useCartStore.getState().cartId
-      if (!cartId) throw new CartError(CartErrorCode.NotFound, CART_CONTENT.toast.failed)
+      if (!cartId) throw new CartError(CartErrorCode.NotFound, CART_CONTENT.toast.failed.text)
       return validateForCheckout(cartId)
     },
     onSuccess: ({ cart, valid }) => {
       queryClient.setQueryData<Cart | null>(cartKeys.detail(cart.id), cart)
       if (!valid) {
-        toast.error(CART_CONTENT.toast.checkoutBlocked)
-        announce(CART_CONTENT.toast.checkoutBlocked)
+        appToast.error(CART_CONTENT.toast.checkoutBlocked.title, CART_CONTENT.toast.checkoutBlocked.text)
+        announce(CART_CONTENT.toast.checkoutBlocked.text)
         return
       }
       // TODO(shopify): `begin_checkout` analytics event goes here (docs/shopify/09).
       if (USE_MOCK_DATA) {
-        toast(CART_CONTENT.toast.checkoutMock)
+        appToast.info(CART_CONTENT.toast.checkoutMock.title, CART_CONTENT.toast.checkoutMock.text)
         return
       }
       // TODO(shopify): the redirect to Shopify's hosted checkout.
       window.location.assign(cart.checkoutUrl)
     },
-    onError: (error) => toast.error(error instanceof CartError ? error.message : CART_CONTENT.toast.failed),
+    onError: (error) =>
+      appToast.error(
+        CART_CONTENT.toast.failed.title,
+        error instanceof CartError ? error.message : CART_CONTENT.toast.failed.text,
+      ),
   })
 }

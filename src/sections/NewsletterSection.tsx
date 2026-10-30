@@ -1,5 +1,5 @@
 import type { SubmitEventHandler } from 'react'
-import toast from 'react-hot-toast'
+import { appToast } from '@/lib/appToast'
 import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { Typography } from '@/components/ui/Typography'
@@ -12,7 +12,7 @@ export function NewsletterSection() {
   // UI only for now — wire to Shopify (customer marketing consent) via service -> hook later.
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
-    toast.success(successMessage)
+    appToast.success(successMessage)
     event.currentTarget.reset()
   }
 

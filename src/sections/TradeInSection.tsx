@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm, type DefaultValues } from 'react-hook-form'
-import toast from 'react-hot-toast'
+import { appToast } from '@/lib/appToast'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Stepper } from '@/components/form/Stepper'
 import { ArrowUpRightIcon, ReturnIcon, WhatsAppIcon } from '@/components/icons'
@@ -113,7 +113,7 @@ export function TradeInSection() {
       if (!url) return
       // May be blocked after the async validation on some phones: the success screen has a real link as the fallback.
       window.open(url, '_blank', 'noopener,noreferrer')
-      toast.success(TRADE_IN_CONTENT.success.toast)
+      appToast.success(TRADE_IN_CONTENT.success.toast)
       clearTradeInDraft()
       form.reset(EMPTY_VALUES)
       setShowErrors(false)
@@ -132,7 +132,7 @@ export function TradeInSection() {
     form.reset(EMPTY_VALUES)
     clearTradeInDraft()
     goToStep(TradeInStep.Phone)
-    toast(TRADE_IN_CONTENT.cleared)
+    appToast.info(TRADE_IN_CONTENT.cleared)
   }
 
   const cancel = () => {

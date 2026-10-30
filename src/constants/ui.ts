@@ -154,3 +154,11 @@ export const IconButtonVariant = {
   Primary: 'primary',
 } as const
 export type IconButtonVariant = (typeof IconButtonVariant)[keyof typeof IconButtonVariant]
+
+/** Look of a toast: the icon badge. Every toast has a title, an optional text and a close button (`AppToast`). */
+export const ToastVariant = {
+  Success: 'success',
+  Error: 'error',
+  Info: 'info',
+} as const
+export type ToastVariant = (typeof ToastVariant)[keyof typeof ToastVariant]

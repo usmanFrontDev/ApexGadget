@@ -1,8 +1,7 @@
 import { useIsMutating, useMutation, useMutationState, useQueryClient } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
 import { CART_CONTENT } from '@/constants/cart'
 import { cartKeys } from '@/constants/queryKeys'
-import { showItemRemovedToast } from '@/lib/cartToasts'
+import { appToast } from '@/lib/appToast'
 import { applyTotals } from '@/lib/cartTotals'
 import {
   addLines,
@@ -28,7 +27,7 @@ const CART_SCOPE = { id: 'cart' } as const
 
 function requireCartId(): string {
   const id = useCartStore.getState().cartId
-  if (!id) throw new CartError(CartErrorCode.NotFound, CART_CONTENT.toast.failed)
+  if (!id) throw new CartError(CartErrorCode.NotFound, CART_CONTENT.toast.failed.text)
   return id
 }
 
@@ -43,7 +42,9 @@ function useCartCache() {
     commit: ({ cart, warnings }: CartResult) => {
       queryClient.setQueryData<Cart | null>(cartKeys.detail(cart.id), cart)
       const clamped = warnings.find((warning) => warning.code === CartWarningCode.QuantityClamped)
-      if (clamped) toast(CART_CONTENT.toast.clamped.replace('{n}', String(clamped.available)))
+      if (clamped) {
+        appToast.info(CART_CONTENT.toast.clamped.title, CART_CONTENT.toast.clamped.text.replace('{n}', String(clamped.available)))
+      }
     },
     queryClient,
   }
@@ -77,16 +78,16 @@ export function useAddToCart() {
     mutationFn: addToCartFlow,
     onSuccess: (result, input) => {
       commit(result)
-      toast.success(CART_CONTENT.toast.added)
-      const line = result.cart.lines.find((item) => item.variantId === input.variantId)
-      announce(CART_CONTENT.announce.added.replace('{title}', line?.productTitle ?? ''))
+      const title = result.cart.lines.find((item) => item.variantId === input.variantId)?.productTitle ?? ''
+      appToast.success(CART_CONTENT.toast.added.title, CART_CONTENT.toast.added.text.replace('{title}', title))
+      announce(CART_CONTENT.announce.added.replace('{title}', title))
     },
     onError: (error) => {
       if (error instanceof CartError && error.code === CartErrorCode.SingleUnitInCart) {
-        toast(CART_CONTENT.toast.singleUnit)
+        appToast.info(CART_CONTENT.toast.singleUnit.title, CART_CONTENT.toast.singleUnit.text)
         return
       }
-      toast.error(userMessage(error, CART_CONTENT.toast.addFailed))
+      appToast.error(CART_CONTENT.toast.addFailed.title, userMessage(error, CART_CONTENT.toast.addFailed.text))
     },
   })
 }
@@ -103,7 +104,7 @@ export function useUpdateCartLine() {
       commit(result)
       announce(CART_CONTENT.announce.updated)
     },
-    onError: (error) => toast.error(userMessage(error, CART_CONTENT.toast.failed)),
+    onError: (error) => appToast.error(CART_CONTENT.toast.failed.title, userMessage(error, CART_CONTENT.toast.failed.text)),
   })
 }
 
@@ -129,11 +130,11 @@ export function useRemoveCartLine() {
     },
     onError: (error, _lineId, context) => {
       if (context?.previous) queryClient.setQueryData<Cart | null>(context.key, context.previous)
-      toast.error(userMessage(error, CART_CONTENT.toast.failed))
+      appToast.error(CART_CONTENT.toast.failed.title, userMessage(error, CART_CONTENT.toast.failed.text))
     },
     onSuccess: (result, _lineId, context) => {
       commit(result)
-      showItemRemovedToast(context.title)
+      appToast.success(CART_CONTENT.toast.removed.title, CART_CONTENT.toast.removed.text.replace('{title}', context.title))
       announce(CART_CONTENT.announce.removed.replace('{title}', context.title))
     },
   })
@@ -152,7 +153,7 @@ export function useApplyDiscount() {
     },
     onError: (error) => {
       if (error instanceof CartError && error.code === CartErrorCode.InvalidDiscount) return
-      toast.error(userMessage(error, CART_CONTENT.toast.failed))
+      appToast.error(CART_CONTENT.toast.failed.title, userMessage(error, CART_CONTENT.toast.failed.text))
     },
   })
 }
@@ -167,7 +168,7 @@ export function useRemoveDiscount() {
       commit(result)
       announce(CART_CONTENT.announce.discountRemoved)
     },
-    onError: (error) => toast.error(userMessage(error, CART_CONTENT.toast.failed)),
+    onError: (error) => appToast.error(CART_CONTENT.toast.failed.title, userMessage(error, CART_CONTENT.toast.failed.text)),
   })
 }
 
@@ -179,7 +180,7 @@ export function useUpdateCartNote() {
     scope: CART_SCOPE,
     mutationFn: (note: string) => updateNote(requireCartId(), note),
     onSuccess: commit,
-    onError: (error) => toast.error(userMessage(error, CART_CONTENT.toast.failed)),
+    onError: (error) => appToast.error(CART_CONTENT.toast.failed.title, userMessage(error, CART_CONTENT.toast.failed.text)),
   })
 }
 
