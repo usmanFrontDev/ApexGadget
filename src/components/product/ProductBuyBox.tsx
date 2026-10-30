@@ -158,20 +158,21 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
         {/* Actions come last (the decision). Full width only on phones (Button blockOnMobile); side by side from sm. */}
         <div className="flex flex-col gap-3 border-t border-ink/8 pt-6 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-start">
           {sold ? (
-            <Button type="button" variant={ButtonVariant.Secondary} size={ButtonSize.Lg} disabled blockOnMobile className="sm:min-w-[200px]">
+            <Button type="button" variant={ButtonVariant.Secondary} size={ButtonSize.Lg} disabled blockOnMobile>
               {PRODUCT_CONTENT.soldOut}
             </Button>
           ) : line ? (
             <>
-              {/* Same control as the product cards, cart page and mini-cart (− becomes a trash button at 1). */}
-              <CartQuantityControl line={line} removable className="max-sm:w-full max-sm:justify-between" />
+              {/* More than one unit (accessories): the shared quantity control. A single phone has nothing to choose. */}
+              {stockLimit > 1 && (
+                <CartQuantityControl line={line} removable className="max-sm:w-full max-sm:justify-between" />
+              )}
               <Button
                 to={ROUTES.cart}
                 size={ButtonSize.Lg}
                 icon={<ArrowUpRightIcon />}
                 iconAnimation={IconAnimation.PointRight}
                 blockOnMobile
-                className="sm:min-w-[210px]"
               >
                 {PRODUCT_CONTENT.viewCart}
               </Button>
@@ -185,7 +186,6 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
               disabled={!variant || addToCart.isPending}
               onClick={onAdd}
               blockOnMobile
-              className="sm:min-w-[210px]"
             >
               {PRODUCT_CONTENT.addToCart}
             </Button>
