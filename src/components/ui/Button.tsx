@@ -32,7 +32,7 @@ export interface ButtonProps extends ActionElementProps {
 const variantClasses: Record<ButtonVariant, string> = {
   [ButtonVariant.Primary]: 'bg-primary font-bold text-white shadow-primary hover:brightness-110',
   // Same weight as Primary: two buttons side by side must read as the same size.
-  [ButtonVariant.Secondary]: 'bg-white/92 font-bold text-ink shadow-ring hover:bg-white',
+  [ButtonVariant.Secondary]: 'bg-white/92 font-bold text-ink shadow-ring hover:bg-canvas',
 }
 
 const defaultIconStyle: Record<ButtonVariant, ButtonIconStyle> = {

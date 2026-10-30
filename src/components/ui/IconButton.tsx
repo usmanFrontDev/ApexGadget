@@ -31,7 +31,7 @@ export function IconButton({
       className={iconCircleClasses(
         size,
         `transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-          variant === IconButtonVariant.Primary ? 'hover:brightness-110' : 'hover:bg-white'
+          variant === IconButtonVariant.Primary ? 'hover:brightness-110' : 'hover:bg-canvas'
         } ${className ?? ''}`,
         variant,
       )}
