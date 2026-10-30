@@ -30,12 +30,12 @@ export function ProductCardCartControl({ product }: ProductCardCartControlProps)
   return (
     <IconButton
       label={`${PRODUCT_CONTENT.addToCart}: ${product.title}`}
-      size={IconButtonSize.Lg}
+      size={IconButtonSize.Md}
       variant={IconButtonVariant.Primary}
       disabled={addToCart.isPending}
       onClick={() => addToCart.mutate({ variantId, productHandle: product.handle, quantity: 1 })}
     >
-      <BagIcon width={19} height={19} />
+      <BagIcon width={16} height={16} />
     </IconButton>
   )
 }
