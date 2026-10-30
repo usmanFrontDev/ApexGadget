@@ -5,6 +5,19 @@ Custom React frontend; **Shopify is the backend** (products, content, cart/check
 ## Stack
 Vite · React 19 · TypeScript (strict) · Tailwind CSS v4 (`@tailwindcss/vite`, tokens in `@theme` inside `src/index.css`) · React Router (`react-router-dom`) · TanStack Query (server state) · Zustand (client/UI state) · Framer Motion (animations) · react-hot-toast · `@shopify/storefront-api-client`. Package manager: **yarn**.
 
+## Shopify contract (details in `docs/shopify/`)
+- `docs/shopify/02-data-model.md` and `06-field-mapping.md` are the contract; `OPEN-ISSUES.md` lists conflicts, assumptions, unverified and client-blocked items. Any change to `ProductSummary`/`ProductDetail`, filters or Home content must update the docs, mapper, mock data and GraphQL in the **same change**.
+- **Filters are server-side**, driven by Shopify Search & Discovery (`docs/shopify/10-filters-and-search-discovery.md`). Never hardcode facet lists in components; render the `FilterGroup[]` the API returns. A new filterable attribute = metafield definition (filterable) + Search & Discovery setup + doc update + mock fixture.
+- **Trade-in** is WhatsApp-only: `lib/tradeInMessage.ts` (`buildTradeInMessage`, `buildWhatsAppUrl`) is the single source of the message; number and template come from `apex_site_settings` (`useTradeInSettings`). Option lists live ONCE in `constants/trade.ts` and drive the Zod schema (`lib/schemas/tradeIn.schema.ts`) and the form types. No backend, no Admin token. Add/rename an option there, never in a component.
+- **Wishlist**: `store/useWishlistStore.ts`, key `apex.wishlist.v1`, items `{ handle, addedAt }[]`; storage access goes through `lib/safeStorage.ts` (never throws). Cards use `WishlistButton`.
+- **Product page** (`/shop/:handle`) depends on `ProductDetail` (docs/shopify/06 §3): service `productDetail.service.ts` -> `useProduct`; a sold listing still renders (Sold state), only an unknown handle is "not found". Shopify HTML always goes through `lib/sanitizeHtml.ts`. Mock cart (`store/useCartStore.ts`) is mock-mode only until plan step 6.
+- New homepage/CMS section = metaobject definition + doc table (02) + query (05) + mapper (06) + mock fixture + loading/empty/error states.
+- Components never call Shopify; only services do. No Admin token in client code or `VITE_` vars; no serverless functions at launch (trade-in is a WhatsApp `wa.me` link).
+- Mock data must always satisfy the same types as the Shopify mappers. Currency is PKR (`formatPrice`). `ptaStatus` = PTA/Non-PTA/JV, `grade` = condition quality.
+- New env vars go into `.env.example` and `docs/shopify/00-overview.md`.
+- Before finishing a Shopify-related task run `yarn typecheck`, `yarn lint` and `yarn shopify:audit` (needs the live store's public env; exit 2 = not connected).
+- When you learn something about the project structure while working, update the relevant md file in the same change.
+
 ## Folder structure (`@/` alias = `src/`)
 ```
 src/
@@ -16,7 +29,7 @@ src/
     icons/      one SVG icon component per file (currentColor), exported via index.ts
     layout/     Header, Footer, RootLayout, ScrollToTop
     shop/       shop-page parts (ProductGrid, ShopFilterPanel, ActiveFilters, ResultsFooter...)
-    common/     reusable domain-agnostic blocks (ProductCard, SectionHeader...)
+    common/     reusable domain-agnostic blocks (CategoryCard, PromoCard, PageBanner, CtaBanner...)
   hooks/        useXxx.ts — TanStack Query hooks wrapping services
   services/     <feature>.service.ts — API calls + GraphQL (no React here)
   store/        Zustand stores (useCartStore.ts ...)
@@ -37,7 +50,7 @@ src/
 ## Reusable UI building blocks (use these, don't re-create)
 - `Button` (`components/ui/Button.tsx`): props `variant` (Primary|Secondary), `size` (Sm|Md|Lg), `icon` (any node), `iconPosition` (Start|End), `iconStyle` (Circle|Plain), plus `to` (router link) / `href` (anchor) / `onClick`. All option values come from `constants/ui.ts`.
 - `Button` also has `fullWidth` (label left, icon right) and sizes Xs|Sm|Md|Lg; `Chip` sizes Xs|Sm|Md|Lg, variants Default|Label|Dark; `GlassCard` variants Hero|Promo|Soft (override radius via `className`).
-- `IconButton` (round, `label` required for a11y), `IconCircle` (decorative round badge), `Chip`, `GlassCard`, `SectionHeading`, `Container`, `Reveal` (scroll animation). Cards: `ProductCard`, `CategoryCard`, `PromoCard`, `FeatureCard`, `TestimonialCard`; `BannerCarousel` (+ `useCarousel` hook). Link/anchor/button switching is handled by `ActionElement`.
+- `IconButton` (round, `label` required for a11y), `IconCircle` (decorative round badge), `Chip`, `GlassCard`, `SectionHeading`, `Container`, `Reveal` (scroll animation). Cards: `ShopProductCard` (the ONE product card for shop, home and similar products; no add-to-cart on cards, only "View details" + the heart), `CategoryCard`, `PromoCard`, `FeatureCard`, `TestimonialCard`; `BannerCarousel` (+ `useCarousel` hook). Link/anchor/button switching is handled by `ActionElement`.
 - **Typography**: all text goes through `Typography` (`components/ui/Typography.tsx`) with `variant` (`TypographyVariant`: Display, Heading, Title, Subtitle, CardTitle, Lead, Body, BodySm, Caption, Eyebrow, Price, Quote), `tone` and `align` (`TypographyAlign.CenterBelowLg` = centred on phone/tablet, left on desktop). Sizes are responsive per variant (phone -> `sm` -> `lg` -> `xl`) and live only there; don't write `text-[..px]` on headings/paragraphs. Override per use only through `className`.
 - **Phone/tablet layout (< lg)**: centred approach: centred headings/text, full-width CTAs (`Button blockOnMobile` = full width, label centred, icon pinned right), one product card per row, tight gutters (`Container` px-3 -> sm:px-6 -> lg:px-8), odd last grid item spans the row.
 - **Icon hover animations**: `Button`, `IconButton`, `IconCircle` take `iconAnimation` (`IconAnimation.PointRight` = up-right arrow rotates to point right, plus NudgeRight, NudgeUpRight, Spin, Grow). Animations live in `index.css` (`[data-icon-animation]` inside a `[data-hover-scope]` ancestor; reduced-motion safe). Every arrow-icon button/link should pass `iconAnimation`. To animate on a card hover, put `data-hover-scope` on the card.
@@ -46,11 +59,11 @@ src/
 - File names must differ by more than casing (macOS is case-insensitive).
 - Fonts: Plus Jakarta Sans = default (`font-sans`), Montserrat = body copy (`font-body`). Section content/data lives in `constants/<page>.ts` with types in `types/<page>.types.ts`.
 - Temporary placeholders live in `constants/mock.ts` and must be replaced by Shopify data.
-- **Shop page**: the whole catalogue is fetched once (`services/products.service.ts` -> `hooks/useCatalog.ts`, cached), then filtered / sorted / counted / paginated **client-side** by pure functions in `lib/shopCatalog.ts` (`hooks/useShopCatalog.ts`). That gives instant filtering, facet counts and price bounds. Filters, sort and page live in the URL (`hooks/useShopFilters.ts`, keys in `ShopParam` + `SHOP_FACETS` in `constants/shop.ts`), so every state is shareable. To add a filter: add a `FacetKey` + entry in `SHOP_FACETS` + a case in `getFacetValues`.
+- **Shop page**: filtering, sorting, facet counts and pagination are **server-side** (Shopify Storefront `collection.products(filters)` / `search(productFilters)`; the mock engine in `services/mock/shopMock.ts` returns the same `ShopResultsPage` with `FilterGroup[]`). Flow: `services/products.service.ts` -> `hooks/useShopProducts.ts` (`useInfiniteQuery`, **Load more**, `keepPreviousData`) -> `ShopCatalogSection`. Category, search `q`, sort and every selected filter live in the URL (`hooks/useShopFilters.ts`; filters as `f.<ProductFilter type>…`, codec in `lib/shopFilters.ts`), so every state is shareable. The sidebar renders whatever groups the API returns (`ShopFilterPanel`); enums in `constants/shop.ts` only supply labels/order/swatches. Details: `docs/shopify/10-filters-and-search-discovery.md`.
 - Catalogue source: **mock data is the default** (`constants/mockProducts.ts`) while the frontend is being built; Shopify Storefront API is used only with an explicit `VITE_USE_MOCK_DATA=false` plus credentials. Shopify integration comes later — don't spend time on it now. Products are mapped from Shopify **tags** (`model:iphone-15`, `storage:256gb`, `battery:96`, `color:black`, `grade:excellent`, `pta` / `non-pta`) and `productType` (`iPhones` = phones, anything else = accessories) — see `SHOPIFY_TAG` in `constants/shop.ts`. Keep both sources returning `ProductSummary[]`.
 - Inputs that mirror a URL value (price slider) must follow the URL when it changes elsewhere: keep a `syncedValue` state and adopt the new value during render (see `PriceRangeFilter`) — don't remount with `key`, it races with the URL update.
 - **Stretched links** (whole card/banner clickable via `after:absolute after:inset-0` on a link): never put a transform on the link or its parent chain up to the positioned container (`active:scale-*`, `hover:scale-*`, `translate-*`): a transform turns that element into the containing block and shrinks the clickable area. Use `active:scale-none` on `Button`s used this way.
-- Shop primitives: `Checkbox`, `RangeSlider` (two native range inputs), `Pagination`, `SelectMenu` (accessible listbox, `compact`), `Drawer` (focus trap, Esc, scroll lock), `FilterChip` (white/solid-red pill), `Skeleton`, `EmptyState`, `Breadcrumb`. Shop-only parts live in `components/shop/`.
+- Shop primitives: `Checkbox`, `RangeSlider` (two native range inputs), `SelectMenu` (accessible listbox, `compact`), `Drawer` (focus trap, Esc, scroll lock), `FilterChip` (white/solid-red pill), `Skeleton`, `EmptyState`, `Breadcrumb`. Shop-only parts live in `components/shop/`.
 
 ## Styling / Figma fidelity
 - Tailwind utilities only; no inline styles, no CSS files except `index.css`.

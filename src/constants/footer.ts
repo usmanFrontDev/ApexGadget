@@ -11,9 +11,9 @@ export const FOOTER_COLUMNS: readonly FooterColumn[] = [
     title: 'Shop',
     links: [
       { label: 'iPhones', to: getShopPath(ShopCategoryId.Iphones) },
-      { label: 'Audio', to: getShopPath(ShopCategoryId.Accessories) },
-      { label: 'Wearables', to: getShopPath(ShopCategoryId.Accessories) },
-      { label: 'Accessories', to: ROUTES.shop },
+      { label: 'Audio', to: getShopPath(ShopCategoryId.Audio) },
+      { label: 'Wearables', to: getShopPath(ShopCategoryId.Wearables) },
+      { label: 'Accessories', to: getShopPath(ShopCategoryId.Accessories) },
     ],
   },
   {
@@ -36,6 +36,7 @@ export const FOOTER_COLUMNS: readonly FooterColumn[] = [
   },
 ]
 
-export const PAYMENT_METHODS = ['Visa', 'Mastercard', 'PayPal'] as const
+/** Manual payment methods enabled in Shopify at launch (no online card payments). */
+export const PAYMENT_METHODS = ['Cash on Delivery', 'Bank transfer', 'EasyPaisa', 'JazzCash'] as const
 
 export const COPYRIGHT_TEXT = `© ${new Date().getFullYear()} Apex Gadget. All rights reserved.`

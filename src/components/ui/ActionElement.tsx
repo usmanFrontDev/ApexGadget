@@ -15,6 +15,7 @@ export interface ActionElementProps {
   disabled?: boolean
   'aria-label'?: string
   'aria-expanded'?: boolean
+  'aria-pressed'?: boolean
   'aria-controls'?: string
   [dataAttribute: `data-${string}`]: string | undefined
 }

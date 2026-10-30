@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { ArrowUpRightIcon } from '@/components/icons'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { IconCircle } from '@/components/ui/IconCircle'
+import { Skeleton } from '@/components/ui/Skeleton'
 import { Typography } from '@/components/ui/Typography'
 import {
   GlassCardVariant,
@@ -14,9 +15,11 @@ import type { CategoryItem } from '@/types/home.types'
 
 export interface CategoryCardProps {
   category: CategoryItem
+  /** The count is still loading: show a placeholder line so the card doesn't jump. */
+  countPending?: boolean
 }
 
-export function CategoryCard({ category }: CategoryCardProps) {
+export function CategoryCard({ category, countPending = false }: CategoryCardProps) {
   const { name, productCount, image, to } = category
 
   return (
@@ -55,14 +58,18 @@ export function CategoryCard({ category }: CategoryCardProps) {
             {name}
           </Link>
         </Typography>
-        <Typography
-          variant={TypographyVariant.Caption}
-          tone={TypographyTone.Soft}
-          align={TypographyAlign.CenterBelowSm}
-          className="mt-1 truncate"
-        >
-          {productCount} products
-        </Typography>
+        {productCount !== undefined ? (
+          <Typography
+            variant={TypographyVariant.Caption}
+            tone={TypographyTone.Soft}
+            align={TypographyAlign.CenterBelowSm}
+            className="mt-1 truncate"
+          >
+            {productCount} {productCount === 1 ? 'product' : 'products'}
+          </Typography>
+        ) : (
+          countPending && <Skeleton className="mx-auto mt-1.5 h-3 w-16 sm:mx-0" />
+        )}
       </div>
 
       <IconCircle

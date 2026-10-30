@@ -19,6 +19,7 @@ const twMerge = extendTailwindMerge({
             'banner',
             'ring',
             'ring-primary',
+            'ring-selected',
             'inset-glass',
             'inset-promo',
           ],

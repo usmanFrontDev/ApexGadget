@@ -6,10 +6,9 @@ import { Button } from '@/components/ui/Button'
 import { Drawer } from '@/components/ui/Drawer'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { GlassCard } from '@/components/ui/GlassCard'
-import { Pagination } from '@/components/ui/Pagination'
 import { SelectMenu } from '@/components/ui/SelectMenu'
 import { Skeleton } from '@/components/ui/Skeleton'
-import { DESKTOP_FILTERS_QUERY, SORT_OPTIONS } from '@/constants/shop'
+import { DESKTOP_FILTERS_QUERY } from '@/constants/shop'
 import { Typography } from '@/components/ui/Typography'
 import {
   ButtonSize,
@@ -20,8 +19,10 @@ import {
   TypographyVariant,
 } from '@/constants/ui'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import type { useShopFilters } from '@/hooks/useShopFilters'
-import { useShopCatalog } from '@/hooks/useShopCatalog'
+import { getSortOptions, type ShopFiltersState } from '@/hooks/useShopFilters'
+import { useShopProducts } from '@/hooks/useShopProducts'
+import { dropStaleSelection } from '@/lib/shopFilters'
+import { offeredFilterKinds } from '@/services/products.mappers'
 
 const RESULTS_ID = 'shop-results'
 const FILTERS_ID = 'shop-filters'
@@ -29,12 +30,13 @@ const FILTERS_ID = 'shop-filters'
 const STICKY_TOP_PX = 112
 
 export interface ShopCatalogSectionProps {
-  shop: ReturnType<typeof useShopFilters>
+  shop: ShopFiltersState
 }
 
 export function ShopCatalogSection({ shop }: ShopCatalogSectionProps) {
-  const { filters, activeFilterCount } = shop
-  const { view, isPending, isError, refetch } = useShopCatalog(filters)
+  const { query, activeFilterCount, replaceSelection } = shop
+  const results = useShopProducts(query)
+  const { products, filters, totalCount, isPending, isError, isStale, refetch } = results
   const isDesktop = useMediaQuery(DESKTOP_FILTERS_QUERY)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const closeDrawer = useCallback(() => setDrawerOpen(false), [])
@@ -52,21 +54,25 @@ export function ShopCatalogSection({ shop }: ShopCatalogSectionProps) {
     if (sidebar && sidebar.getBoundingClientRect().top < STICKY_TOP_PX - 4) {
       document.getElementById(RESULTS_ID)?.scrollIntoView({ block: 'start' })
     }
-  }, [filters])
+  }, [query])
 
-  const changePage = (page: number) => {
-    shop.setPage(page)
-    document.getElementById(RESULTS_ID)?.scrollIntoView({ block: 'start' })
-  }
+  // The client can remove a filter in Shopify at any time: drop selections whose filter is gone.
+  useEffect(() => {
+    if (isPending || isStale || isError || filters.length === 0) return
+    const kept = dropStaleSelection(query.selection, offeredFilterKinds(filters))
+    if (kept.length !== query.selection.length) replaceSelection(kept)
+  }, [isPending, isStale, isError, filters, query.selection, replaceSelection])
 
-  const filterPanel = view && (
+  const filterPanel = !isPending && (
     <ShopFilterPanel
-      filters={filters}
-      view={view}
-      onToggleFacet={shop.toggleFacet}
+      groups={filters}
+      selection={query.selection}
+      onToggle={shop.toggleFilter}
       onPriceChange={shop.setPriceRange}
     />
   )
+
+  const resultsLabel = totalCount === undefined ? undefined : `${totalCount} ${totalCount === 1 ? 'result' : 'results'}`
 
   const clearButton = (
     <button
@@ -93,13 +99,13 @@ export function ShopCatalogSection({ shop }: ShopCatalogSectionProps) {
         }
       />
     )
-  } else if (isPending || !view) {
+  } else if (isPending) {
     content = <ShopProductGridSkeleton />
-  } else if (view.products.length === 0) {
+  } else if (products.length === 0) {
     content = (
       <EmptyState
         icon={<SearchIcon width={24} height={24} />}
-        title="No devices match your filters"
+        title="No products match your filters"
         description="Try removing a filter or widening the price range — new stock lands every Friday."
         action={
           <Button variant={ButtonVariant.Secondary} size={ButtonSize.Md} onClick={shop.clearFilters}>
@@ -110,10 +116,21 @@ export function ShopCatalogSection({ shop }: ShopCatalogSectionProps) {
     )
   } else {
     content = (
-      <>
-        <ShopProductGrid products={view.products} />
-        <Pagination page={view.page} pageCount={view.pageCount} onChange={changePage} />
-      </>
+      <div aria-busy={isStale} className={isStale ? 'opacity-60 transition-opacity' : 'transition-opacity'}>
+        <ShopProductGrid products={products} />
+        {results.hasNextPage && (
+          <div className="mt-8 flex justify-center">
+            <Button
+              variant={ButtonVariant.Secondary}
+              size={ButtonSize.Md}
+              disabled={results.isFetchingNextPage}
+              onClick={() => results.fetchNextPage()}
+            >
+              {results.isFetchingNextPage ? 'Loading…' : 'Load more'}
+            </Button>
+          </div>
+        )}
+      </div>
     )
   }
 
@@ -165,7 +182,7 @@ export function ShopCatalogSection({ shop }: ShopCatalogSectionProps) {
             className="whitespace-nowrap"
             aria-live="polite"
           >
-            {view ? `Showing ${view.total} ${view.total === 1 ? 'result' : 'results'}` : 'Loading…'}
+            {isPending ? 'Loading…' : resultsLabel ? `Showing ${resultsLabel}` : `Showing ${products.length}${results.hasNextPage ? '+' : ''} products`}
           </Typography>
           <div className="flex items-center gap-2.5">
             {!isDesktop && (
@@ -183,8 +200,8 @@ export function ShopCatalogSection({ shop }: ShopCatalogSectionProps) {
             <SelectMenu
               compact
               label="Sort by"
-              options={SORT_OPTIONS}
-              value={filters.sort}
+              options={getSortOptions(query.search)}
+              value={query.sort}
               onChange={shop.setSort}
               className="min-w-0 flex-1 sm:flex-none"
             />
@@ -211,7 +228,7 @@ export function ShopCatalogSection({ shop }: ShopCatalogSectionProps) {
                 Clear all
               </Button>
               <Button size={ButtonSize.Md} className="flex-1" onClick={closeDrawer}>
-                {view ? `Show ${view.total} results` : 'Show results'}
+                {resultsLabel ? `Show ${resultsLabel}` : 'Show results'}
               </Button>
             </div>
           }

@@ -3,8 +3,9 @@ import bannerImage from '@/assets/images/banner-wave.jpg'
 import categoryImage from '@/assets/images/category-headphones.png'
 import heroImage from '@/assets/images/hero-iphone.png'
 import tradeInImage from '@/assets/images/trade-in-iphone.png'
+import { MOCK_PRODUCTS } from '@/constants/mockProducts'
 import { ROUTES } from '@/constants/routes'
-import { getShopPath, ShopCategoryId } from '@/constants/shop'
+import { getShopPath, PRODUCT_ROW_SIZE, ShopCategoryId } from '@/constants/shop'
 import type {
   BannerSlide,
   CategoryItem,
@@ -38,6 +39,18 @@ export const SOCIAL_LINKS: readonly SocialLink[] = [
   { label: 'LinkedIn', shortLabel: 'in', href: '#' },
 ]
 
+/** Where the picture sits inside a promo card (sm and up). Shopify stores only the preset name. */
+export const PromoLayout = {
+  TradeIn: 'trade-in',
+  Accessories: 'accessories',
+} as const
+export type PromoLayout = (typeof PromoLayout)[keyof typeof PromoLayout]
+
+export const PROMO_LAYOUT_CLASSES: Record<PromoLayout, string> = {
+  [PromoLayout.TradeIn]: 'sm:left-[62.4%] sm:top-[11.3%] sm:w-[40%]',
+  [PromoLayout.Accessories]: 'sm:left-[49.9%] sm:-top-[7.4%] sm:w-[48.2%]',
+}
+
 export const PROMO_CARDS: readonly PromoCardData[] = [
   {
     id: 'trade-in',
@@ -48,7 +61,7 @@ export const PROMO_CARDS: readonly PromoCardData[] = [
     cta: { label: 'Get a trade-in quote', to: ROUTES.trade },
     image: tradeInImage,
     imageAlt: 'Hand holding a blue iPhone',
-    imageClassName: 'sm:left-[62.4%] sm:top-[11.3%] sm:w-[40%]',
+    layout: PromoLayout.TradeIn,
   },
   {
     id: 'accessories',
@@ -59,17 +72,17 @@ export const PROMO_CARDS: readonly PromoCardData[] = [
     cta: { label: 'Shop accessories', to: ROUTES.shop },
     image: accessoriesImage,
     imageAlt: 'Apple chargers, cables, AirPods and cases',
-    imageClassName: 'sm:left-[49.9%] sm:-top-[7.4%] sm:w-[48.2%]',
+    layout: PromoLayout.Accessories,
   },
 ]
 
 // Mock data — replaced by Shopify collections later.
 export const CATEGORIES: readonly CategoryItem[] = [
-  { id: 'iphones', name: 'iPhones', productCount: 42, image: categoryImage, to: getShopPath(ShopCategoryId.Iphones) },
-  { id: 'audio', name: 'Audio', productCount: 28, image: categoryImage, to: getShopPath(ShopCategoryId.Accessories) },
-  { id: 'wearables', name: 'Wearables', productCount: 19, image: categoryImage, to: getShopPath(ShopCategoryId.Accessories) },
-  { id: 'chargers', name: 'Chargers', productCount: 35, image: categoryImage, to: getShopPath(ShopCategoryId.Accessories) },
-  { id: 'cases', name: 'Cases', productCount: 54, image: categoryImage, to: getShopPath(ShopCategoryId.Accessories) },
+  { id: 'iphones', name: 'iPhones', image: categoryImage, to: getShopPath(ShopCategoryId.Iphones) },
+  { id: 'audio', name: 'Audio', image: categoryImage, to: getShopPath(ShopCategoryId.Audio) },
+  { id: 'wearables', name: 'Wearables', image: categoryImage, to: getShopPath(ShopCategoryId.Wearables) },
+  { id: 'chargers', name: 'Chargers', image: categoryImage, to: getShopPath(ShopCategoryId.Chargers) },
+  { id: 'cases', name: 'Cases', image: categoryImage, to: getShopPath(ShopCategoryId.Cases) },
 ]
 
 export const BANNER_AUTOPLAY_MS = 5000
@@ -82,49 +95,11 @@ export const BANNER_SLIDES: readonly BannerSlide[] = [
   { id: 'slide-4', image: bannerImage, alt: 'Red silk wave banner' },
 ]
 
-// Mock products — replaced by Shopify best-selling products (service -> hook) later.
-export const BESTSELLERS: readonly ProductSummary[] = [
-  {
-    id: 'iphone-15-pro',
-    title: 'iPhone 15 Pro 256GB',
-    subtitle: '6.7″ display · triple camera · 5G',
-    priceAmount: 899,
-    currencyCode: 'USD',
-    image: categoryImage,
-    badge: { label: 'PTA approved' },
-    to: ROUTES.shop,
-  },
-  {
-    id: 'iphone-14-pro',
-    title: 'iPhone 14 Pro 128GB',
-    subtitle: 'Battery 94% · box & cable included',
-    priceAmount: 729,
-    currencyCode: 'USD',
-    image: categoryImage,
-    badge: { label: 'PTA approved' },
-    to: ROUTES.shop,
-  },
-  {
-    id: 'iphone-13',
-    title: 'iPhone 13 256GB',
-    subtitle: 'Factory unlocked · certified test passed',
-    priceAmount: 549,
-    currencyCode: 'USD',
-    image: categoryImage,
-    badge: { label: 'Non-PTA' },
-    to: ROUTES.shop,
-  },
-  {
-    id: 'iphone-12',
-    title: 'iPhone 12 128GB',
-    subtitle: 'Battery 91% · 12 month warranty',
-    priceAmount: 419,
-    currencyCode: 'USD',
-    image: categoryImage,
-    badge: { label: 'Non-PTA' },
-    to: ROUTES.shop,
-  },
-]
+// Mock bestsellers (the first in-stock iPhones of the mock catalogue, so every card links to a real product page).
+// Replaced by the Shopify `bestsellers` collection (plan step 4).
+export const BESTSELLERS: readonly ProductSummary[] = MOCK_PRODUCTS.filter(
+  (product) => product.category === ShopCategoryId.Iphones && product.availableForSale !== false,
+).slice(0, PRODUCT_ROW_SIZE)
 
 export const WHY_SHOP_ITEMS: readonly FeatureItem[] = [
   {

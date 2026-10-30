@@ -2,11 +2,13 @@ import { Outlet } from 'react-router-dom'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
-import { MOCK_CART_COUNT, MOCK_USER_INITIALS } from '@/constants/mock'
+import { MOCK_USER_INITIALS } from '@/constants/mock'
+import { useCartCount } from '@/store/useCartStore'
 import { NewsletterSection } from '@/sections/NewsletterSection'
 
 /** App shell: page canvas, decorative glows, header and the routed page. */
 export function RootLayout() {
+  const cartCount = useCartCount()
   return (
     <div className="relative isolate min-h-screen overflow-x-clip bg-canvas">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
@@ -16,7 +18,7 @@ export function RootLayout() {
       </div>
 
       <ScrollToTop />
-      <Header cartCount={MOCK_CART_COUNT} userInitials={MOCK_USER_INITIALS} />
+      <Header cartCount={cartCount} userInitials={MOCK_USER_INITIALS} />
       <main>
         <Outlet />
       </main>

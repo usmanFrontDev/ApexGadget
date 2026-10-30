@@ -122,3 +122,10 @@ export const TypographyAlign = {
   CenterBelowLg: 'center-below-lg',
 } as const
 export type TypographyAlign = (typeof TypographyAlign)[keyof typeof TypographyAlign]
+
+/** Look of the page banner artwork (decides the panel colour behind the phone crop below `lg`). */
+export const PageBannerTone = {
+  Light: 'light',
+  Dark: 'dark',
+} as const
+export type PageBannerTone = (typeof PageBannerTone)[keyof typeof PageBannerTone]

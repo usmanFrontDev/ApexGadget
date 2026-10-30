@@ -1,11 +1,13 @@
-import { ProductCard } from '@/components/common/ProductCard'
 import { Reveal } from '@/components/common/Reveal'
+import { ShopProductCard } from '@/components/shop/ShopProductCard'
 import { ArrowUpRightIcon } from '@/components/icons'
 import { Button } from '@/components/ui/Button'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { BESTSELLERS } from '@/constants/home'
 import { ROUTES } from '@/constants/routes'
+import { PRODUCT_ROW_GRID_CLASSES } from '@/constants/shop'
 import { ButtonSize, ButtonVariant, IconAnimation } from '@/constants/ui'
+import { cn } from '@/lib/cn'
 
 export function BestsellersSection() {
   return (
@@ -27,11 +29,11 @@ export function BestsellersSection() {
         }
       />
 
-      <ul className="mt-5 grid gap-4 sm:mt-6 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6 xl:gap-7">
+      <ul className={cn(PRODUCT_ROW_GRID_CLASSES, 'mt-5 sm:mt-6')}>
         {BESTSELLERS.map((product, index) => (
           <li key={product.id} className="mx-auto h-full w-full max-w-[340px] sm:max-w-none">
             <Reveal delay={index * 0.06} className="h-full">
-              <ProductCard product={product} />
+              <ShopProductCard product={product} />
             </Reveal>
           </li>
         ))}

@@ -1,3 +1,5 @@
+import type { PromoLayout } from '@/constants/home'
+
 export interface CtaLink {
   label: string
   /** Internal route (react-router). */
@@ -31,14 +33,15 @@ export interface PromoCardData {
   cta: CtaLink & { to: string }
   image: string
   imageAlt: string
-  /** Tailwind classes that position the image (from sm breakpoint up). */
-  imageClassName: string
+  /** Picture placement preset (the Tailwind positioning lives in code, not in the CMS). */
+  layout: PromoLayout
 }
 
 export interface CategoryItem {
   id: string
   name: string
-  productCount: number
+  /** Optional: the Storefront API has no collection count, so the card shows none by default. */
+  productCount?: number
   image: string
   to: string
 }

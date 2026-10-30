@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactNode } from 'react'
+import type { ElementType, HTMLAttributes, ReactNode, Ref } from 'react'
 import { TypographyAlign, TypographyTone, TypographyVariant } from '@/constants/ui'
 import { cn } from '@/lib/cn'
 
@@ -12,6 +12,8 @@ export interface TypographyProps extends Omit<HTMLAttributes<HTMLElement>, 'clas
   tone?: TypographyTone
   align?: TypographyAlign
   className?: string
+  /** For moving focus to a heading (React 19: `ref` is a normal prop). */
+  ref?: Ref<HTMLElement>
 }
 
 /** Size, weight, leading and tracking per variant: phone first, then `sm` / `lg` / `xl` steps. */
@@ -76,7 +78,7 @@ export function Typography({
   className,
   ...rest
 }: TypographyProps) {
-  const Tag = as ?? defaultTag[variant]
+  const Tag = (as ?? defaultTag[variant]) as ElementType
   return (
     <Tag
       {...rest}

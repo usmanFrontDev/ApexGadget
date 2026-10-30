@@ -39,6 +39,8 @@
   /* Hairline rings (inner strokes) */
   --shadow-ring: inset 0 0 0 1px rgb(20 20 22 / 0.09);
   --shadow-ring-primary: inset 0 0 0 1px rgb(200 32 40 / 0.1);
+  /* Selected state of choice chips / cards / swatches */
+  --shadow-ring-selected: inset 0 0 0 1.5px var(--color-primary);
   --shadow-inset-glass: inset 0 1px 0 rgb(255 255 255 / 0.92), inset 0 0 0 1px rgb(20 20 22 / 0.08);
   --shadow-inset-promo: inset 0 1px 0 rgb(255 255 255 / 0.92), inset 0 0 0 1px rgb(200 32 40 / 0.24);
 }
@@ -105,5 +107,93 @@
   body {
     background-color: var(--color-canvas);
     color: var(--color-ink);
+  }
+
+  /* Tailwind v4 no longer gives buttons a pointer cursor: everything the user can click gets one. */
+  button:not(:disabled),
+  a[href],
+  summary,
+  select:not(:disabled),
+  label[for],
+  [role='button']:not([aria-disabled='true']),
+  [role='radio']:not(:disabled),
+  [role='tab'],
+  [role='option'],
+  input[type='checkbox']:not(:disabled),
+  input[type='radio']:not(:disabled),
+  input[type='range'] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  select:disabled,
+  [aria-disabled='true'],
+  input:disabled {
+    cursor: not-allowed;
+  }
+}
+
+/*
+ * Rich text coming from Shopify (product description, policies). It is sanitised before it is rendered
+ * (lib/sanitizeHtml.ts); these rules only style it with the design tokens.
+ */
+@layer components {
+  .rich-text {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+  }
+  .rich-text > * + * {
+    margin-top: 0.75rem;
+  }
+  .rich-text h2,
+  .rich-text h3,
+  .rich-text h4 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    color: var(--color-ink);
+  }
+  .rich-text h2,
+  .rich-text h3 {
+    font-size: 1.125rem;
+  }
+  .rich-text h4 {
+    font-size: 1rem;
+    margin-top: 1.25rem;
+  }
+  .rich-text a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .rich-text ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+  }
+  .rich-text ul > li {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  /* Red check mark in front of every bullet */
+  .rich-text ul > li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 0.9em;
+    height: 0.9em;
+    background-color: var(--color-primary);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5l3.3 3.3L13 4.8'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5l3.3 3.3L13 4.8'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  .rich-text ol {
+    padding-left: 1.25rem;
+    list-style: decimal;
   }
 }

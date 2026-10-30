@@ -8,7 +8,7 @@ export default function ShopPage() {
 
   return (
     <Container className="pt-6">
-      <ShopIntroSection filters={shop.filters} onSelectPill={shop.selectModel} />
+      <ShopIntroSection query={shop.query} onSelectPill={shop.selectPill} />
       <ShopCatalogSection shop={shop} />
     </Container>
   )

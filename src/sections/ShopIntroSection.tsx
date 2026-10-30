@@ -5,15 +5,17 @@ import { Typography } from '@/components/ui/Typography'
 import { ROUTES } from '@/constants/routes'
 import { SHOP_BANNER, SHOP_PAGE_CONTENT, type ShopCategoryId } from '@/constants/shop'
 import { TypographyTone, TypographyVariant } from '@/constants/ui'
-import type { ShopFilters } from '@/types/shop.types'
+import type { ShopQuery } from '@/types/shop.types'
 
 export interface ShopIntroSectionProps {
-  filters: ShopFilters
+  query: ShopQuery
   onSelectPill: (category: ShopCategoryId, model?: string) => void
 }
 
-export function ShopIntroSection({ filters, onSelectPill }: ShopIntroSectionProps) {
-  const { title, description } = SHOP_PAGE_CONTENT[filters.category]
+export function ShopIntroSection({ query, onSelectPill }: ShopIntroSectionProps) {
+  const content = SHOP_PAGE_CONTENT[query.category]
+  const title = query.search ? `Results for “${query.search}”` : content.title
+  const description = query.search ? 'Matching iPhones and accessories, refine them with the filters.' : content.description
 
   return (
     <section>
@@ -35,7 +37,7 @@ export function ShopIntroSection({ filters, onSelectPill }: ShopIntroSectionProp
       </div>
 
       <div className="mt-5">
-        <ShopPills filters={filters} onSelect={onSelectPill} />
+        <ShopPills query={query} onSelect={onSelectPill} />
       </div>
     </section>
   )
