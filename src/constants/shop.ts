@@ -1,13 +1,42 @@
 import shopBannerImage from '@/assets/images/ShopBanner.png'
 import { ROUTES } from '@/constants/routes'
-import type { FacetConfig } from '@/types/shop.types'
 
+/**
+ * Shop categories = Shopify `productType` + a smart collection with the same handle
+ * (docs/shopify/10-filters-and-search-discovery.md §3). `all` is the `all-products` collection.
+ */
 export const ShopCategoryId = {
+  All: 'all',
   Iphones: 'iphones',
+  Audio: 'audio',
+  Wearables: 'wearables',
+  Chargers: 'chargers',
+  Cases: 'cases',
   Accessories: 'accessories',
 } as const
 export type ShopCategoryId = (typeof ShopCategoryId)[keyof typeof ShopCategoryId]
 export const DEFAULT_CATEGORY: ShopCategoryId = ShopCategoryId.Iphones
+
+/** Shopify `productType` of each category (`accessories` = every other type, `all` = no type). */
+export const CATEGORY_PRODUCT_TYPE: Partial<Record<ShopCategoryId, string>> = {
+  [ShopCategoryId.Iphones]: 'iPhones',
+  [ShopCategoryId.Audio]: 'Audio',
+  [ShopCategoryId.Wearables]: 'Wearables',
+  [ShopCategoryId.Chargers]: 'Chargers',
+  [ShopCategoryId.Cases]: 'Cases',
+}
+export const OTHER_ACCESSORIES_PRODUCT_TYPE = 'Accessories'
+
+/** Collection handle that serves a category. */
+export const CATEGORY_COLLECTION_HANDLE: Record<ShopCategoryId, string> = {
+  [ShopCategoryId.All]: 'all-products',
+  [ShopCategoryId.Iphones]: 'iphones',
+  [ShopCategoryId.Audio]: 'audio',
+  [ShopCategoryId.Wearables]: 'wearables',
+  [ShopCategoryId.Chargers]: 'chargers',
+  [ShopCategoryId.Cases]: 'cases',
+  [ShopCategoryId.Accessories]: 'accessories',
+}
 
 export const ProductSortKey = {
   Featured: 'featured',
@@ -15,15 +44,19 @@ export const ProductSortKey = {
   PriceAsc: 'price-asc',
   PriceDesc: 'price-desc',
   TitleAsc: 'title-asc',
+  /** Search results only. */
+  Relevance: 'relevance',
 } as const
 export type ProductSortKey = (typeof ProductSortKey)[keyof typeof ProductSortKey]
 export const DEFAULT_SORT: ProductSortKey = ProductSortKey.Featured
+export const DEFAULT_SEARCH_SORT: ProductSortKey = ProductSortKey.Relevance
 
-export const ProductCondition = {
+export const ProductPtaStatus = {
   Pta: 'pta',
   NonPta: 'non-pta',
+  Jv: 'jv',
 } as const
-export type ProductCondition = (typeof ProductCondition)[keyof typeof ProductCondition]
+export type ProductPtaStatus = (typeof ProductPtaStatus)[keyof typeof ProductPtaStatus]
 
 export const ProductGrade = {
   New: 'new',
@@ -33,19 +66,9 @@ export const ProductGrade = {
 } as const
 export type ProductGrade = (typeof ProductGrade)[keyof typeof ProductGrade]
 
-export const GRADE_LABELS: Record<ProductGrade, string> = {
-  [ProductGrade.New]: 'New',
-  [ProductGrade.Excellent]: 'Excellent',
-  [ProductGrade.VeryGood]: 'Very Good',
-  [ProductGrade.Good]: 'Good',
-}
-
-export const CONDITION_LABELS: Record<ProductCondition, string> = {
-  [ProductCondition.Pta]: 'PTA Approved',
-  [ProductCondition.NonPta]: 'Non-PTA',
-}
-
 export const ShopModelId = {
+  Iphone17: 'iphone-17',
+  Iphone16: 'iphone-16',
   Iphone15: 'iphone-15',
   Iphone14: 'iphone-14',
   Iphone13: 'iphone-13',
@@ -66,9 +89,9 @@ export type ProductStorage = (typeof ProductStorage)[keyof typeof ProductStorage
 
 export const BatteryRange = {
   Excellent: '90-100',
-  Good: '85-89',
-  Fair: '80-84',
-  Low: 'below-80',
+  Good: '80-89',
+  Fair: '70-79',
+  Low: 'below-70',
 } as const
 export type BatteryRange = (typeof BatteryRange)[keyof typeof BatteryRange]
 
@@ -84,95 +107,79 @@ export const ProductColor = {
 } as const
 export type ProductColor = (typeof ProductColor)[keyof typeof ProductColor]
 
-export const FacetKey = {
-  Models: 'models',
-  Storages: 'storages',
-  Conditions: 'conditions',
-  BatteryRanges: 'batteryRanges',
-  Colors: 'colors',
-} as const
-export type FacetKey = (typeof FacetKey)[keyof typeof FacetKey]
+export const PTA_STATUS_LABELS: Record<ProductPtaStatus, string> = {
+  [ProductPtaStatus.Pta]: 'PTA Approved',
+  [ProductPtaStatus.NonPta]: 'Non-PTA',
+  [ProductPtaStatus.Jv]: 'JV',
+}
 
-/** Sidebar filters, in display order. */
-export const SHOP_FACETS: readonly FacetConfig[] = [
-  {
-    key: FacetKey.Models,
-    param: 'model',
-    title: 'Model',
-    options: [
-      { value: ShopModelId.Iphone15, label: 'iPhone 15' },
-      { value: ShopModelId.Iphone14, label: 'iPhone 14' },
-      { value: ShopModelId.Iphone13, label: 'iPhone 13' },
-      { value: ShopModelId.Iphone12, label: 'iPhone 12' },
-      { value: ShopModelId.Iphone11, label: 'iPhone 11' },
-      { value: ShopModelId.IphoneSe, label: 'iPhone SE' },
-    ],
-  },
-  {
-    key: FacetKey.Storages,
-    param: 'storage',
-    title: 'Storage',
-    options: [
-      { value: ProductStorage.Gb64, label: '64GB' },
-      { value: ProductStorage.Gb128, label: '128GB' },
-      { value: ProductStorage.Gb256, label: '256GB' },
-      { value: ProductStorage.Gb512, label: '512GB' },
-      { value: ProductStorage.Tb1, label: '1TB' },
-    ],
-  },
-  {
-    key: FacetKey.Conditions,
-    param: 'condition',
-    title: 'Condition',
-    options: [
-      { value: ProductCondition.Pta, label: CONDITION_LABELS[ProductCondition.Pta] },
-      { value: ProductCondition.NonPta, label: CONDITION_LABELS[ProductCondition.NonPta] },
-    ],
-  },
-  {
-    key: FacetKey.BatteryRanges,
-    param: 'battery',
-    title: 'Battery health',
-    options: [
-      { value: BatteryRange.Excellent, label: '90% – 100%' },
-      { value: BatteryRange.Good, label: '85% – 89%' },
-      { value: BatteryRange.Fair, label: '80% – 84%' },
-      { value: BatteryRange.Low, label: 'Below 80%' },
-    ],
-  },
-  {
-    key: FacetKey.Colors,
-    param: 'color',
-    title: 'Color',
-    options: [
-      { value: ProductColor.Black, label: 'Black', swatchClass: 'bg-[#1d1d1f]' },
-      { value: ProductColor.White, label: 'White', swatchClass: 'bg-[#f1f1f3]' },
-      { value: ProductColor.Blue, label: 'Blue', swatchClass: 'bg-[#2b8fe0]' },
-      { value: ProductColor.Red, label: 'Red', swatchClass: 'bg-[#e5333b]' },
-      { value: ProductColor.Purple, label: 'Purple', swatchClass: 'bg-[#a259f7]' },
-      { value: ProductColor.Gold, label: 'Gold', swatchClass: 'bg-[#f6dc8f]' },
-      { value: ProductColor.NaturalTitanium, label: 'Natural Titanium', swatchClass: 'bg-[#a89b8e]' },
-      { value: ProductColor.Graphite, label: 'Graphite', swatchClass: 'bg-[#4a4a4f]' },
-    ],
-  },
-]
+export const GRADE_LABELS: Record<ProductGrade, string> = {
+  [ProductGrade.New]: 'New',
+  [ProductGrade.Excellent]: 'Excellent',
+  [ProductGrade.VeryGood]: 'Very Good',
+  [ProductGrade.Good]: 'Good',
+}
 
-/** URL query-string keys that aren't facets (`/shop?category=iphones&sort=price-asc&page=2`). */
+/**
+ * Display labels for known filter / metafield values, in the order they should be listed.
+ * Filters themselves come from Shopify (Search & Discovery): this map only prettifies values and
+ * orders them. An unknown value still renders (humanised), it is never dropped.
+ */
+export const FILTER_VALUE_LABELS: Readonly<Record<string, string>> = {
+  [ShopModelId.Iphone17]: 'iPhone 17',
+  [ShopModelId.Iphone16]: 'iPhone 16',
+  [ShopModelId.Iphone15]: 'iPhone 15',
+  [ShopModelId.Iphone14]: 'iPhone 14',
+  [ShopModelId.Iphone13]: 'iPhone 13',
+  [ShopModelId.Iphone12]: 'iPhone 12',
+  [ShopModelId.Iphone11]: 'iPhone 11',
+  [ShopModelId.IphoneSe]: 'iPhone SE',
+  [ProductStorage.Gb64]: '64 GB',
+  [ProductStorage.Gb128]: '128 GB',
+  [ProductStorage.Gb256]: '256 GB',
+  [ProductStorage.Gb512]: '512 GB',
+  [ProductStorage.Tb1]: '1 TB',
+  ...PTA_STATUS_LABELS,
+  [BatteryRange.Excellent]: '90% – 100%',
+  [BatteryRange.Good]: '80% – 89%',
+  [BatteryRange.Fair]: '70% – 79%',
+  [BatteryRange.Low]: 'Below 70%',
+  [ProductColor.Black]: 'Black',
+  [ProductColor.White]: 'White',
+  [ProductColor.Blue]: 'Blue',
+  [ProductColor.Red]: 'Red',
+  [ProductColor.Purple]: 'Purple',
+  [ProductColor.Gold]: 'Gold',
+  [ProductColor.NaturalTitanium]: 'Natural Titanium',
+  [ProductColor.Graphite]: 'Graphite',
+  ...GRADE_LABELS,
+}
+
+/** Colour dot of the colour filter, by value. A value without an entry just shows no dot. */
+export const FILTER_SWATCH_CLASSES: Readonly<Record<string, string>> = {
+  [ProductColor.Black]: 'bg-[#1d1d1f]',
+  [ProductColor.White]: 'bg-[#f1f1f3]',
+  [ProductColor.Blue]: 'bg-[#2b8fe0]',
+  [ProductColor.Red]: 'bg-[#e5333b]',
+  [ProductColor.Purple]: 'bg-[#a259f7]',
+  [ProductColor.Gold]: 'bg-[#f6dc8f]',
+  [ProductColor.NaturalTitanium]: 'bg-[#a89b8e]',
+  [ProductColor.Graphite]: 'bg-[#4a4a4f]',
+}
+
+/** URL query-string keys that aren't filters (`/shop?category=iphones&sort=price-asc`); filters use `f.*`. */
 export const ShopParam = {
   Category: 'category',
   Sort: 'sort',
-  MinPrice: 'min',
-  MaxPrice: 'max',
-  Page: 'page',
   Search: 'q',
 } as const
 
 export const SHOP_PAGE_SIZE = 12
-export const SHOP_CURRENCY_CODE = 'USD'
+export const SHOP_CURRENCY_CODE = 'PKR'
 export const SHOP_PRICE_DEBOUNCE_MS = 300
-/** Slider bounds are the cheapest/dearest product rounded to this step. */
-export const PRICE_BOUNDS_STEP = 50
-export const PRICE_SLIDER_STEP = 10
+/** Mock catalogue only: slider bounds are the cheapest/dearest product rounded to this step. */
+export const PRICE_BOUNDS_STEP = 5000
+export const PRICE_SLIDER_STEP = 500
 export const DESKTOP_FILTERS_QUERY = '(min-width: 1024px)'
 
 export const SORT_OPTIONS: readonly { value: ProductSortKey; label: string }[] = [
@@ -183,11 +190,38 @@ export const SORT_OPTIONS: readonly { value: ProductSortKey; label: string }[] =
   { value: ProductSortKey.TitleAsc, label: 'Name: A to Z' },
 ]
 
+/** Shopify search can only sort by relevance or price. */
+export const SEARCH_SORT_OPTIONS: readonly { value: ProductSortKey; label: string }[] = [
+  { value: ProductSortKey.Relevance, label: 'Relevance' },
+  { value: ProductSortKey.PriceAsc, label: 'Price: low to high' },
+  { value: ProductSortKey.PriceDesc, label: 'Price: high to low' },
+]
+
 export const SHOP_PAGE_CONTENT: Record<ShopCategoryId, { title: string; description: string }> = {
+  [ShopCategoryId.All]: {
+    title: 'Shop everything',
+    description: 'iPhones and Apple accessories, tested, verified and backed by our quality guarantee.',
+  },
   [ShopCategoryId.Iphones]: {
     title: 'Shop iPhones',
     description:
       'Premium used and refurbished iPhones. Tested, verified, and backed by our quality guarantee.',
+  },
+  [ShopCategoryId.Audio]: {
+    title: 'Shop audio',
+    description: 'Original Apple AirPods and headphones, tested and ready to use.',
+  },
+  [ShopCategoryId.Wearables]: {
+    title: 'Shop wearables',
+    description: 'Apple Watch models with battery health stated on every listing.',
+  },
+  [ShopCategoryId.Chargers]: {
+    title: 'Shop chargers',
+    description: 'Original Apple chargers, adapters and cables.',
+  },
+  [ShopCategoryId.Cases]: {
+    title: 'Shop cases',
+    description: 'Cases and covers that fit your iPhone.',
   },
   [ShopCategoryId.Accessories]: {
     title: 'Shop accessories',
@@ -195,7 +229,10 @@ export const SHOP_PAGE_CONTENT: Record<ShopCategoryId, { title: string; descript
   },
 }
 
-/** Quick-select pills under the title. `model` pills pick a single model. */
+/**
+ * Quick-select pills under the title. `model` pills select one value of the model filter
+ * (a metafield filter, see `constants/shopify.ts`).
+ */
 export const SHOP_PILLS: readonly {
   id: string
   label: string
@@ -203,10 +240,14 @@ export const SHOP_PILLS: readonly {
   model?: ShopModelId
 }[] = [
   { id: 'all-iphones', label: 'All iPhones', category: ShopCategoryId.Iphones },
+  { id: 'iphone-16', label: 'iPhone 16', category: ShopCategoryId.Iphones, model: ShopModelId.Iphone16 },
   { id: 'iphone-15', label: 'iPhone 15', category: ShopCategoryId.Iphones, model: ShopModelId.Iphone15 },
   { id: 'iphone-14', label: 'iPhone 14', category: ShopCategoryId.Iphones, model: ShopModelId.Iphone14 },
   { id: 'iphone-13', label: 'iPhone 13', category: ShopCategoryId.Iphones, model: ShopModelId.Iphone13 },
-  { id: 'accessories', label: 'Accessories', category: ShopCategoryId.Accessories },
+  { id: 'audio', label: 'Audio', category: ShopCategoryId.Audio },
+  { id: 'wearables', label: 'Wearables', category: ShopCategoryId.Wearables },
+  { id: 'chargers', label: 'Chargers', category: ShopCategoryId.Chargers },
+  { id: 'cases', label: 'Cases', category: ShopCategoryId.Cases },
 ]
 
 // Mock banner — replaced by an image uploaded in Shopify / the CMS later.
@@ -217,8 +258,9 @@ export const SHOP_BANNER = {
 } as const
 
 /**
- * Shopify product tags the catalogue is built from (case-insensitive), e.g.
- * `model:iphone-15`, `storage:256gb`, `battery:96`, `color:black`, `grade:excellent`, `pta` / `non-pta`.
+ * Legacy Shopify product tags (`model:iphone-15`, `storage:256gb`, `battery:96`, `color:black`,
+ * `grade:excellent`, `pta` / `non-pta` / `jv`), read by the mapper only as a fallback until the
+ * `custom.*` metafields are filled in. Remove once the store is migrated.
  */
 export const SHOPIFY_TAG = {
   Model: 'model:',
@@ -227,12 +269,11 @@ export const SHOPIFY_TAG = {
   Color: 'color:',
   Grade: 'grade:',
 } as const
-export const SHOPIFY_CONDITION_TAGS: Record<ProductCondition, string> = {
-  [ProductCondition.Pta]: 'pta',
-  [ProductCondition.NonPta]: 'non-pta',
+export const SHOPIFY_PTA_TAGS: Record<ProductPtaStatus, string> = {
+  [ProductPtaStatus.Pta]: 'pta',
+  [ProductPtaStatus.NonPta]: 'non-pta',
+  [ProductPtaStatus.Jv]: 'jv',
 }
-/** Shopify `productType` of phones; every other type is treated as an accessory. */
-export const SHOPIFY_IPHONE_PRODUCT_TYPE = 'iPhones'
 
 export function getShopPath(category?: ShopCategoryId) {
   return category ? `${ROUTES.shop}?${ShopParam.Category}=${category}` : ROUTES.shop

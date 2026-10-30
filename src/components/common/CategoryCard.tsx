@@ -55,14 +55,16 @@ export function CategoryCard({ category }: CategoryCardProps) {
             {name}
           </Link>
         </Typography>
-        <Typography
-          variant={TypographyVariant.Caption}
-          tone={TypographyTone.Soft}
-          align={TypographyAlign.CenterBelowSm}
-          className="mt-1 truncate"
-        >
-          {productCount} products
-        </Typography>
+        {productCount !== undefined && (
+          <Typography
+            variant={TypographyVariant.Caption}
+            tone={TypographyTone.Soft}
+            align={TypographyAlign.CenterBelowSm}
+            className="mt-1 truncate"
+          >
+            {productCount} products
+          </Typography>
+        )}
       </div>
 
       <IconCircle

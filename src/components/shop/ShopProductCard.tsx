@@ -4,7 +4,6 @@ import { Chip } from '@/components/ui/Chip'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { IconButton } from '@/components/ui/IconButton'
 import { Typography } from '@/components/ui/Typography'
-import { CONDITION_LABELS, GRADE_LABELS } from '@/constants/shop'
 import {
   ButtonSize,
   ChipSize,
@@ -16,6 +15,7 @@ import {
   TypographyVariant,
 } from '@/constants/ui'
 import { cn } from '@/lib/cn'
+import { labelFor } from '@/lib/filterLabels'
 import { formatPrice } from '@/lib/format'
 import type { ProductSummary } from '@/types/product.types'
 
@@ -26,9 +26,9 @@ export interface ShopProductCardProps {
 /** "PTA Approved · Battery 96%" */
 function getMetaParts(product: ProductSummary) {
   const parts: string[] = []
-  if (product.condition) parts.push(CONDITION_LABELS[product.condition])
+  if (product.ptaStatus) parts.push(labelFor(product.ptaStatus))
   if (product.batteryHealth !== undefined) parts.push(`Battery ${product.batteryHealth}%`)
-  if (parts.length === 0 && product.grade) parts.push('Original', GRADE_LABELS[product.grade])
+  if (parts.length === 0 && product.grade) parts.push('Original', labelFor(product.grade))
   return parts
 }
 
@@ -70,7 +70,7 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
             variant={ChipVariant.Tint}
             className="absolute left-1 top-1 h-6 text-[11px]"
           >
-            {soldOut ? 'Sold out' : grade ? GRADE_LABELS[grade] : null}
+            {soldOut ? 'Sold out' : grade ? labelFor(grade) : null}
           </Chip>
         )}
 

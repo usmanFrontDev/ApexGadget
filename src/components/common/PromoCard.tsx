@@ -14,6 +14,7 @@ import {
   TypographyTone,
   TypographyVariant,
 } from '@/constants/ui'
+import { PROMO_LAYOUT_CLASSES } from '@/constants/home'
 import { cn } from '@/lib/cn'
 import type { PromoCardData } from '@/types/home.types'
 
@@ -22,7 +23,7 @@ export interface PromoCardProps {
 }
 
 export function PromoCard({ data }: PromoCardProps) {
-  const { label, titleLines, description, cta, image, imageAlt, imageClassName } = data
+  const { label, titleLines, description, cta, image, imageAlt, layout } = data
 
   return (
     <GlassCard
@@ -50,7 +51,7 @@ export function PromoCard({ data }: PromoCardProps) {
         decoding="async"
         className={cn(
           'pointer-events-none relative order-2 mx-auto mt-5 h-auto w-[78%] max-w-[300px] select-none sm:absolute sm:mx-0 sm:mt-0 sm:max-w-none',
-          imageClassName,
+          PROMO_LAYOUT_CLASSES[layout],
         )}
       />
       <span
