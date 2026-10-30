@@ -4,7 +4,7 @@ const metafield = (alias: string, key: ProductMetafield) =>
   `${alias}: metafield(namespace: "${METAFIELD_NAMESPACE}", key: "${key}") { value }`
 
 /** Card fields of a product (docs/shopify/05-graphql.md §1). */
-const PRODUCT_CARD_FRAGMENT = `
+export const PRODUCT_CARD_FRAGMENT = `
   fragment ProductCardFields on Product {
     id
     handle
@@ -28,7 +28,7 @@ const PRODUCT_CARD_FRAGMENT = `
   }
 `
 
-const FILTER_FRAGMENT = `
+export const FILTER_FRAGMENT = `
   fragment FilterFields on Filter {
     id
     label

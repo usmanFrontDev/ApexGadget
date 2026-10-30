@@ -1,5 +1,5 @@
 import headphonesImage from '@/assets/images/category-headphones.png'
-import { ROUTES } from '@/constants/routes'
+import { productPath } from '@/constants/routes'
 import {
   ProductColor,
   ProductPtaStatus,
@@ -23,6 +23,8 @@ interface IphoneInput {
   ptaStatus: ProductPtaStatus
   grade: ProductGrade
   price: number
+  /** Mock of a sold listing: stays online as "Sold". */
+  sold?: boolean
 }
 
 const slug = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-')
@@ -37,7 +39,7 @@ const iphone = (input: IphoneInput): ProductSummary => {
     priceAmount: input.price,
     currencyCode: 'PKR',
     image: headphonesImage,
-    to: ROUTES.shop,
+    to: productPath(handle),
     category: ShopCategoryId.Iphones,
     model: input.model,
     storage: input.storage,
@@ -46,6 +48,7 @@ const iphone = (input: IphoneInput): ProductSummary => {
     batteryBucket: getBatteryRange(input.battery),
     ptaStatus: input.ptaStatus,
     grade: input.grade,
+    availableForSale: input.sold ? false : undefined,
     createdAt: nextDate(),
   }
 }
@@ -69,7 +72,7 @@ const accessory = (input: AccessoryInput): ProductSummary => ({
   priceAmount: input.price,
   currencyCode: 'PKR',
   image: input.image,
-  to: ROUTES.shop,
+  to: productPath(slug(input.title)),
   category: input.category,
   grade: input.grade,
   ptaStatus: input.ptaStatus,
@@ -104,7 +107,7 @@ export const MOCK_PRODUCTS: readonly ProductSummary[] = [
   iphone({ title: 'iPhone 13', model: ShopModelId.Iphone13, storage: Gb512, color: Black, battery: 86, ptaStatus: NonPta, grade: Good, price: 239_500 }),
   iphone({ title: 'iPhone 12', model: ShopModelId.Iphone12, storage: Gb64, color: White, battery: 84, ptaStatus: NonPta, grade: Good, price: 151_500 }),
   iphone({ title: 'iPhone 12 Pro', model: ShopModelId.Iphone12, storage: Gb256, color: Gold, battery: 82, ptaStatus: NonPta, grade: Good, price: 195_500 }),
-  iphone({ title: 'iPhone 11', model: ShopModelId.Iphone11, storage: Gb64, color: White, battery: 85, ptaStatus: NonPta, grade: Good, price: 131_500 }),
+  iphone({ title: 'iPhone 11', model: ShopModelId.Iphone11, storage: Gb64, color: White, battery: 85, ptaStatus: NonPta, grade: Good, price: 131_500, sold: true }),
   iphone({ title: 'iPhone 11', model: ShopModelId.Iphone11, storage: Gb128, color: Black, battery: 79, ptaStatus: NonPta, grade: Good, price: 139_500 }),
   iphone({ title: 'iPhone SE (2022)', model: ShopModelId.IphoneSe, storage: Gb64, color: Red, battery: 90, ptaStatus: Pta, grade: VeryGood, price: 139_500 }),
   accessory({ category: ShopCategoryId.Audio, title: 'AirPods Pro (2nd Gen)', subtitle: 'USB-C', price: 79_500, image: headphonesImage, grade: Excellent, ptaStatus: Pta, battery: 97 }),

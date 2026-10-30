@@ -1,3 +1,2 @@
-/** Temporary placeholders until cart / auth are wired to Shopify. */
-export const MOCK_CART_COUNT = 2
+/** Temporary placeholder until auth is wired to Shopify (the cart badge now comes from the cart store). */
 export const MOCK_USER_INITIALS = 'RA'

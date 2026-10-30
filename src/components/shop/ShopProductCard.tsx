@@ -1,8 +1,8 @@
-import { ArrowUpRightIcon, HeartIcon } from '@/components/icons'
+import { ArrowUpRightIcon } from '@/components/icons'
+import { WishlistButton } from '@/components/common/WishlistButton'
 import { Button } from '@/components/ui/Button'
 import { Chip } from '@/components/ui/Chip'
 import { GlassCard } from '@/components/ui/GlassCard'
-import { IconButton } from '@/components/ui/IconButton'
 import { Typography } from '@/components/ui/Typography'
 import {
   ButtonSize,
@@ -10,32 +10,23 @@ import {
   ChipVariant,
   GlassCardVariant,
   IconAnimation,
-  IconButtonSize,
   TypographyTone,
   TypographyVariant,
 } from '@/constants/ui'
 import { cn } from '@/lib/cn'
 import { labelFor } from '@/lib/filterLabels'
 import { formatPrice } from '@/lib/format'
+import { getCardMetaParts } from '@/lib/productView'
 import type { ProductSummary } from '@/types/product.types'
 
 export interface ShopProductCardProps {
   product: ProductSummary
 }
 
-/** "PTA Approved · Battery 96%" */
-function getMetaParts(product: ProductSummary) {
-  const parts: string[] = []
-  if (product.ptaStatus) parts.push(labelFor(product.ptaStatus))
-  if (product.batteryHealth !== undefined) parts.push(`Battery ${product.batteryHealth}%`)
-  if (parts.length === 0 && product.grade) parts.push('Original', labelFor(product.grade))
-  return parts
-}
-
 export function ShopProductCard({ product }: ShopProductCardProps) {
-  const { title, subtitle, priceAmount, currencyCode, image, grade, to, availableForSale } = product
+  const { title, subtitle, priceAmount, currencyCode, image, grade, to, availableForSale, handle } = product
   const soldOut = availableForSale === false
-  const meta = getMetaParts(product)
+  const meta = getCardMetaParts(product)
 
   return (
     <GlassCard
@@ -74,13 +65,11 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
           </Chip>
         )}
 
-        <IconButton
-          label={`Add ${title} to wishlist`}
-          size={IconButtonSize.Sm}
+        <WishlistButton
+          handle={handle}
+          title={title}
           className="absolute right-0 top-0 bg-transparent shadow-none hover:bg-ink/5"
-        >
-          <HeartIcon width={16} height={16} />
-        </IconButton>
+        />
       </div>
 
       <div className="flex flex-1 flex-col px-1 pt-3.5">

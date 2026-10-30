@@ -174,6 +174,14 @@ export const ShopParam = {
   Search: 'q',
 } as const
 
+/**
+ * Product rows outside the shop (home bestsellers, similar products): no sidebar, so up to 5 cards across.
+ * 1 on phones, then 2 -> 3 -> 4 -> 5 (xl).
+ */
+export const PRODUCT_ROW_SIZE = 5
+export const PRODUCT_ROW_GRID_CLASSES =
+  'grid gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
+
 export const SHOP_PAGE_SIZE = 12
 export const SHOP_CURRENCY_CODE = 'PKR'
 export const SHOP_PRICE_DEBOUNCE_MS = 300

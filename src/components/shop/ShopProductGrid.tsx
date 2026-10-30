@@ -13,11 +13,13 @@ const gridClasses =
 
 export interface ShopProductGridProps {
   products: readonly ProductSummary[]
+  /** Column classes; default = the shop grid (with the filter sidebar). */
+  gridClassName?: string
 }
 
-export function ShopProductGrid({ products }: ShopProductGridProps) {
+export function ShopProductGrid({ products, gridClassName = gridClasses }: ShopProductGridProps) {
   return (
-    <ul className={gridClasses}>
+    <ul className={gridClassName}>
       {products.map((product, index) => (
         <li key={product.id} className="h-full">
           <Reveal trigger="mount" delay={(index % 3) * 0.05} className="h-full">
@@ -30,9 +32,15 @@ export function ShopProductGrid({ products }: ShopProductGridProps) {
 }
 
 /** Same footprint as ShopProductCard so the grid doesn't jump when data arrives. */
-export function ShopProductGridSkeleton({ count = SHOP_PAGE_SIZE }: { count?: number }) {
+export function ShopProductGridSkeleton({
+  count = SHOP_PAGE_SIZE,
+  gridClassName = gridClasses,
+}: {
+  count?: number
+  gridClassName?: string
+}) {
   return (
-    <ul aria-hidden="true" className={cn(gridClasses)}>
+    <ul aria-hidden="true" className={cn(gridClassName)}>
       {Array.from({ length: count }, (_, index) => (
         <li key={index}>
           <GlassCard variant={GlassCardVariant.Soft} className="rounded-[18px] p-[15px]">

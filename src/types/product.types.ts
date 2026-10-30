@@ -1,8 +1,5 @@
 import type { ShopCategoryId } from '@/constants/shop'
-
-export interface ProductBadge {
-  label: string
-}
+import type { Money } from '@/types/cart.types'
 
 /**
  * Card-level product data (mapped from Shopify in the service layer).
@@ -23,7 +20,6 @@ export interface ProductSummary {
   image?: string
   /** Alt text from Shopify; falls back to the title. */
   imageAlt?: string
-  badge?: ProductBadge
   to: string
   /** Defaults to true when omitted. */
   availableForSale?: boolean
@@ -45,3 +41,53 @@ export interface ProductSummary {
   /** ISO date, used by the "Newest" sort. */
   createdAt?: string
 }
+
+export interface ProductImage {
+  url: string
+  alt: string
+  width?: number
+  height?: number
+}
+
+export interface ProductOption {
+  name: string
+  values: string[]
+}
+
+export interface ProductSpec {
+  label: string
+  value: string
+}
+
+export interface ProductVariant {
+  id: string
+  title: string
+  sku?: string
+  availableForSale: boolean
+  /** Needs the `unauthenticated_read_product_inventory` scope. */
+  quantityAvailable?: number
+  priceAmount: number
+  compareAtAmount?: number
+  currencyCode: string
+  selectedOptions: { name: string; value: string }[]
+  image?: string
+}
+
+/** Everything the product page shows (docs/shopify/06-field-mapping.md §3). */
+export interface ProductDetail extends ProductSummary {
+  /** Shopify HTML: sanitise before rendering (`lib/sanitizeHtml.ts`). */
+  descriptionHtml: string
+  images: ProductImage[]
+  /** Only options with more than one value (the default "Title" option is dropped). */
+  options: ProductOption[]
+  variants: ProductVariant[]
+  warrantyMonths?: number
+  warrantyNote?: string
+  boxContents: string[]
+  specs: ProductSpec[]
+  seo: { title?: string; description?: string }
+  /** No variant can be bought: the page stays up and shows "Sold". */
+  sold: boolean
+}
+
+export type { Money }

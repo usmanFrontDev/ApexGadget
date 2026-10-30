@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Link, NavLink } from 'react-router-dom'
 import logo from '@/assets/images/logo.png'
-import { BagIcon, CloseIcon, HeartIcon, MenuIcon } from '@/components/icons'
+import { BagIcon, CloseIcon, HeartIcon, MenuIcon, SwapIcon } from '@/components/icons'
 import { Container } from '@/components/ui/Container'
 import { IconButton } from '@/components/ui/IconButton'
 import { NAV_ITEMS } from '@/constants/navigation'
 import { ROUTES } from '@/constants/routes'
 import { cn } from '@/lib/cn'
+import { useWishlistCount } from '@/store/useWishlistStore'
 
 export interface HeaderProps {
   cartCount?: number
@@ -19,6 +20,7 @@ const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
 
 export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const wishlistCount = useWishlistCount()
   const closeMenu = () => setMenuOpen(false)
 
   return (
@@ -41,15 +43,25 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
             <div className="ml-auto flex items-center gap-2.5 sm:gap-3.5">
               <Link
                 to={ROUTES.trade}
-                className="hidden h-[34px] items-center gap-2 rounded-full bg-primary/9 pl-3.5 pr-2.5 text-xs font-bold tracking-[0.2px] text-primary shadow-ring-primary md:inline-flex"
+                className="hidden h-[34px] items-center gap-2 rounded-full bg-primary/9 pl-3 pr-3.5 text-xs font-bold tracking-[0.2px] text-primary shadow-ring-primary transition hover:bg-primary/14 lg:inline-flex"
               >
-                <span aria-hidden="true" className="size-1.5 rounded-full bg-primary" />
-                Quote Trade In
+                <SwapIcon width={15} height={15} />
+                Get a Trade-in Quote
               </Link>
 
-              <IconButton label="Wishlist">
-                <HeartIcon />
-              </IconButton>
+              <span className="relative inline-flex">
+                <IconButton
+                  to={ROUTES.wishlist}
+                  label={wishlistCount > 0 ? `Favorites, ${wishlistCount} saved` : 'Favorites'}
+                >
+                  <HeartIcon />
+                </IconButton>
+                {wishlistCount > 0 && (
+                  <span className="pointer-events-none absolute -right-0.5 -top-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-primary px-1 font-body text-[10px] font-bold text-white">
+                    {wishlistCount > 99 ? '99+' : wishlistCount}
+                  </span>
+                )}
+              </span>
 
               <span className="relative inline-flex">
                 <IconButton label={`Cart, ${cartCount} items`}>
@@ -111,7 +123,7 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
                   onClick={closeMenu}
                   className="mt-1 rounded-2xl bg-primary/9 px-4 py-3 text-sm font-bold text-primary"
                 >
-                  Quote Trade In
+                  Get a Trade-in Quote
                 </Link>
               </motion.nav>
             )}

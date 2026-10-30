@@ -1,4 +1,4 @@
-import { ROUTES } from '@/constants/routes'
+import { productPath } from '@/constants/routes'
 import {
   CATEGORY_PRODUCT_TYPE,
   ProductPtaStatus,
@@ -107,8 +107,7 @@ export function mapProduct(node: ShopifyProductNode): ProductSummary {
     ptaStatus:
       clean(node.ptaStatus?.value) ??
       Object.values(ProductPtaStatus).find((status) => tags.includes(SHOPIFY_PTA_TAGS[status])),
-    // TODO: link to the product page (`/shop/${node.handle}`) once it exists (plan step 5).
-    to: ROUTES.shop,
+    to: productPath(node.handle),
   }
 }
 

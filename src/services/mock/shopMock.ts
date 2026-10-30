@@ -203,3 +203,17 @@ export function queryMockShop(query: ShopQuery, after: string | null): ShopResul
     totalCount: matching.length,
   }
 }
+
+/** In-stock products per category (the same numbers the shop lists by default). `accessories` = everything but iPhones. */
+export function countMockCategories(products: readonly ProductSummary[]): Partial<Record<ShopCategoryId, number>> {
+  const available = products.filter((product) => product.availableForSale !== false)
+  const counts: Partial<Record<ShopCategoryId, number>> = {}
+  for (const category of Object.values(ShopCategoryId)) {
+    if (category === ShopCategoryId.All) continue
+    counts[category] =
+      category === ShopCategoryId.Accessories
+        ? available.filter((product) => product.category !== ShopCategoryId.Iphones).length
+        : available.filter((product) => product.category === category).length
+  }
+  return counts
+}

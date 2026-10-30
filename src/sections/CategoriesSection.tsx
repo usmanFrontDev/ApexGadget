@@ -5,9 +5,12 @@ import { Button } from '@/components/ui/Button'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { CATEGORIES, CATEGORIES_SECTION_ID } from '@/constants/home'
 import { ROUTES } from '@/constants/routes'
+import { useCategoryCounts } from '@/hooks/useCategoryCounts'
+import { type ShopCategoryId } from '@/constants/shop'
 import { ButtonSize, ButtonVariant, IconAnimation } from '@/constants/ui'
 
 export function CategoriesSection() {
+  const counts = useCategoryCounts()
   return (
     <section id={CATEGORIES_SECTION_ID} className="mt-10 scroll-mt-28 sm:mt-14 lg:mt-[78px]">
       <SectionHeading
@@ -31,7 +34,10 @@ export function CategoriesSection() {
         {CATEGORIES.map((category, index) => (
           <li key={category.id} className="h-full max-sm:odd:last:col-span-2">
             <Reveal delay={index * 0.06} className="h-full">
-              <CategoryCard category={category} />
+              <CategoryCard
+                category={{ ...category, productCount: counts.data?.[category.id as ShopCategoryId] }}
+                countPending={counts.isPending}
+              />
             </Reveal>
           </li>
         ))}
