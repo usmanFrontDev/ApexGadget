@@ -11,7 +11,7 @@ import { CART_CONTENT } from '@/constants/cart'
 import { ROUTES } from '@/constants/routes'
 import { ButtonSize, ButtonVariant, TypographyTone, TypographyVariant } from '@/constants/ui'
 import { useCart } from '@/hooks/useCart'
-import { useUpdateCartLine, useUpdatingLineIds } from '@/hooks/useCartMutations'
+import { useRemoveCartLine, useUpdatingLineIds } from '@/hooks/useCartMutations'
 import { getCartTotals } from '@/lib/cartTotals'
 import { formatPrice } from '@/lib/format'
 import { useCartStore } from '@/store/useCartStore'
@@ -25,7 +25,7 @@ export function CartDrawer() {
   const closeDrawer = useCartStore((state) => state.closeDrawer)
   const { pathname } = useLocation()
   const query = useCart({ fresh: open })
-  const updateLine = useUpdateCartLine()
+  const removeLine = useRemoveCartLine()
   const updating = useUpdatingLineIds()
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export function CartDrawer() {
               <CartDrawerLine
                 line={line}
                 pending={updating.has(line.id)}
-                onQuantityChange={(item, quantity) => updateLine.mutate({ lineId: item.id, quantity })}
+                onRemove={(item) => removeLine.mutate(item.id)}
                 onNavigate={closeDrawer}
               />
             </li>

@@ -62,7 +62,7 @@ Docs revised 2026-10-30 (v2 brief). Sources: shopify.dev versioning, filter-prod
 | K28 | `Pagination` (removed in step 3) is back for the Favorites page (local data, numbered pages). Shop stays on Load more. | done |
 
 | K31 | **Cart built on mock data** (`/cart`, mini-cart, `CartService`). Deviations from the design: Checkout is blocked and totals exclude sold lines; a Discount row was added; no × on the sticky bar; generic payment icons instead of brand logos. | accepted |
-| K32 | **Add to Cart now exists on every product card** as a round bag icon beside the heart (user decision; AGENTS said "no add-to-cart on cards"). Adding only toasts; the mini-cart opens only from the header icon. Products with options (mock: MagSafe Case) show only "View details". `ProductSummary.variantId` added (mapper, mock, GraphQL, docs). | done |
+| K32 | **Add to Cart now exists on every product card** as a round red bag button beside the price, turning into the quantity control once in the cart (user decision; AGENTS said "no add-to-cart on cards"). Adding only toasts; the mini-cart opens only from the header icon. Products with options (mock: MagSafe Case) show only "View details". `ProductSummary.variantId` added (mapper, mock, GraphQL, docs). | done |
 | K33 | Cart "You may also like" = one row of up to 5 `ShopProductCard`s (same as the product page); hidden below 2 results. | done |
 
 ## Assumptions (correct me)
@@ -96,7 +96,7 @@ Docs revised 2026-10-30 (v2 brief). Sources: shopify.dev versioning, filter-prod
 12. Warranty months/note shown in "Detailed Information" (mock: 6 months, PLACEHOLDER).
 13. CtaBanner phone image (K22).
 9. Which marketing claims may be printed.
-14. **Cart:** payment-method wording and logos (`ACCEPTED_PAYMENTS`), trust-row claims ("Tested before shipping", "Warranty included", "Easy returns (7 days)"), shipping rules, real discount-code rules.
+14. **Cart:** payment-method wording and logos (`ACCEPTED_PAYMENTS`), shipping rules, real discount-code rules.
 
 ## Unverified (could not confirm in official docs; marked ⚠ in the docs)
 - U1 Shopify Payments unavailability in Pakistan (third-party sources only) and the official gateway list for Pakistan.

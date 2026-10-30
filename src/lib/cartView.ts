@@ -17,7 +17,7 @@ export function getCartLineMeta(line: Pick<CartLine, 'ptaStatus' | 'batteryHealt
 export const getLineMaxQuantity = (line: Pick<CartLine, 'quantityAvailable'>) =>
   line.quantityAvailable ?? CART_DEFAULT_MAX_QUANTITY
 
-/** Phones (stock 1) have no stepper. */
+/** Phones (stock 1): the quantity can't go above 1. */
 export const isSingleUnit = (line: Pick<CartLine, 'quantityAvailable'>) => line.quantityAvailable === 1
 
 /** "1 of 1 available" for a single unit, "Only 2 left" for a low stock, nothing otherwise. */

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { ArrowUpRightIcon } from '@/components/icons'
+import { CartQuantityControl } from '@/components/cart/CartQuantityControl'
 import { ChoiceChips } from '@/components/form/ChoiceChips'
 import { ConditionReport } from '@/components/product/ConditionReport'
 import { PRODUCT_DETAILS_ID } from '@/constants/product'
@@ -10,7 +11,6 @@ import { FormField } from '@/components/form/FormField'
 import { Button } from '@/components/ui/Button'
 import { Chip } from '@/components/ui/Chip'
 import { GlassCard } from '@/components/ui/GlassCard'
-import { QuantityStepper } from '@/components/ui/QuantityStepper'
 import { Typography } from '@/components/ui/Typography'
 import { LOW_STOCK_MAX, PRODUCT_CONTENT } from '@/constants/product'
 import {
@@ -25,7 +25,7 @@ import {
   TypographyVariant,
 } from '@/constants/ui'
 import { useCartLineForVariant } from '@/hooks/useCart'
-import { useAddToCart, useRemoveCartLine, useUpdateCartLine } from '@/hooks/useCartMutations'
+import { useAddToCart } from '@/hooks/useCartMutations'
 import { formatPrice } from '@/lib/format'
 import { firstParagraphText, truncateText } from '@/lib/html'
 import { findVariant, getMetaLine } from '@/lib/productView'
@@ -41,8 +41,6 @@ export interface ProductBuyBoxProps {
 export function ProductBuyBox({ product }: ProductBuyBoxProps) {
   const [selection, setSelection] = useState<Record<string, string>>({})
   const addToCart = useAddToCart()
-  const setQuantity = useUpdateCartLine()
-  const removeLine = useRemoveCartLine()
 
   const variant = useMemo(() => findVariant(product, selection), [product, selection])
   const needsOptions = product.options.length > 0
@@ -165,16 +163,8 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
             </Button>
           ) : line ? (
             <>
-              {stockLimit > 1 && (
-                <QuantityStepper
-                  value={line.quantity}
-                  max={stockLimit}
-                  label={`${PRODUCT_CONTENT.quantityOf} ${product.title}`}
-                  disabled={setQuantity.isPending}
-                  onChange={(quantity) => setQuantity.mutate({ lineId: line.id, quantity })}
-                  className="max-sm:w-full max-sm:justify-between"
-                />
-              )}
+              {/* Same control as the product cards, cart page and mini-cart (− becomes a trash button at 1). */}
+              <CartQuantityControl line={line} removable className="max-sm:w-full max-sm:justify-between" />
               <Button
                 to={ROUTES.cart}
                 size={ButtonSize.Lg}
@@ -215,14 +205,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
               ? stockLimit === 1
                 ? PRODUCT_CONTENT.onlyOneHint
                 : PRODUCT_CONTENT.stockLimitHint.replace('{n}', String(stockLimit))
-              : PRODUCT_CONTENT.inCartHint}{' '}
-            <button
-              type="button"
-              onClick={() => removeLine.mutate(line.id)}
-              className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            >
-              {PRODUCT_CONTENT.removeFromCart}
-            </button>
+              : PRODUCT_CONTENT.inCartHint}
           </Typography>
         )}
 

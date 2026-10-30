@@ -2,13 +2,14 @@ import type { ReactNode } from 'react'
 import { ActionElement, type ActionElementProps } from '@/components/ui/ActionElement'
 import { AnimatedIcon } from '@/components/ui/AnimatedIcon'
 import { iconCircleClasses } from '@/components/ui/iconCircleStyles'
-import { IconAnimation, IconButtonSize } from '@/constants/ui'
+import { IconAnimation, IconButtonSize, IconButtonVariant } from '@/constants/ui'
 
 export interface IconButtonProps extends Omit<ActionElementProps, 'children' | 'aria-label'> {
   /** Accessible name (required: there is no visible text). */
   label: string
   children: ReactNode
   size?: IconButtonSize
+  variant?: IconButtonVariant
   /** Hover animation for the icon. Default: none. */
   iconAnimation?: IconAnimation
 }
@@ -16,6 +17,7 @@ export interface IconButtonProps extends Omit<ActionElementProps, 'children' | '
 export function IconButton({
   label,
   size = IconButtonSize.Lg,
+  variant = IconButtonVariant.Default,
   iconAnimation = IconAnimation.None,
   className,
   children,
@@ -28,7 +30,10 @@ export function IconButton({
       data-hover-scope=""
       className={iconCircleClasses(
         size,
-        `transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${className ?? ''}`,
+        `transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+          variant === IconButtonVariant.Primary ? 'hover:brightness-110' : 'hover:bg-white'
+        } ${className ?? ''}`,
+        variant,
       )}
     >
       <AnimatedIcon animation={iconAnimation}>{children}</AnimatedIcon>

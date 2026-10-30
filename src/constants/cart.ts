@@ -1,5 +1,3 @@
-import { RETURN_WINDOW_DAYS } from '@/constants/product'
-
 export const CART_STORAGE_KEY = 'apex.cart.v1'
 
 export const CART_NOTE_MAX = 300
@@ -26,16 +24,6 @@ export const ACCEPTED_PAYMENTS: readonly { id: string; label: string; icon: Paym
   { id: 'bank', label: 'Bank transfer', icon: PaymentIconKey.Bank },
   { id: 'easypaisa', label: 'EasyPaisa', icon: PaymentIconKey.Wallet },
   { id: 'jazzcash', label: 'JazzCash', icon: PaymentIconKey.Wallet },
-]
-
-export const CartTrustIconKey = { Shield: 'shield', Warranty: 'warranty', Return: 'return' } as const
-export type CartTrustIconKey = (typeof CartTrustIconKey)[keyof typeof CartTrustIconKey]
-
-/** Client-owned claims (BLOCKED-ON-CLIENT). The returns window is shared with the product page's trust strip. */
-export const CART_TRUST_ITEMS: readonly { id: string; icon: CartTrustIconKey; label: string }[] = [
-  { id: 'tested', icon: CartTrustIconKey.Shield, label: 'Tested before shipping' },
-  { id: 'warranty', icon: CartTrustIconKey.Warranty, label: 'Warranty included' },
-  { id: 'returns', icon: CartTrustIconKey.Return, label: `Easy returns (${RETURN_WINDOW_DAYS} days)` },
 ]
 
 export const CART_CONTENT = {

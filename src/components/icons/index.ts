@@ -1,6 +1,5 @@
 export { AlertIcon } from './AlertIcon'
 export { ArrowUpRightIcon } from './ArrowUpRightIcon'
-export { BadgeCheckIcon } from './BadgeCheckIcon'
 export { BagIcon } from './BagIcon'
 export { BankIcon } from './BankIcon'
 export { CameraIcon } from './CameraIcon'

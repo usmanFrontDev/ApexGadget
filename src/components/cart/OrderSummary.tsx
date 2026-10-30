@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { CartTrustList } from '@/components/cart/CartTrustList'
 import { CheckoutButton } from '@/components/cart/CheckoutButton'
 import { DiscountCodeField } from '@/components/cart/DiscountCodeField'
 import { PaymentMethods } from '@/components/cart/PaymentMethods'
@@ -118,9 +117,8 @@ export function OrderSummary({ cart, className }: OrderSummaryProps) {
         </Button>
       </div>
 
-      <div className="mt-6 flex flex-col gap-5">
+      <div className="mt-6">
         <PaymentMethods />
-        <CartTrustList />
       </div>
     </GlassCard>
   )

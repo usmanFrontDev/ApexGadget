@@ -1,5 +1,5 @@
 import { CartLineCard } from '@/components/cart/CartLineCard'
-import { useRemoveCartLine, useUpdateCartLine, useUpdatingLineIds } from '@/hooks/useCartMutations'
+import { useRemoveCartLine, useUpdatingLineIds } from '@/hooks/useCartMutations'
 import type { CartLine } from '@/types/cart.types'
 
 export interface CartLineListProps {
@@ -9,7 +9,6 @@ export interface CartLineListProps {
 /** The lines as a list; owns the remove / quantity mutations. */
 export function CartLineList({ lines }: CartLineListProps) {
   const removeLine = useRemoveCartLine()
-  const updateLine = useUpdateCartLine()
   const updating = useUpdatingLineIds()
 
   return (
@@ -20,7 +19,6 @@ export function CartLineList({ lines }: CartLineListProps) {
             line={line}
             pending={updating.has(line.id)}
             onRemove={(item) => removeLine.mutate(item.id)}
-            onQuantityChange={(item, quantity) => updateLine.mutate({ lineId: item.id, quantity })}
           />
         </li>
       ))}

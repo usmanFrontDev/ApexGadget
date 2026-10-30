@@ -139,9 +139,18 @@ export const NoticeVariant = {
 } as const
 export type NoticeVariant = (typeof NoticeVariant)[keyof typeof NoticeVariant]
 
-/** `Md` = the 52px pill next to a large Button; `Sm` = the compact one inside cart lines. */
+/** `Md` = the 52px pill next to a large Button; `Sm` = compact (cart lines, mini-cart); `Xs` = product cards. */
 export const QuantityStepperSize = {
   Md: 'md',
   Sm: 'sm',
+  /** Product cards. */
+  Xs: 'xs',
 } as const
 export type QuantityStepperSize = (typeof QuantityStepperSize)[keyof typeof QuantityStepperSize]
+
+/** `Primary` = solid red round button (e.g. the card's add-to-cart). */
+export const IconButtonVariant = {
+  Default: 'default',
+  Primary: 'primary',
+} as const
+export type IconButtonVariant = (typeof IconButtonVariant)[keyof typeof IconButtonVariant]
