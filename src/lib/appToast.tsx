@@ -2,8 +2,12 @@ import toast from 'react-hot-toast'
 import { AppToast } from '@/components/ui/AppToast'
 import { ToastVariant } from '@/constants/ui'
 
+/** Id of the toast on screen: a new toast replaces it at once, so there is never more than one. */
+let currentId: string | undefined
+
 function show(variant: ToastVariant, title: string, text?: string) {
-  toast.custom((item) => (
+  if (currentId) toast.remove(currentId)
+  currentId = toast.custom((item) => (
     <AppToast title={title} text={text} variant={variant} visible={item.visible} onClose={() => toast.dismiss(item.id)} />
   ))
 }

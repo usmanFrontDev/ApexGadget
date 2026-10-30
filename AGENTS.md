@@ -108,7 +108,7 @@ Rules: one service file + one hook file per feature; hooks are the only place th
 - Server state (products, collections, cart from Shopify) → always through the service → hook chain above. Never copy server data into Zustand.
 - Client/UI state (cart drawer open, filters UI, etc.) → Zustand store in `store/` (`use<Name>Store.ts`), typed state + actions, select with selectors to avoid re-renders.
 - Shopify client is a singleton from `lib/shopify.ts`.
-- User feedback via toasts: always `appToast.success/error/info(title, text?)` (`lib/appToast.tsx`, one `AppToast` layout: badge, title, optional text, close; never call `toast()` directly), triggered from mutation hooks, messages from constants as `{ title, text }`. Animations via Framer Motion (shared variants in `lib/` or `constants/`; respect reduced motion).
+- User feedback via toasts: always `appToast.success/error/info(title, text?)` (`lib/appToast.tsx`, one `AppToast` layout: badge, title, optional text, close; never call `toast()` directly). Only ONE toast is visible: a new one removes the previous at once, triggered from mutation hooks, messages from constants as `{ title, text }`. Animations via Framer Motion (shared variants in `lib/` or `constants/`; respect reduced motion).
 
 ## UI/UX robustness (check on every component)
 - **Sticky sidebars** must never be taller than the viewport: `sticky top-28` + `max-h-[calc(100dvh-8rem)]`, fixed header row, scrollable body (`min-h-0 flex-1 overflow-y-auto overscroll-contain scrollbar-thin`, bottom `mask-image` fade + bottom padding, focusable `role=region`).
