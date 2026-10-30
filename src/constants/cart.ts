@@ -75,7 +75,7 @@ export const CART_CONTENT = {
   line: {
     remove: 'Remove',
     removeLabel: 'Remove {title} from cart',
-    save: 'Save to favorites',
+    save: 'Save',
     saved: 'Saved',
     available: '{quantity} of {stock} available',
     sold: 'Sold',

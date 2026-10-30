@@ -102,7 +102,9 @@ export function CartLineCard({ line, pending = false, onRemove, onQuantityChange
             <CartLinePrice line={line} className="hidden shrink-0 items-end text-right sm:flex" />
           </div>
 
-          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
+          {/* Bottom row: availability / stepper on the left, the two buttons on the right (under the price). */}
+          <div className="mt-auto flex flex-wrap items-center justify-between gap-x-3 gap-y-3 pt-4">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             {availableForSale ? (
               availability && !showStepper && (
                 <Chip size={ChipSize.Xs}>{availability}</Chip>
@@ -137,8 +139,8 @@ export function CartLineCard({ line, pending = false, onRemove, onQuantityChange
             )}
           </div>
 
-          {/* Same buttons as the wishlist and the product page, left-aligned under the details. */}
-          <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
+          {/* Same buttons as the wishlist and the product page. */}
+          <div className="flex flex-wrap items-center gap-2 sm:ml-auto sm:justify-end">
             <Button
               type="button"
               variant={ButtonVariant.Secondary}
@@ -157,6 +159,7 @@ export function CartLineCard({ line, pending = false, onRemove, onQuantityChange
               label={{ add: CART_CONTENT.line.save, saved: CART_CONTENT.line.saved }}
               buttonSize={ButtonSize.Xs}
             />
+          </div>
           </div>
 
           {/* Second control for the same favorites toggle (the design's heart, top right on phones). */}
