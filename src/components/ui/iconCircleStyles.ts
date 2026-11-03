@@ -8,7 +8,7 @@ const sizeClasses: Record<IconButtonSize, string> = {
 }
 
 const variantClasses: Record<IconButtonVariant, string> = {
-  [IconButtonVariant.Default]: 'bg-white/92 text-ink shadow-ring',
+  [IconButtonVariant.Default]: 'bg-surface/92 text-ink shadow-ring',
   [IconButtonVariant.Primary]: 'bg-primary text-white shadow-primary-soft',
 }
 

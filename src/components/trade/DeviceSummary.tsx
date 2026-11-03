@@ -33,7 +33,7 @@ export function DeviceSummary({ values, className }: DeviceSummaryProps) {
     <div className={cn('flex items-center gap-3', className)}>
       <span
         aria-hidden="true"
-        className="grid size-12 shrink-0 place-items-center rounded-2xl bg-white text-ink/70 shadow-ring"
+        className="grid size-12 shrink-0 place-items-center rounded-2xl bg-surface text-ink/70 shadow-ring"
       >
         <PhoneIcon width={22} height={22} />
       </span>

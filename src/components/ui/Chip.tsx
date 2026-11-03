@@ -36,7 +36,7 @@ export function Chip({
   return (
     <span
       className={cn(
-        'inline-flex max-w-full items-center gap-[9px] whitespace-nowrap rounded-full bg-white/92 shadow-ring',
+        'inline-flex max-w-full items-center gap-[9px] whitespace-nowrap rounded-full bg-surface/92 shadow-ring',
         sizeClasses[size],
         variantClasses[variant],
         className,

@@ -22,7 +22,7 @@ export function SupportQuickCard({ icon, title, text, href, target, onClick }: S
   const interactive = Boolean(href || onClick)
   const body = (
     <>
-      <span aria-hidden="true" className="relative grid size-11 place-items-center rounded-full bg-white/70 text-primary shadow-ring-primary backdrop-blur-md">
+      <span aria-hidden="true" className="relative grid size-11 place-items-center rounded-full bg-surface/70 text-primary shadow-ring-primary backdrop-blur-md">
         {icon}
       </span>
       <div className="mt-4 flex items-end justify-between gap-3">
@@ -47,7 +47,7 @@ export function SupportQuickCard({ icon, title, text, href, target, onClick }: S
     <GlassCard
       variant={GlassCardVariant.Promo}
       data-hover-scope=""
-      className="group h-full rounded-[20px] bg-gradient-to-br from-white/90 via-white/65 to-primary/5"
+      className="group h-full rounded-[20px] bg-gradient-to-br from-surface/90 via-surface/65 to-primary/5"
     >
       <GlassGlow className="-bottom-16 -right-12 size-[190px] opacity-40" />
       {interactive ? (

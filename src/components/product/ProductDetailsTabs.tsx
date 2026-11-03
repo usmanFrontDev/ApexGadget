@@ -78,7 +78,7 @@ export function ProductDetailsTabs({ product }: ProductDetailsTabsProps) {
           {PRODUCT_CONTENT.noSpecs}
         </Typography>
       ) : (
-        <dl className="max-w-[640px] divide-y divide-ink/8 rounded-[20px] bg-white/60 px-5 shadow-ring">
+        <dl className="max-w-[640px] divide-y divide-ink/8 rounded-[20px] bg-surface/60 px-5 shadow-ring">
           {product.specs.map((spec) => (
             <div key={spec.label} className="flex items-baseline justify-between gap-4 py-3 text-[13.5px]">
               <dt className="shrink-0 font-body text-ink/60">{spec.label}</dt>

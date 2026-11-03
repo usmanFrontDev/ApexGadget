@@ -169,7 +169,7 @@ export function ShopCatalogSection({ shop }: ShopCatalogSectionProps) {
             {/* Bottom fade: a plain overlay (a mask-image on the scroller repainted wrongly). */}
             <span
               aria-hidden="true"
-              className="pointer-events-none -mt-7 h-7 shrink-0 bg-gradient-to-t from-white to-transparent"
+              className="pointer-events-none -mt-7 h-7 shrink-0 bg-gradient-to-t from-surface to-transparent"
             />
           </GlassCard>
         </aside>

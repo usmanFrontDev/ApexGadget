@@ -36,6 +36,9 @@ Always send `width`/`height` from the API (`Image.width/height`) to avoid layout
 Rules: shown in full from `lg` (page copy is also in the DOM as visually hidden text); below `lg` the page writes real HTML copy and shows a **4:3 crop** of the phones (`object-position` 90 % / 84 %), so keep the phones inside x 50–90 % and the baked text left of x 45 %. Keep the 3:1 ratio when replacing the files. For real, editable HTML copy on desktop too, export **text-free** versions (same size). Both files are heavy for web: re-export as WebP/JPG under ~300 KB.
 CtaBanner art (red phone, optional): not supplied yet, suggested `src/assets/images/CtaBanner.png`, transparent PNG ≈ 400 × 400 px.
 
+## Dark theme art
+Transparent product art (iPhones, accessories) works on both themes. **No dark version exists yet** for the opaque light pictures: the page banners (`ShopBanner`, `TradeInBanner`, `FavBanner`, `SupportBanner`, 3:1 / 8:3 with copy baked in) are shown as light panels in dark mode. Wanted from the designer: dark exports of the same banners (same size and names with `-dark`), then `PageBanner` / `ShopBanner` can switch like `Logo` does. `SupportCard.png` is replaced in dark mode by a glass headset tile (`SupportArt`). `logo-dark.png` (white logo) comes from the Figma dark frame.
+
 ## Support page images
 - `src/assets/images/SupportBanner.png`: 2172 × 724 (3:1) finished banner, copy baked in like the other page banners (K18).
 - `src/assets/images/SupportCard.png`: 1153 × 1364 headset illustration beside the contact form (from `lg`).

@@ -64,7 +64,7 @@ export function CartLineCard({ line, pending = false, onRemove }: CartLineCardPr
                 className={cn('size-full object-contain p-2.5', !availableForSale && 'opacity-50 grayscale')}
               />
             ) : (
-              <span className="block size-full bg-[repeating-linear-gradient(135deg,#e9e9eb_0_7px,#f1f1f3_7px_13px)]" />
+              <span className="block size-full bg-[repeating-linear-gradient(135deg,var(--color-placeholder-a)_0_7px,var(--color-placeholder-b)_7px_13px)]" />
             )}
           </Link>
           <CartLinePrice line={line} className="sm:hidden" />

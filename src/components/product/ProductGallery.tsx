@@ -56,7 +56,7 @@ export function ProductGallery({ images, title, badge, sold = false, below }: Pr
             aria-label={`Show photo ${imageIndex + 1} of ${count}`}
             aria-current={imageIndex === index}
             className={cn(
-              'block overflow-hidden rounded-2xl bg-white p-1.5 transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+              'block overflow-hidden rounded-2xl bg-surface p-1.5 transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
               vertical ? 'size-14' : 'size-[62px]',
               imageIndex === index ? 'shadow-ring-selected' : 'opacity-70 shadow-ring hover:opacity-100',
             )}
@@ -81,7 +81,7 @@ export function ProductGallery({ images, title, badge, sold = false, below }: Pr
             thumbnails are always on screen together, however tall the card is */}
         {many && (
           <div className="absolute inset-y-16 left-4 z-10 hidden items-center lg:flex">
-            <div className="max-h-full rounded-[20px] bg-white/70 p-1.5 shadow-ring backdrop-blur-sm">{renderThumbs(true)}</div>
+            <div className="max-h-full rounded-[20px] bg-surface/70 p-1.5 shadow-ring backdrop-blur-sm">{renderThumbs(true)}</div>
           </div>
         )}
 
@@ -112,7 +112,7 @@ export function ProductGallery({ images, title, badge, sold = false, below }: Pr
               )}
             />
           ) : (
-            <span className="absolute inset-0 bg-[repeating-linear-gradient(135deg,#e9e9eb_0_7px,#f1f1f3_7px_13px)]" />
+            <span className="absolute inset-0 bg-[repeating-linear-gradient(135deg,var(--color-placeholder-a)_0_7px,var(--color-placeholder-b)_7px_13px)]" />
           )}
 
           {badge && (

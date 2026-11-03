@@ -25,7 +25,7 @@ export function FilterChip({ children, selected = false, icon, toggle = true, on
         icon ? 'pl-4 pr-5' : 'px-5',
         selected
           ? 'bg-primary text-white shadow-primary-soft'
-          : 'bg-white/92 text-ink shadow-ring hover:bg-canvas',
+          : 'bg-surface/92 text-ink shadow-ring hover:bg-canvas',
         className,
       )}
     >

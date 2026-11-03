@@ -146,12 +146,12 @@ export function SelectMenu<T extends string>({
           'flex w-full items-center gap-2 whitespace-nowrap text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
           field
             ? cn(
-                'h-12 rounded-2xl bg-white pl-4 pr-3.5 hover:bg-white',
+                'h-12 rounded-2xl bg-surface pl-4 pr-3.5 hover:bg-surface',
                 invalid ? 'shadow-ring-selected' : 'shadow-ring',
               )
             : compact
               ? 'h-10 rounded-xl bg-ink/5 pl-3.5 pr-3 text-[13px] hover:bg-ink/8'
-              : 'h-12 rounded-full bg-white/92 pl-5 pr-4 shadow-ring hover:bg-canvas',
+              : 'h-12 rounded-full bg-surface/92 pl-5 pr-4 shadow-ring hover:bg-canvas',
         )}
       >
         {icon && <span className="shrink-0 text-ink/55">{icon}</span>}
@@ -195,7 +195,7 @@ export function SelectMenu<T extends string>({
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.16 }}
             className={cn(
-              'absolute top-full z-30 mt-2 max-h-[min(20rem,60vh)] w-max min-w-full max-w-[calc(100vw-2rem)] overflow-y-auto overscroll-contain rounded-[22px] bg-white/95 p-1.5 shadow-glass-hero backdrop-blur-[18px]',
+              'absolute top-full z-30 mt-2 max-h-[min(20rem,60vh)] w-max min-w-full max-w-[calc(100vw-2rem)] overflow-y-auto overscroll-contain rounded-[22px] bg-surface/95 p-1.5 shadow-glass-hero backdrop-blur-[18px]',
               alignRight ? 'right-0 origin-top-right' : 'left-0 origin-top-left',
             )}
           >

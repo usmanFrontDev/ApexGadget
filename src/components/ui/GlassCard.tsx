@@ -32,7 +32,7 @@ export function GlassCard({
       className={cn(
         // overflow-clip (not hidden): a clipped box can never be scrolled programmatically, so a
         // focused child can't shove the card's content out of place.
-        'relative overflow-clip rounded-[28px] bg-white/80 backdrop-blur-[18px]',
+        'relative overflow-clip rounded-[28px] bg-surface/80 backdrop-blur-[18px]',
         drop,
         className,
       )}

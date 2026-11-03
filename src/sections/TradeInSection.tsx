@@ -171,7 +171,7 @@ export function TradeInSection() {
                 onStepClick={(id) => goToStep(id as TradeInStep)}
               />
 
-              <div className="mt-5 rounded-[22px] bg-white/55 p-4 shadow-ring sm:p-7">
+              <div className="mt-5 rounded-[22px] bg-surface/55 p-4 shadow-ring sm:p-7">
                 <Typography
                   ref={headingRef}
                   id={HEADING_ID}

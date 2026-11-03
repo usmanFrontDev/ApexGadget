@@ -16,7 +16,7 @@ export interface AppToastProps {
 const badge: Record<ToastVariant, { Icon: ComponentType<IconProps>; classes: string }> = {
   [ToastVariant.Success]: { Icon: CheckIcon, classes: 'bg-emerald-500 text-white' },
   [ToastVariant.Error]: { Icon: AlertIcon, classes: 'bg-primary text-white' },
-  [ToastVariant.Info]: { Icon: InfoIcon, classes: 'bg-ink text-white' },
+  [ToastVariant.Info]: { Icon: InfoIcon, classes: 'bg-ink text-canvas' },
 }
 
 /** The one toast layout of the app: icon badge, bold title, optional text, close button. Shown through `lib/appToast.tsx`. */
@@ -26,7 +26,7 @@ export function AppToast({ title, text, variant = ToastVariant.Success, visible,
     <div
       role={variant === ToastVariant.Error ? 'alert' : 'status'}
       className={cn(
-        'flex w-[min(92vw,360px)] items-start gap-3 rounded-[20px] bg-white p-4 shadow-glass-hero transition duration-200 motion-reduce:transition-none',
+        'flex w-[min(92vw,360px)] items-start gap-3 rounded-[20px] bg-surface p-4 shadow-glass-hero transition duration-200 motion-reduce:transition-none',
         visible ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0',
       )}
     >

@@ -26,7 +26,7 @@ export function SwatchPicker<T extends string>(props: SwatchPickerProps<T>) {
         <>
           <span
             className={cn(
-              'grid size-9 place-items-center rounded-full bg-white p-[3px] transition-shadow',
+              'grid size-9 place-items-center rounded-full bg-surface p-[3px] transition-shadow',
               checked ? 'shadow-ring-selected' : 'shadow-ring group-hover:shadow-ring-primary',
             )}
           >

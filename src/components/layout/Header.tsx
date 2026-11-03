@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import logo from '@/assets/images/logo.png'
 import { BagIcon, CloseIcon, HeartIcon, MenuIcon, SwapIcon } from '@/components/icons'
+import { Logo } from '@/components/layout/Logo'
+import { ThemeToggle } from '@/components/layout/ThemeToggle'
 import { Container } from '@/components/ui/Container'
 import { IconButton } from '@/components/ui/IconButton'
 import { NAV_ITEMS } from '@/constants/navigation'
 import { ROUTES } from '@/constants/routes'
+import { THEME_CONTENT } from '@/constants/theme'
 import { cn } from '@/lib/cn'
 import { useCartStore } from '@/store/useCartStore'
 import { useWishlistCount } from '@/store/useWishlistStore'
@@ -32,7 +34,7 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
         <div className="relative">
           <div className="flex h-16 items-center gap-3 rounded-full bg-white/5 pl-[22px] pr-3 shadow-header backdrop-blur-[18px] lg:h-[84px] lg:pr-[22px]">
             <Link to={ROUTES.home} aria-label="Apex Gadgets — home" className="shrink-0">
-              <img src={logo} alt="Apex Gadgets" width={80} height={32} className="h-8 w-auto" />
+              <Logo className="h-8" />
             </Link>
 
             <nav aria-label="Primary" className="ml-[60px] hidden items-center gap-[65px] lg:flex">
@@ -51,6 +53,9 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
                 <SwapIcon width={15} height={15} />
                 Get a Trade-in Quote
               </Link>
+
+              {/* From sm; on phones the switch is in the menu (no room in the bar). */}
+              <ThemeToggle className="max-sm:hidden" />
 
               <span className="relative inline-flex">
                 <IconButton
@@ -85,7 +90,7 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
               <button
                 type="button"
                 aria-label="Account"
-                className="inline-flex h-12 items-center gap-3 rounded-full bg-white/92 pl-1.5 pr-2 text-sm font-semibold text-ink shadow-ring transition hover:bg-white sm:pl-[19px]"
+                className="inline-flex h-12 items-center gap-3 rounded-full bg-surface/92 pl-1.5 pr-2 text-sm font-semibold text-ink shadow-ring transition hover:bg-surface sm:pl-[19px]"
               >
                 <span className="hidden sm:inline">Account</span>
                 <span className="grid size-8 place-items-center rounded-full bg-primary text-xs font-bold text-white">
@@ -114,7 +119,7 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.2 }}
-                className="absolute inset-x-0 top-full mt-2 flex flex-col gap-1 rounded-[28px] bg-white/90 p-3 shadow-glass-hero backdrop-blur-[18px] lg:hidden"
+                className="absolute inset-x-0 top-full mt-2 flex flex-col gap-1 rounded-[28px] bg-surface/90 p-3 shadow-glass-hero backdrop-blur-[18px] lg:hidden"
               >
                 {NAV_ITEMS.map((item) => (
                   <NavLink
@@ -133,6 +138,10 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
                 >
                   Get a Trade-in Quote
                 </Link>
+                <div className="mt-1 flex items-center justify-between rounded-2xl px-4 py-1 sm:hidden">
+                  <span className="text-base font-semibold text-ink">{THEME_CONTENT.menuToggle}</span>
+                  <ThemeToggle />
+                </div>
               </motion.nav>
             )}
           </AnimatePresence>

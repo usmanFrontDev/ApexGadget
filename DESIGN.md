@@ -24,6 +24,19 @@ Opacity scale for text: body `ink`, `ink/70` soft, `ink/60` muted; on dark `pape
 Colour swatches for the colour facet are defined in `SHOP_FACETS` (`constants/shop.ts`).
 Rule: don't hardcode hex for theme colours; use the utility (`bg-primary`, `text-ink`).
 
+### Dark theme
+Same design, dark palette from the Figma "Apex Dark version" (class `dark` on `<html>`; tokens in `index.css`):
+
+| Token | Light | Dark |
+|---|---|---|
+| `ink` (text) | `#141416` | `#f5f5f6` (muted = `ink/60` ≈ Figma 62 %) |
+| `canvas` (page) | `#f2f2f3` | `#08080a` |
+| `surface` (cards `/80`, pills `/92`, inputs, toasts) | `#ffffff` | `#17171b` (≈ Figma white 4–7 % glass) |
+| hairlines (`shadow-ring`, `shadow-inset-*`) | ink 8–9 % | white 9–12 % |
+| drop shadows | ink 7–9 % | black 45–50 % + red glow 14 % on promo cards |
+| page glows | red 12 % / 8 %, grey 5 % | red 20 % / 12 %, white 7 % |
+`primary`, `primary-deep`, `ink-deep`, `paper`, the dark newsletter / CTA gradients and `text-white` on red stay the same. The switch (`ThemeToggle`, sun ↔ moon, Framer Motion) sits in the header from `sm` and in the mobile menu; colours cross-fade for ~450 ms; `color-scheme` and `<meta name="theme-color">` follow the theme. The logo has a white version (`logo-dark.png`, exported from the Figma dark frame).
+
 ## 3. Typography
 Fonts: **Plus Jakarta Sans** (`font-sans`, default; UI + headings, weights 600/700/800) and **Montserrat**
 (`font-body`; paragraphs, weights 400/700). All text goes through `components/ui/Typography.tsx`.

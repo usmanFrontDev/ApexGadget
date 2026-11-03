@@ -47,7 +47,7 @@ export function TradeInSidebar() {
 
       <GlassCard variant={GlassCardVariant.Soft} className="hidden rounded-[20px] p-5 lg:block">
         <div className="flex items-center gap-3">
-          <span aria-hidden="true" className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-ink shadow-ring">
+          <span aria-hidden="true" className="grid size-10 shrink-0 place-items-center rounded-full bg-surface text-ink shadow-ring">
             <ShieldIcon width={19} height={19} />
           </span>
           <Typography variant={TypographyVariant.CardTitle}>{reply.title}</Typography>

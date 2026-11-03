@@ -67,7 +67,7 @@ export function TradeInReviewStep({ onEdit }: TradeInReviewStepProps) {
         }}
       />
 
-      <section aria-label={TRADE_IN_CONTENT.summaryCard} className="rounded-2xl bg-white/70 p-4 shadow-ring">
+      <section aria-label={TRADE_IN_CONTENT.summaryCard} className="rounded-2xl bg-surface/70 p-4 shadow-ring">
         <div className="flex items-center justify-between gap-3">
           <Typography variant={TypographyVariant.BodySm} className="font-sans font-bold">
             {TRADE_IN_CONTENT.summaryCard}
@@ -83,7 +83,7 @@ export function TradeInReviewStep({ onEdit }: TradeInReviewStepProps) {
         <DeviceSummary values={values} className="mt-3" />
       </section>
 
-      <p className="flex items-center gap-2.5 rounded-2xl bg-white/70 px-4 py-3 font-body text-[12.5px] text-ink/70 shadow-ring">
+      <p className="flex items-center gap-2.5 rounded-2xl bg-surface/70 px-4 py-3 font-body text-[12.5px] text-ink/70 shadow-ring">
         <CameraIcon width={17} height={17} className="shrink-0 text-ink/60" />
         <Typography as="span" variant={TypographyVariant.Caption} tone={TypographyTone.Soft}>
           {TRADE_IN_CONTENT.attachNote}

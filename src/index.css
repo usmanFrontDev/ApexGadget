@@ -1,18 +1,30 @@
 @import "tailwindcss";
 
+/* `dark:` follows the `.dark` class on <html> (set by lib/theme.ts), not the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /*
  * Design tokens — single source of truth for the theme (taken from Figma).
  * Utilities are generated from these: `bg-primary`, `text-ink`, `font-body`,
  * `shadow-glass-hero`, `max-w-page`, ...
+ *
+ * Colours that change between the light and the dark theme are SEMANTIC (`ink` = text, `canvas` = page,
+ * `surface` = cards / pills / inputs): they point at the raw variables below, which `.dark` overrides.
+ * Never write `bg-white` / `text-black` for a surface or text: use `bg-surface` / `text-ink`.
  */
 @theme {
-  /* Colors */
+  /* Colors that stay the same in both themes */
   --color-primary: #c82028;
-  --color-ink: #141416;
   --color-ink-deep: #0a0a0b;
-  --color-canvas: #f2f2f3;
   --color-paper: #f6f7f5;
   --color-primary-deep: #8c0002;
+
+  /* Colors that switch with the theme */
+  --color-ink: var(--ink);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-placeholder-a: var(--placeholder-a);
+  --color-placeholder-b: var(--placeholder-b);
 
   /* Fonts: Plus Jakarta Sans = UI/headings (default), Montserrat = body copy */
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
@@ -24,25 +36,98 @@
   /* Layout: 1264px content + 2 x 24px gutters */
   --container-page: 82rem;
 
-  /* Elevation (drop shadows) */
-  --shadow-header:
-    0 18px 40px rgb(20 20 22 / 0.09), inset 0 1px 0 rgb(255 255 255 / 0.05),
-    inset 0 0 0 1px rgb(20 20 22 / 0.09);
-  --shadow-glass-hero: 0 24px 60px rgb(20 20 22 / 0.09), 0 1px 2px rgb(20 20 22 / 0.05);
-  --shadow-glass-promo: 0 18px 44px rgb(20 20 22 / 0.09), 0 24px 60px rgb(200 32 40 / 0.09);
-  --shadow-glass-soft: 0 18px 44px rgb(20 20 22 / 0.07);
-  --shadow-primary: 0 10px 28px rgb(200 32 40 / 0.4), inset 0 1px 0 rgb(255 255 255 / 0.24);
-  --shadow-primary-soft: 0 8px 22px rgb(200 32 40 / 0.09), inset 0 1px 0 rgb(255 255 255 / 0.22);
-  --shadow-newsletter: 0 24px 60px rgb(20 20 22 / 0.1), inset 0 0 0 1px rgb(200 32 40 / 0.3);
-  --shadow-banner: 0 18px 44px rgb(200 32 40 / 0.16), inset 0 0 0 1px rgb(20 20 22 / 0.14);
+  /* Elevation (drop shadows): the values live in :root / .dark below */
+  --shadow-header: var(--shadow-header-value);
+  --shadow-glass-hero: var(--shadow-glass-hero-value);
+  --shadow-glass-promo: var(--shadow-glass-promo-value);
+  --shadow-glass-soft: var(--shadow-glass-soft-value);
+  --shadow-primary: var(--shadow-primary-value);
+  --shadow-primary-soft: var(--shadow-primary-soft-value);
+  --shadow-newsletter: var(--shadow-newsletter-value);
+  --shadow-banner: var(--shadow-banner-value);
 
   /* Hairline rings (inner strokes) */
-  --shadow-ring: inset 0 0 0 1px rgb(20 20 22 / 0.09);
-  --shadow-ring-primary: inset 0 0 0 1px rgb(200 32 40 / 0.1);
+  --shadow-ring: var(--shadow-ring-value);
+  --shadow-ring-primary: var(--shadow-ring-primary-value);
   /* Selected state of choice chips / cards / swatches */
   --shadow-ring-selected: inset 0 0 0 1.5px var(--color-primary);
-  --shadow-inset-glass: inset 0 1px 0 rgb(255 255 255 / 0.92), inset 0 0 0 1px rgb(20 20 22 / 0.08);
-  --shadow-inset-promo: inset 0 1px 0 rgb(255 255 255 / 0.92), inset 0 0 0 1px rgb(200 32 40 / 0.24);
+  --shadow-inset-glass: var(--shadow-inset-glass-value);
+  --shadow-inset-promo: var(--shadow-inset-promo-value);
+}
+
+/* Light theme (the original Figma design) */
+:root {
+  --ink: #141416;
+  --canvas: #f2f2f3;
+  --surface: #ffffff;
+  --placeholder-a: #e9e9eb;
+  --placeholder-b: #f1f1f3;
+  --scrollbar: rgb(20 20 22 / 0.2);
+
+  /* Ambient glows behind the page (RootLayout) */
+  --glow-red-1: rgb(200 32 40 / 0.12);
+  --glow-red-2: rgb(200 32 40 / 0.08);
+  --glow-neutral: rgb(20 20 22 / 0.05);
+
+  --shadow-header-value:
+    0 18px 40px rgb(20 20 22 / 0.09), inset 0 1px 0 rgb(255 255 255 / 0.05),
+    inset 0 0 0 1px rgb(20 20 22 / 0.09);
+  --shadow-glass-hero-value: 0 24px 60px rgb(20 20 22 / 0.09), 0 1px 2px rgb(20 20 22 / 0.05);
+  --shadow-glass-promo-value: 0 18px 44px rgb(20 20 22 / 0.09), 0 24px 60px rgb(200 32 40 / 0.09);
+  --shadow-glass-soft-value: 0 18px 44px rgb(20 20 22 / 0.07);
+  --shadow-primary-value: 0 10px 28px rgb(200 32 40 / 0.4), inset 0 1px 0 rgb(255 255 255 / 0.24);
+  --shadow-primary-soft-value: 0 8px 22px rgb(200 32 40 / 0.09), inset 0 1px 0 rgb(255 255 255 / 0.22);
+  --shadow-newsletter-value: 0 24px 60px rgb(20 20 22 / 0.1), inset 0 0 0 1px rgb(200 32 40 / 0.3);
+  --shadow-banner-value: 0 18px 44px rgb(200 32 40 / 0.16), inset 0 0 0 1px rgb(20 20 22 / 0.14);
+  --shadow-ring-value: inset 0 0 0 1px rgb(20 20 22 / 0.09);
+  --shadow-ring-primary-value: inset 0 0 0 1px rgb(200 32 40 / 0.1);
+  --shadow-inset-glass-value: inset 0 1px 0 rgb(255 255 255 / 0.92), inset 0 0 0 1px rgb(20 20 22 / 0.08);
+  --shadow-inset-promo-value: inset 0 1px 0 rgb(255 255 255 / 0.92), inset 0 0 0 1px rgb(200 32 40 / 0.24);
+}
+
+/* Dark theme: palette and elevation from the Figma "Apex Dark version" (page #08080A, glass cards, white hairlines, red glows) */
+.dark {
+  color-scheme: dark;
+  --ink: #f5f5f6;
+  --canvas: #08080a;
+  --surface: #17171b;
+  --placeholder-a: #17171b;
+  --placeholder-b: #1d1d22;
+  --scrollbar: rgb(245 245 246 / 0.25);
+
+  --glow-red-1: rgb(200 32 40 / 0.2);
+  --glow-red-2: rgb(200 32 40 / 0.12);
+  --glow-neutral: rgb(255 255 255 / 0.07);
+
+  --shadow-header-value:
+    0 18px 40px rgb(0 0 0 / 0.5), inset 0 1px 0 rgb(255 255 255 / 0.05),
+    inset 0 0 0 1px rgb(255 255 255 / 0.1);
+  --shadow-glass-hero-value: 0 24px 60px rgb(0 0 0 / 0.5), 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-glass-promo-value: 0 18px 44px rgb(0 0 0 / 0.5), 0 24px 60px rgb(200 32 40 / 0.14);
+  --shadow-glass-soft-value: 0 18px 44px rgb(0 0 0 / 0.45);
+  --shadow-primary-value: 0 10px 28px rgb(200 32 40 / 0.4), inset 0 1px 0 rgb(255 255 255 / 0.24);
+  --shadow-primary-soft-value: 0 8px 22px rgb(200 32 40 / 0.28), inset 0 1px 0 rgb(255 255 255 / 0.2);
+  --shadow-newsletter-value: 0 24px 60px rgb(0 0 0 / 0.5), inset 0 0 0 1px rgb(200 32 40 / 0.3);
+  --shadow-banner-value: 0 18px 44px rgb(200 32 40 / 0.22), inset 0 0 0 1px rgb(255 255 255 / 0.12);
+  --shadow-ring-value: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+  --shadow-ring-primary-value: inset 0 0 0 1px rgb(200 32 40 / 0.3);
+  --shadow-inset-glass-value: inset 0 1px 0 rgb(255 255 255 / 0.06), inset 0 0 0 1px rgb(255 255 255 / 0.09);
+  --shadow-inset-promo-value: inset 0 1px 0 rgb(255 255 255 / 0.06), inset 0 0 0 1px rgb(200 32 40 / 0.24);
+}
+
+/*
+ * Theme switch: lib/theme.ts adds `.theme-switching` to <html> for a moment, so every colour fades instead of
+ * jumping. It is not permanent (permanent colour transitions would slow down hover states and page loads).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-switching,
+  html.theme-switching *,
+  html.theme-switching *::before,
+  html.theme-switching *::after {
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity !important;
+    transition-duration: 350ms !important;
+    transition-timing-function: ease !important;
+  }
 }
 
 /*
@@ -78,7 +163,7 @@
 
 @utility scrollbar-thin {
   scrollbar-width: thin;
-  scrollbar-color: rgb(20 20 22 / 0.2) transparent;
+  scrollbar-color: var(--scrollbar) transparent;
 }
 
 @utility scrollbar-none {
@@ -105,8 +190,8 @@
   }
 
   body {
-    background-color: var(--color-canvas);
-    color: var(--color-ink);
+    background-color: var(--canvas);
+    color: var(--ink);
   }
 
   /* Tailwind v4 no longer gives buttons a pointer cursor: everything the user can click gets one. */
@@ -142,7 +227,7 @@
     font-family: var(--font-body);
     font-size: 0.8125rem;
     line-height: 1.55;
-    color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+    color: color-mix(in srgb, var(--ink) 70%, transparent);
   }
   .rich-text > * + * {
     margin-top: 0.75rem;
@@ -154,7 +239,7 @@
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.25;
-    color: var(--color-ink);
+    color: var(--ink);
   }
   .rich-text h2,
   .rich-text h3 {

@@ -15,7 +15,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function 
       aria-invalid={invalid || undefined}
       {...rest}
       className={cn(
-        'min-h-[92px] w-full min-w-0 resize-y rounded-2xl bg-white px-4 py-3 text-sm text-ink outline-none transition placeholder:text-ink/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+        'min-h-[92px] w-full min-w-0 resize-y rounded-2xl bg-surface px-4 py-3 text-sm text-ink outline-none transition placeholder:text-ink/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
         invalid ? 'shadow-ring-selected' : 'shadow-ring',
         className,
       )}
