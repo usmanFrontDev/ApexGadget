@@ -27,7 +27,7 @@ export function ChoiceCardGroup<T extends string>(props: ChoiceCardGroupProps<T>
       optionClassName={({ checked }) =>
         cn(
           'relative flex min-h-[78px] flex-col items-start gap-1 rounded-2xl px-3.5 py-3 text-left',
-          checked ? 'bg-primary/8 shadow-ring-selected' : 'bg-white shadow-ring hover:bg-white',
+          checked ? 'bg-primary/8 shadow-ring-selected' : 'bg-surface shadow-ring hover:bg-surface',
         )
       }
       renderOption={({ option, checked }) => (

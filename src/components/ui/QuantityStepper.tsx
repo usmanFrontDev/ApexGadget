@@ -51,7 +51,7 @@ export function QuantityStepper({
     <div
       role="group"
       aria-label={label}
-      className={cn('inline-flex shrink-0 items-center rounded-full bg-white/92 shadow-ring', sizing.root, className)}
+      className={cn('inline-flex shrink-0 items-center rounded-full bg-surface/92 shadow-ring', sizing.root, className)}
     >
       {removes ? (
         <button type="button" aria-label={removeLabel ?? 'Remove'} disabled={disabled} onClick={onRemove} className={cn(stepButton, sizing.button)}>

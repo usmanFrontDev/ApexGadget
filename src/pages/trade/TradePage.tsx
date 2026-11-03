@@ -41,7 +41,7 @@ export default function TradePage() {
         mobileContent={
           <ol className="mx-auto mt-6 flex max-w-[360px] flex-col gap-2.5 text-left">
             {TRADE_IN_CONTENT.steps.map((step) => (
-              <li key={step.number} className="flex items-center gap-3 rounded-full bg-white/80 py-2 pl-2 pr-5 shadow-ring">
+              <li key={step.number} className="flex items-center gap-3 rounded-full bg-surface/80 py-2 pl-2 pr-5 shadow-ring">
                 <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary/10 text-[13px] font-bold text-primary shadow-ring-primary">
                   {step.number}
                 </span>

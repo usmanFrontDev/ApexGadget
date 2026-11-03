@@ -25,13 +25,13 @@ export function SupportInfoCard({ id, icon, title, text, linkLabel, image, onOpe
       as="article"
       variant={GlassCardVariant.Promo}
       data-hover-scope=""
-      className="group h-full scroll-mt-28 rounded-[24px] bg-gradient-to-br from-white/90 via-white/65 to-primary/6"
+      className="group h-full scroll-mt-28 rounded-[24px] bg-gradient-to-br from-surface/90 via-surface/65 to-primary/6"
     >
       {/* Premium glass: one blush glow behind the picture, bottom right. */}
       <GlassGlow className="-bottom-20 -right-16 size-[320px]" />
       <div id={id} className="absolute -top-28" aria-hidden="true" />
       <div className="relative flex h-full min-h-[200px] flex-col p-5 sm:p-6">
-        <span aria-hidden="true" className="grid size-11 place-items-center rounded-full bg-white/70 text-primary shadow-ring-primary backdrop-blur-md">
+        <span aria-hidden="true" className="grid size-11 place-items-center rounded-full bg-surface/70 text-primary shadow-ring-primary backdrop-blur-md">
           {icon}
         </span>
         <div className="mt-4 max-w-[62%] sm:max-w-[58%]">

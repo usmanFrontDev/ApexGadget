@@ -42,7 +42,7 @@ export function Stepper({ steps, current, onStepClick, className }: StepperProps
           )
           const pillClasses = cn(
             'inline-flex h-10 items-center gap-2.5 rounded-full pl-2.5 pr-5 text-[13px] font-semibold',
-            active ? 'bg-primary text-white shadow-primary-soft' : done ? 'bg-white text-ink shadow-ring' : 'bg-white/60 text-ink/55',
+            active ? 'bg-primary text-white shadow-primary-soft' : done ? 'bg-surface text-ink shadow-ring' : 'bg-surface/60 text-ink/55',
           )
           return (
             <Fragment key={step.id}>
@@ -52,7 +52,7 @@ export function Stepper({ steps, current, onStepClick, className }: StepperProps
                   <button
                     type="button"
                     onClick={() => onStepClick(step.id)}
-                    className={cn(pillClasses, 'transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary')}
+                    className={cn(pillClasses, 'transition hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary')}
                   >
                     {pill}
                   </button>

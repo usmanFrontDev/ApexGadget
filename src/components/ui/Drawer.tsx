@@ -78,7 +78,7 @@ export function Drawer({ open, onClose, title, children, footer, returnFocusSele
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={onClose}
-            className="absolute inset-0 bg-ink/35 backdrop-blur-sm"
+            className="absolute inset-0 bg-ink-deep/50 backdrop-blur-sm"
           />
           <motion.div
             ref={panelRef}
@@ -90,7 +90,7 @@ export function Drawer({ open, onClose, title, children, footer, returnFocusSele
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 380, damping: 40 }}
-            className="absolute inset-y-0 right-0 flex w-[min(92vw,400px)] flex-col rounded-l-[28px] bg-white/92 shadow-glass-hero outline-none backdrop-blur-[18px]"
+            className="absolute inset-y-0 right-0 flex w-[min(92vw,400px)] flex-col rounded-l-[28px] bg-surface/92 shadow-glass-hero outline-none backdrop-blur-[18px]"
           >
             <div className="flex items-center justify-between px-6 pb-3 pt-6">
               <Typography as="h2" id={titleId} variant={TypographyVariant.Subtitle}>

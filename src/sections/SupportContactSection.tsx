@@ -1,5 +1,5 @@
-import supportCardImage from '@/assets/images/SupportCard.png'
 import { ContactForm } from '@/components/support/ContactForm'
+import { SupportArt } from '@/components/support/SupportArt'
 import { Chip } from '@/components/ui/Chip'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Typography } from '@/components/ui/Typography'
@@ -33,7 +33,7 @@ export function SupportContactSection() {
           <div className="relative hidden flex-col items-center justify-center px-8 py-10 text-center lg:flex">
             {/* Divider that stops short of the card's top and bottom edges (as in the design). */}
             <span aria-hidden="true" className="absolute inset-y-8 left-0 w-px bg-ink/9" />
-            <img src={supportCardImage} alt="" width={1153} height={1364} loading="lazy" className="h-auto w-full max-w-[300px] mix-blend-multiply" />
+            <SupportArt />
             <Typography as="p" variant={TypographyVariant.Subtitle} className="-mt-8">
               {contact.sideTitle}
             </Typography>

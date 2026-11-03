@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import logo from '@/assets/images/logo.png'
+import { Logo } from '@/components/layout/Logo'
 import { ActionElement } from '@/components/ui/ActionElement'
 import { Chip } from '@/components/ui/Chip'
 import { Container } from '@/components/ui/Container'
@@ -20,7 +20,7 @@ export function Footer() {
         <div className="grid gap-8 sm:gap-10 lg:grid-cols-[minmax(0,1.45fr)_repeat(3,minmax(0,1fr))]">
           <div className="flex flex-col items-center lg:items-start">
             <Link to={ROUTES.home} aria-label="Apex Gadgets — home" className="inline-block">
-              <img src={logo} alt="Apex Gadgets" width={80} height={32} className="h-[30px] w-auto" />
+              <Logo className="h-[30px]" />
             </Link>
             <Typography
               variant={TypographyVariant.Body}

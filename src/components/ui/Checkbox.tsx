@@ -33,7 +33,7 @@ export function Checkbox({ checked, onChange, label, count, swatchClass, disable
       />
       <span
         aria-hidden="true"
-        className="grid size-4 shrink-0 place-items-center rounded-[5px] border border-ink/25 bg-white text-white transition peer-checked:border-primary peer-checked:bg-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary [&>svg]:opacity-0 peer-checked:[&>svg]:opacity-100"
+        className="grid size-4 shrink-0 place-items-center rounded-[5px] border border-ink/25 bg-surface text-white transition peer-checked:border-primary peer-checked:bg-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary [&>svg]:opacity-0 peer-checked:[&>svg]:opacity-100"
       >
         <CheckIcon width={12} height={12} strokeWidth={2.2} />
       </span>

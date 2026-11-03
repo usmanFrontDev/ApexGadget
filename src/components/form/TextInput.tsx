@@ -16,7 +16,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function T
       aria-invalid={invalid || undefined}
       {...rest}
       className={cn(
-        'h-12 w-full min-w-0 rounded-2xl bg-white px-4 text-sm text-ink outline-none transition placeholder:text-ink/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+        'h-12 w-full min-w-0 rounded-2xl bg-surface px-4 text-sm text-ink outline-none transition placeholder:text-ink/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
         invalid ? 'shadow-ring-selected' : 'shadow-ring',
         className,
       )}

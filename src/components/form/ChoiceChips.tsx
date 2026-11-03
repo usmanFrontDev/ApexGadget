@@ -23,7 +23,7 @@ export function ChoiceChips<T extends string>({ className, ...props }: ChoiceChi
       optionClassName={({ checked }) =>
         checked
           ? 'inline-flex h-[42px] min-w-[64px] items-center justify-center whitespace-nowrap rounded-full bg-primary/8 px-4 text-[13px] font-semibold text-primary shadow-ring-selected'
-          : 'inline-flex h-[42px] min-w-[64px] items-center justify-center whitespace-nowrap rounded-full bg-white px-4 text-[13px] font-medium text-ink/80 shadow-ring hover:bg-white hover:text-ink'
+          : 'inline-flex h-[42px] min-w-[64px] items-center justify-center whitespace-nowrap rounded-full bg-surface px-4 text-[13px] font-medium text-ink/80 shadow-ring hover:bg-surface hover:text-ink'
       }
       renderOption={({ option }) => <span className="truncate">{option.label}</span>}
     />

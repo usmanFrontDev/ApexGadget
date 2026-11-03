@@ -47,7 +47,7 @@ export function SupportInfoDrawer({ panel, onClose }: SupportInfoDrawerProps) {
       <div>
         <ul className="flex flex-col gap-2">
           {ACCEPTED_PAYMENTS.map((method) => (
-            <li key={method.id} className="rounded-[14px] bg-white px-4 py-3 text-[13.5px] font-semibold shadow-ring">
+            <li key={method.id} className="rounded-[14px] bg-surface px-4 py-3 text-[13.5px] font-semibold shadow-ring">
               {method.label}
             </li>
           ))}

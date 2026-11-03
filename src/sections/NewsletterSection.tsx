@@ -50,7 +50,7 @@ export function NewsletterSection() {
 
           <form
             onSubmit={handleSubmit}
-            className="relative flex w-full flex-col gap-2.5 sm:h-[60px] sm:flex-row sm:items-center sm:gap-0 sm:rounded-full sm:bg-white/92 sm:pl-[23px] sm:pr-[9px] sm:shadow-ring lg:w-[552px]"
+            className="relative flex w-full flex-col gap-2.5 sm:h-[60px] sm:flex-row sm:items-center sm:gap-0 sm:rounded-full sm:bg-surface/92 sm:pl-[23px] sm:pr-[9px] sm:shadow-ring lg:w-[552px]"
           >
             <label htmlFor="newsletter-email" className="sr-only">
               Email address
@@ -62,7 +62,7 @@ export function NewsletterSection() {
               required
               placeholder={placeholder}
               autoComplete="email"
-              className="h-[50px] w-full min-w-0 rounded-full bg-white/92 px-5 text-center text-[14.5px] text-ink shadow-ring outline-none placeholder:text-ink/62 sm:h-auto sm:flex-1 sm:rounded-none sm:bg-transparent sm:px-0 sm:text-left sm:shadow-none"
+              className="h-[50px] w-full min-w-0 rounded-full bg-surface/92 px-5 text-center text-[14.5px] text-ink shadow-ring outline-none placeholder:text-ink/62 sm:h-auto sm:flex-1 sm:rounded-none sm:bg-transparent sm:px-0 sm:text-left sm:shadow-none"
             />
             <Button type="submit" size={ButtonSize.Xs} className="font-body max-sm:h-[50px] max-sm:w-full">
               {submitLabel}

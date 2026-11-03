@@ -62,7 +62,7 @@ export function WishlistRow({ product, onRemove }: WishlistRowProps) {
             />
           </>
         ) : (
-          <span className="absolute inset-0 bg-[repeating-linear-gradient(135deg,#e9e9eb_0_7px,#f1f1f3_7px_13px)]" />
+          <span className="absolute inset-0 bg-[repeating-linear-gradient(135deg,var(--color-placeholder-a)_0_7px,var(--color-placeholder-b)_7px_13px)]" />
         )}
       </Link>
 

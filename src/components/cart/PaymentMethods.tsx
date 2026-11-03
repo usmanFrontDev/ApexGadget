@@ -21,7 +21,7 @@ export function PaymentMethods() {
         {ACCEPTED_PAYMENTS.map((method) => {
           const Icon = ICONS[method.icon]
           return (
-            <li key={method.id} className="flex min-w-0 flex-col items-center gap-1.5 rounded-[14px] bg-white/80 px-1 py-2.5 shadow-ring">
+            <li key={method.id} className="flex min-w-0 flex-col items-center gap-1.5 rounded-[14px] bg-surface/80 px-1 py-2.5 shadow-ring">
               {method.logo ? (
                 <img src={method.logo} alt="" className="h-5 w-auto object-contain" />
               ) : (

@@ -74,7 +74,7 @@ export function CategoryCard({ category, countPending = false }: CategoryCardPro
 
       <IconCircle
         iconAnimation={IconAnimation.PointRight}
-        className="absolute bottom-[21px] right-[21px] transition group-hover:bg-white max-sm:hidden"
+        className="absolute bottom-[21px] right-[21px] transition group-hover:bg-surface max-sm:hidden"
       >
         <ArrowUpRightIcon width={13} height={13} />
       </IconCircle>
