@@ -47,9 +47,9 @@ export function SupportQuickCard({ icon, title, text, href, target, onClick }: S
     <GlassCard
       variant={GlassCardVariant.Promo}
       data-hover-scope=""
-      className="group h-full rounded-[20px] bg-gradient-to-br from-white/90 via-white/65 to-primary/8"
+      className="group h-full rounded-[20px] bg-gradient-to-br from-white/90 via-white/65 to-primary/5"
     >
-      <GlassGlow className="-bottom-16 -right-12 size-[190px] opacity-50" />
+      <GlassGlow className="-bottom-16 -right-12 size-[190px] opacity-40" />
       {interactive ? (
         <ActionElement
           href={href}

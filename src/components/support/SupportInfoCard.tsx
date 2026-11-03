@@ -25,7 +25,7 @@ export function SupportInfoCard({ id, icon, title, text, linkLabel, image, onOpe
       as="article"
       variant={GlassCardVariant.Promo}
       data-hover-scope=""
-      className="group h-full scroll-mt-28 rounded-[24px] bg-gradient-to-br from-white/90 via-white/65 to-primary/10"
+      className="group h-full scroll-mt-28 rounded-[24px] bg-gradient-to-br from-white/90 via-white/65 to-primary/6"
     >
       {/* Premium glass: one blush glow behind the picture, bottom right. */}
       <GlassGlow className="-bottom-20 -right-16 size-[320px]" />

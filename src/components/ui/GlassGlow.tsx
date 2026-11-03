@@ -14,7 +14,7 @@ export function GlassGlow({ className }: GlassGlowProps) {
     <span
       aria-hidden="true"
       className={cn(
-        'pointer-events-none absolute rounded-full bg-[radial-gradient(closest-side,rgb(200_32_40/0.22),transparent_92%)] opacity-80 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none',
+        'pointer-events-none absolute rounded-full bg-[radial-gradient(closest-side,rgb(200_32_40/0.15),transparent_92%)] opacity-80 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none',
         className,
       )}
     />
