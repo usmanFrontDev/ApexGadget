@@ -66,7 +66,7 @@ export function ContactForm() {
       className="flex flex-col gap-4"
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <FormField id={IDS.name} label={copy.name} error={errors.name?.message}>
+        <FormField id={IDS.name} label={copy.name} required error={errors.name?.message}>
           <TextInput
             id={IDS.name}
             autoComplete="name"
@@ -76,7 +76,7 @@ export function ContactForm() {
             {...register('name')}
           />
         </FormField>
-        <FormField id={IDS.email} label={copy.email} error={errors.email?.message}>
+        <FormField id={IDS.email} label={copy.email} required error={errors.email?.message}>
           <TextInput
             id={IDS.email}
             type="email"
@@ -127,7 +127,7 @@ export function ContactForm() {
         </FormField>
       </div>
 
-      <FormField id={IDS.message} label={copy.message} error={errors.message?.message}>
+      <FormField id={IDS.message} label={copy.message} required error={errors.message?.message}>
         <TextArea
           id={IDS.message}
           rows={5}

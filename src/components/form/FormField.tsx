@@ -8,6 +8,8 @@ export interface FormFieldProps {
   label: string
   /** Muted text after the label, e.g. "(optional)". */
   suffix?: string
+  /** Adds a red asterisk (and "required" for screen readers). */
+  required?: boolean
   hint?: string
   error?: string
   /** `group`: the control is a radiogroup, so the label is a `<span>` referenced by `aria-labelledby={`${id}-label`}`. */
@@ -17,10 +19,18 @@ export interface FormFieldProps {
 }
 
 /** Label + control + hint + inline error. The control wires `aria-describedby` with the helpers above. */
-export function FormField({ id, label, suffix, hint, error, asGroup = false, children, className }: FormFieldProps) {
+export function FormField({ id, label, suffix, required = false, hint, error, asGroup = false, children, className }: FormFieldProps) {
   const labelContent = (
     <>
       {label}
+      {required && (
+        <>
+          <span aria-hidden="true" className="ml-0.5 text-primary">
+            *
+          </span>
+          <span className="sr-only"> (required)</span>
+        </>
+      )}
       {suffix && <span className="ml-1 font-normal text-ink/50">{suffix}</span>}
     </>
   )

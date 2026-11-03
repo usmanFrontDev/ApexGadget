@@ -14,7 +14,7 @@ export async function sendContactMessage(values: ContactValues): Promise<void> {
   if (values.website) return
   if (!EMAILJS_CONFIG) throw new ContactError(ContactErrorCode.NotConfigured, 'The contact form is not connected yet.')
 
-  const topic = CONTACT_TOPICS.find((item) => item.value === values.topic)?.label ?? values.topic
+  const topic = CONTACT_TOPICS.find((item) => item.value === values.topic)?.label ?? '-'
   let response: Response
   try {
     response = await fetch(EMAILJS_ENDPOINT, {

@@ -1,4 +1,5 @@
 import favoritesBanner from '@/assets/images/FavBanner.png'
+import supportBanner from '@/assets/images/SupportBanner.png'
 import tradeInBanner from '@/assets/images/TradeInBanner.png'
 
 /**
@@ -9,4 +10,5 @@ import tradeInBanner from '@/assets/images/TradeInBanner.png'
 export const PAGE_BANNERS = {
   wishlist: { src: favoritesBanner, width: 2172, height: 724 },
   tradeIn: { src: tradeInBanner, width: 2172, height: 724 },
+  support: { src: supportBanner, width: 2172, height: 724 },
 } as const

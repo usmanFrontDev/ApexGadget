@@ -8,7 +8,8 @@ export const contactSchema = z.object({
   email: z.string().trim().max(CONTACT_LIMITS.emailMax, errors.email).pipe(z.email(errors.email)),
   /** Optional: empty or a phone-like value. */
   phone: z.string().trim().refine((value) => value === '' || CONTACT_PHONE_PATTERN.test(value), errors.phone),
-  topic: z.enum(CONTACT_TOPICS.map((topic) => topic.value) as [string, ...string[]], { error: errors.topic }),
+  /** Optional (the design has no asterisk). */
+  topic: z.enum(CONTACT_TOPICS.map((topic) => topic.value) as [string, ...string[]]).optional(),
   message: z.string().trim().min(CONTACT_LIMITS.messageMin, errors.message).max(CONTACT_LIMITS.messageMax, errors.messageMax),
   /** Honeypot: people never see it, bots fill it. A filled value is dropped silently. */
   website: z.string().max(200).optional(),

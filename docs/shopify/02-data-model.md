@@ -81,7 +81,8 @@ The product count on the card is **derived at runtime** (not stored): the Storef
 | `social_instagram`, `social_x`, `social_youtube`, `social_linkedin`, `social_facebook`, `social_tiktok` | url | empty ⇒ hidden |
 | `whatsapp_number` | text | digits only with country code, e.g. `923001234567` (used for `wa.me`) |
 | **`trade_in_message_template`** | mtext | WhatsApp message with `{placeholders}` (06 §7). Draft default shipped in code; **client edits here**. |
-| `support_email`, `support_phone` | text | |
+| `support_email`, `support_phone` | text | `support_phone` is the Call card and `tel:` link of the Support page |
+| `support_hours` | text | e.g. `Mon – Sat, 10AM – 8PM` (Support page "Business hours" card; empty ⇒ card hidden) |
 | `drop_alerts_title_line_1`, `drop_alerts_title_line_2`, `drop_alerts_description`, `drop_alerts_button_label` | text | copy of the launch "drop alerts" block (replaces the newsletter form) |
 | `drop_alerts_message` | mtext | pre-filled WhatsApp text, e.g. "Hi Apex Gadgets, please add me to your drop alerts." (**DRAFT**, client edits) |
 | `shop_banner_image` | img | 2880×1080 |

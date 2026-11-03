@@ -23,5 +23,6 @@ Mock-only things that must not ship connected: `constants/mockCart.ts` (discount
 |---|---|
 | `services/support.service.ts` `getFaqItems` | metaobjects `apex_faq_item` (`question`, `answer` rich_text -> HTML, `topic`, `sort_order`), docs/shopify/02 §5 |
 | `getWarrantyHtml` | `page(handle: "warranty") { body }` |
+| `getSupportInfo` | `apex_site_settings` fields `support_phone`, `support_hours` (02 §5); a missing value hides its Support card |
 
 The contact form does not use Shopify: it is sent through EmailJS (see 00 env table). Mock-only: `constants/mockSupport.ts` (placeholder texts).

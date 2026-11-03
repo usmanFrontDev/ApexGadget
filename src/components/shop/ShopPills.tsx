@@ -1,4 +1,5 @@
 import { FilterChip } from '@/components/ui/FilterChip'
+import { PillRow } from '@/components/ui/PillRow'
 import { SHOP_PILLS, type ShopCategoryId } from '@/constants/shop'
 import { METAFIELD_NAMESPACE, ProductMetafield } from '@/constants/shopify'
 import type { ShopQuery } from '@/types/shop.types'
@@ -21,9 +22,7 @@ export function ShopPills({ query, onSelect }: ShopPillsProps) {
       : undefined
 
   return (
-    <div role="group" aria-label="Quick filters" // Padding (offset by negative margins) leaves room for the active pill's shadow, which the
-      // scroll container would otherwise clip into a visible box.
-      className="scrollbar-none -mx-6 -mb-7 flex gap-2.5 overflow-x-auto px-6 pb-9 pt-2">
+    <PillRow label="Quick filters">
       {SHOP_PILLS.map((pill) => {
         const selected =
           !query.search &&
@@ -35,6 +34,6 @@ export function ShopPills({ query, onSelect }: ShopPillsProps) {
           </FilterChip>
         )
       })}
-    </div>
+    </PillRow>
   )
 }

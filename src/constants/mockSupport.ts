@@ -1,4 +1,4 @@
-import { FaqTopic, type FaqItem } from '@/types/support.types'
+import { FaqTopic, type FaqItem, type SupportInfo } from '@/types/support.types'
 
 /**
  * MOCK support content (mock mode only). Every text is a PLACEHOLDER: the real wording is client-owned
@@ -16,3 +16,6 @@ export const MOCK_FAQ_ITEMS: readonly FaqItem[] = [
 export const MOCK_WARRANTY_HTML = `
   <h3>Warranty</h3>
   <p>PLACEHOLDER: the warranty policy (months per product type and what is covered) is set by the client.</p>`
+
+/** MOCK ONLY: placeholder contact details. The real ones are `apex_site_settings.support_phone` / `support_hours` (BLOCKED-ON-CLIENT). */
+export const MOCK_SUPPORT_INFO: SupportInfo = { phone: '+92 300 1234567', hours: 'Mon – Sat, 10AM – 8PM' }

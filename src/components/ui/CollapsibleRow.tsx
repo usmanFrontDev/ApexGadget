@@ -1,8 +1,8 @@
 import { useId, type ReactNode } from 'react'
-import { ChevronDownIcon } from '@/components/icons'
+import { ChevronDownIcon, MinusIcon, PlusIcon } from '@/components/icons'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Typography } from '@/components/ui/Typography'
-import { GlassCardVariant, TypographyVariant } from '@/constants/ui'
+import { CollapsibleRowVariant, GlassCardVariant, TypographyVariant } from '@/constants/ui'
 import { cn } from '@/lib/cn'
 
 export interface CollapsibleRowProps {
@@ -11,32 +11,58 @@ export interface CollapsibleRowProps {
   icon?: ReactNode
   /** Let a long label wrap (FAQ questions) instead of truncating it. */
   wrapLabel?: boolean
+  variant?: CollapsibleRowVariant
   open: boolean
   onOpenChange: (open: boolean) => void
   children: ReactNode
   className?: string
 }
 
-/** Accordion row: a full-width toggle (icon, label, chevron) that reveals its content. Closed content is `inert`. */
-export function CollapsibleRow({ label, icon, wrapLabel = false, open, onOpenChange, children, className }: CollapsibleRowProps) {
+/**
+ * Accordion row. `Card`: glass card with icon, label and chevron. `Plain`: a list row with a bottom divider and a
+ * plus / minus (FAQ). Closed content is `inert`.
+ */
+export function CollapsibleRow({
+  label,
+  icon,
+  wrapLabel = false,
+  variant = CollapsibleRowVariant.Card,
+  open,
+  onOpenChange,
+  children,
+  className,
+}: CollapsibleRowProps) {
   const panelId = useId()
-  return (
-    <GlassCard variant={GlassCardVariant.Soft} className={cn('rounded-[20px]', className)}>
+  const plain = variant === CollapsibleRowVariant.Plain
+  const Indicator = plain ? (open ? MinusIcon : PlusIcon) : ChevronDownIcon
+
+  const content = (
+    <>
       <button
         type="button"
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => onOpenChange(!open)}
-        className="flex min-h-[54px] w-full cursor-pointer items-center gap-3 px-4 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
+        className={cn(
+          'flex w-full cursor-pointer items-center gap-3 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
+          plain ? 'min-h-[52px] px-1' : 'min-h-[54px] px-4',
+        )}
       >
         {icon && <span className="shrink-0 text-ink/70">{icon}</span>}
-        <Typography as="span" variant={TypographyVariant.BodySm} className={cn('min-w-0 flex-1 font-sans font-semibold', wrapLabel ? 'py-3' : 'truncate')}>
+        <Typography
+          as="span"
+          variant={plain ? TypographyVariant.Body : TypographyVariant.BodySm}
+          className={cn('min-w-0 flex-1 font-sans font-semibold', wrapLabel ? 'py-3' : 'truncate')}
+        >
           {label}
         </Typography>
-        <ChevronDownIcon
+        <Indicator
           width={16}
           height={16}
-          className={cn('shrink-0 text-ink/60 transition-transform duration-300 motion-reduce:transition-none', open && 'rotate-180')}
+          className={cn(
+            'shrink-0 text-ink/60 transition-transform duration-300 motion-reduce:transition-none',
+            !plain && open && 'rotate-180',
+          )}
         />
       </button>
       <div
@@ -48,9 +74,16 @@ export function CollapsibleRow({ label, icon, wrapLabel = false, open, onOpenCha
         )}
       >
         <div className="min-h-0 overflow-hidden">
-          <div className="px-4 pb-4">{children}</div>
+          <div className={plain ? 'px-1 pb-4' : 'px-4 pb-4'}>{children}</div>
         </div>
       </div>
+    </>
+  )
+
+  if (plain) return <div className={cn('border-b border-ink/9', className)}>{content}</div>
+  return (
+    <GlassCard variant={GlassCardVariant.Soft} className={cn('rounded-[20px]', className)}>
+      {content}
     </GlassCard>
   )
 }

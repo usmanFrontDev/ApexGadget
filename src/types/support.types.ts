@@ -8,6 +8,14 @@ export const FaqTopic = {
 } as const
 export type FaqTopic = (typeof FaqTopic)[keyof typeof FaqTopic]
 
+/** Contact details of `apex_site_settings` (docs/shopify/02 §5); a missing value hides its card. */
+export interface SupportInfo {
+  /** As typed, shown and used in `tel:`. */
+  phone?: string
+  /** e.g. "Mon – Sat, 10AM – 8PM". */
+  hours?: string
+}
+
 /** `apex_faq_item` metaobject (docs/shopify/02 §5). */
 export interface FaqItem {
   id: string

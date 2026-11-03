@@ -162,3 +162,10 @@ export const ToastVariant = {
   Info: 'info',
 } as const
 export type ToastVariant = (typeof ToastVariant)[keyof typeof ToastVariant]
+
+/** `Card` = glass card row with a chevron; `Plain` = list row with a divider and a plus / minus (FAQ). */
+export const CollapsibleRowVariant = {
+  Card: 'card',
+  Plain: 'plain',
+} as const
+export type CollapsibleRowVariant = (typeof CollapsibleRowVariant)[keyof typeof CollapsibleRowVariant]

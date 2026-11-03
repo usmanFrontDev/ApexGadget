@@ -40,5 +40,6 @@ export const supportKeys = {
   all: ['support'] as const,
   faq: () => [...supportKeys.all, 'faq'] as const,
   warranty: () => [...supportKeys.all, 'warranty'] as const,
+  info: () => [...supportKeys.all, 'info'] as const,
   contact: () => [...supportKeys.all, 'contact'] as const,
 }

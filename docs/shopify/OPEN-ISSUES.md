@@ -65,6 +65,7 @@ Docs revised 2026-10-30 (v2 brief). Sources: shopify.dev versioning, filter-prod
 | K32 | **Add to Cart now exists on every product card** as a round red bag button beside the price, turning into the quantity control once in the cart (user decision; AGENTS said "no add-to-cart on cards"). Adding only toasts; the mini-cart opens only from the header icon. Products with options (mock: MagSafe Case) show only "View details". `ProductSummary.variantId` added (mapper, mock, GraphQL, docs). | done |
 | K33 | Cart "You may also like" = one row of up to 5 `ShopProductCard`s (same as the product page); hidden below 2 results. | done |
 
+| K35 | Support page now follows the supplied design (banner `SupportBanner.png`, card art `SupportCard.png`). Derived: "Business hours" is a plain card (no link); "Email us" scrolls to the form; the Shipping / Warranty / Payments "View details" links open a side panel (the design shows no detail sections); the contact topic is optional (no asterisk in the design). The pictures of the three info cards are **dummies** (existing product art): the client's delivery box, warranty phone and payment-logo images replace them. The design's header (search / account icons) and footer are not part of this change. | done / assets pending |
 | K34 | **Support page, 404 / error pages and shop search built** (mock content). Search is in the shop toolbar (`q`), not the header (K21 stays: no header search icon). The Support contact form uses EmailJS from the browser (public keys, no backend): needs an EmailJS account, a service and a template (see 00). The "no serverless functions" rule is unchanged. | done |
 
 ## Assumptions (correct me)
@@ -98,6 +99,7 @@ Docs revised 2026-10-30 (v2 brief). Sources: shopify.dev versioning, filter-prod
 12. Warranty months/note shown in "Detailed Information" (mock: 6 months, PLACEHOLDER).
 13. CtaBanner phone image (K22).
 9. Which marketing claims may be printed.
+16. **Support assets:** images of the Shipping, Warranty and Payments cards (`SUPPORT_CARD_IMAGES`), final support phone and business hours.
 15. **Support content:** FAQ questions/answers, warranty text, shipping/returns/refund/privacy/terms (all PLACEHOLDER in `constants/mockSupport.ts`), business hours, support email/phone.
 14. **Cart:** payment-method wording and logos (`ACCEPTED_PAYMENTS`), shipping rules, real discount-code rules.
 
