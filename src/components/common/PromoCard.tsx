@@ -54,9 +54,10 @@ export function PromoCard({ data }: PromoCardProps) {
           PROMO_LAYOUT_CLASSES[layout],
         )}
       />
+      {/* Fade behind the copy: the card's own surface colour, so it is white on the light theme and dark on the dark one. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(to_right,#fff_0%,rgb(255_255_255/0.48)_42%,transparent_85%)] sm:block"
+        className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(to_right,var(--color-surface)_0%,color-mix(in_srgb,var(--color-surface)_48%,transparent)_42%,transparent_85%)] sm:block"
       />
 
       <div className="relative z-10 order-1 flex flex-col items-center text-center sm:max-w-[min(311px,56%)] sm:flex-1 sm:items-start sm:text-left">
