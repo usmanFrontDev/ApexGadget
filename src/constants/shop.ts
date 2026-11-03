@@ -184,6 +184,9 @@ export const PRODUCT_ROW_GRID_CLASSES =
 
 export const SHOP_PAGE_SIZE = 12
 export const SHOP_CURRENCY_CODE = 'PKR'
+/** Product search field of the shop toolbar. */
+export const SHOP_SEARCH_DEBOUNCE_MS = 350
+export const SHOP_SEARCH_MAX_LENGTH = 80
 export const SHOP_PRICE_DEBOUNCE_MS = 300
 /** Mock catalogue only: slider bounds are the cheapest/dearest product rounded to this step. */
 export const PRICE_BOUNDS_STEP = 5000

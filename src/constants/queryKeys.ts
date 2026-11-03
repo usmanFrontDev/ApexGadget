@@ -35,3 +35,10 @@ export const cartKeys = {
   mutation: (name: 'add' | 'update-line' | 'remove-line' | 'discount' | 'note' | 'checkout') =>
     [...cartKeys.mutations(), name] as const,
 }
+
+export const supportKeys = {
+  all: ['support'] as const,
+  faq: () => [...supportKeys.all, 'faq'] as const,
+  warranty: () => [...supportKeys.all, 'warranty'] as const,
+  contact: () => [...supportKeys.all, 'contact'] as const,
+}

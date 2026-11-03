@@ -100,6 +100,9 @@ export function useShopFilters() {
     [update],
   )
 
+  /** Free-text search (`q`): switches the shop to Shopify's `search`. Empty = back to the category. */
+  const setSearch = useCallback((search: string) => update(() => ({ search })), [update])
+
   const setSort = useCallback((sort: ProductSortKey) => update(() => ({ sort })), [update])
   const clearFilters = useCallback(() => update(() => ({ selection: [] })), [update])
 
@@ -110,6 +113,7 @@ export function useShopFilters() {
     selectPill,
     toggleFilter,
     setPriceRange,
+    setSearch,
     replaceSelection,
     setSort,
     clearFilters,

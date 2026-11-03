@@ -3,6 +3,7 @@ import { SearchIcon, SlidersIcon } from '@/components/icons'
 import { ShopFilterPanel } from '@/components/shop/ShopFilterPanel'
 import { ShopProductGrid, ShopProductGridSkeleton } from '@/components/shop/ShopProductGrid'
 import { Button } from '@/components/ui/Button'
+import { ShopSearchField } from '@/components/shop/ShopSearchField'
 import { Drawer } from '@/components/ui/Drawer'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { GlassCard } from '@/components/ui/GlassCard'
@@ -183,7 +184,9 @@ export function ShopCatalogSection({ shop }: ShopCatalogSectionProps) {
             aria-live="polite"
           >
             {isPending ? 'Loading…' : resultsLabel ? `Showing ${resultsLabel}` : `Showing ${products.length}${results.hasNextPage ? '+' : ''} products`}
+            {query.search && !isPending ? ` for “${query.search}”` : ''}
           </Typography>
+          <ShopSearchField value={query.search} onSearch={shop.setSearch} className="min-w-0 sm:max-w-[340px] sm:flex-1" />
           <div className="flex items-center gap-2.5">
             {!isDesktop && (
               <Button

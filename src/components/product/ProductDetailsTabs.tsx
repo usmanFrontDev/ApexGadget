@@ -1,3 +1,4 @@
+import { RichText } from '@/components/common/RichText'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Tabs, type TabItem } from '@/components/ui/Tabs'
@@ -6,23 +7,10 @@ import { PRODUCT_CONTENT, PRODUCT_TABS, ProductTabId } from '@/constants/product
 import { GlassCardVariant, TypographyTone, TypographyVariant } from '@/constants/ui'
 import { useShopPolicies } from '@/hooks/useShopPolicies'
 import { getDetailRows } from '@/lib/productView'
-import { sanitizeHtml } from '@/lib/sanitizeHtml'
 import type { ProductDetail } from '@/types/product.types'
 
 export interface ProductDetailsTabsProps {
   product: ProductDetail
-}
-
-function RichText({ html, empty }: { html: string | undefined; empty: string }) {
-  const clean = html ? sanitizeHtml(html).trim() : ''
-  if (!clean) {
-    return (
-      <Typography variant={TypographyVariant.Body} tone={TypographyTone.Muted}>
-        {empty}
-      </Typography>
-    )
-  }
-  return <div className="rich-text" dangerouslySetInnerHTML={{ __html: clean }} />
 }
 
 function DetailsCard({ product }: ProductDetailsTabsProps) {

@@ -16,3 +16,12 @@ Shopify integration is ON HOLD: everything runs on mock data. This file lists wh
 | cart query fields | `merchandise.product` metafields (`condition_grade`, `pta_status`, `battery_health`, `card_subtitle`, `storage`, `color`), `quantityAvailable` (needs `unauthenticated_read_product_inventory`), `compareAtPrice` |
 
 Mock-only things that must not ship connected: `constants/mockCart.ts` (discount codes, `apex.cart.mock.v1`), `services/mock/cartDemo.ts` (dev seed).
+
+## Pending Shopify implementations (support) — `TODO(shopify)` markers
+
+| Where | What |
+|---|---|
+| `services/support.service.ts` `getFaqItems` | metaobjects `apex_faq_item` (`question`, `answer` rich_text -> HTML, `topic`, `sort_order`), docs/shopify/02 §5 |
+| `getWarrantyHtml` | `page(handle: "warranty") { body }` |
+
+The contact form does not use Shopify: it is sent through EmailJS (see 00 env table). Mock-only: `constants/mockSupport.ts` (placeholder texts).

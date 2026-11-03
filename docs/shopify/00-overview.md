@@ -31,6 +31,7 @@ components / sections / pages   (never call Shopify)
 | Home content | metaobjects `apex_*` | 10 min |
 | Product page `/shop/:handle` | `product(handle)` (+ recommendations / similar); sold listings stay up | per handle |
 | Cart | Storefront `cart*`, cart id in localStorage, checkout = redirect to `checkoutUrl` | cart id |
+| Support | FAQ (`apex_faq_item`) + warranty page via `support.service.ts`; shipping/returns = shop policies; contact form -> EmailJS (not Shopify) | 10 min |
 | Trade-in | form → message → `wa.me/<number>?text=…` (no request) | – |
 | Account / orders | Customer Account API **[P]** | – |
 
@@ -42,6 +43,7 @@ components / sections / pages   (never call Shopify)
 | `VITE_SHOPIFY_STORE_DOMAIN` | client | `store.myshopify.com`; empty in `.env.example` |
 | `VITE_SHOPIFY_STOREFRONT_TOKEN` | client | **public** Headless-channel token |
 | `VITE_SHOPIFY_API_VERSION` | client | optional; default in `src/constants/shopify.ts` (`2026-10`) |
+| `VITE_EMAILJS_SERVICE_ID`, `VITE_EMAILJS_TEMPLATE_ID`, `VITE_EMAILJS_PUBLIC_KEY` | client | Support contact form (EmailJS REST, no backend). **Public by design**; restrict the allowed domains in the EmailJS dashboard. Empty = the form says it isn't connected. Template variables: `from_name`, `reply_to`, `phone`, `topic`, `message`, `page_url`; the recipient is the template's "To email". |
 | `VITE_SITE_URL` | client/build | canonical URL, sitemap (added in step 10) |
 | `VITE_SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID` **[P]** | client | public OAuth id |
 | `SHOPIFY_ADMIN_TOKEN`, `SHOPIFY_ADMIN_STORE_DOMAIN`, `TURNSTILE_SECRET` **[P]** | Vercel server only | not used at launch; never `VITE_` |

@@ -1,4 +1,4 @@
-import { ROUTES } from '@/constants/routes'
+import { SupportSectionId, supportPath } from '@/constants/support'
 import { getShopPath, ShopCategoryId } from '@/constants/shop'
 import type { FooterColumn } from '@/types/layout.types'
 
@@ -19,10 +19,10 @@ export const FOOTER_COLUMNS: readonly FooterColumn[] = [
   {
     title: 'Support',
     links: [
-      { label: 'Contact us', to: ROUTES.support },
-      { label: 'Shipping & returns', to: ROUTES.support },
-      { label: 'Warranty', to: ROUTES.support },
-      { label: 'FAQs', to: ROUTES.support },
+      { label: 'Contact us', to: supportPath(SupportSectionId.Contact) },
+      { label: 'Shipping & returns', to: supportPath(SupportSectionId.Shipping) },
+      { label: 'Warranty', to: supportPath(SupportSectionId.Warranty) },
+      { label: 'FAQs', to: supportPath(SupportSectionId.Faq) },
     ],
   },
   {

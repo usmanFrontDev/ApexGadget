@@ -123,6 +123,9 @@ Currency is PKR, whole rupees, formatted by `formatPrice` ("Rs 359,500").
 | `Notice` | cart | red-tint box, variants `Unavailable` (`role="alert"`) and `Error` (put inside an `aria-live="polite"` wrapper); `compact` for the drawer / discount. |
 | `CollapsibleRow` | cart | accordion row (icon, label, chevron), content `inert` while closed: "Add a note for delivery", "Add discount code" (below lg). |
 | Toasts | app | `react-hot-toast` at **top-center**. ONE layout for every toast: `AppToast` (icon badge by variant Success / Error / Info, bold title, optional text, close X), always shown through `appToast.success/error/info(title, text?)` in `lib/appToast.tsx`; never call `toast()` directly. A new toast removes the one on screen at once (never two together); the visible time is unchanged. Cart copy is `{ title, text }` pairs in `CART_CONTENT.toast`. |
+| `ShopSearchField` | shop toolbar | pill input (search icon, clear X), debounced 350 ms into the URL `q` (Enter = now); toolbar order: result count, search, Filters (below lg), Sort. |
+| Support page | `/support` | Display title + lead + jump chips (`SupportNav`), then Contact (WhatsApp card + glass card with `ContactForm`; success view replaces the form), Shipping & returns + Warranty (two `GlassCard`s with `RichText`), FAQs (`FaqList`: `CollapsibleRow` with `wrapLabel`, one open at a time, grouped by topic). |
+| Error pages | `*`, crashes | `EmptyState` inside the layout: `NotFoundPage` (Back to home / Browse the shop), `RouteErrorPage` (Try again / Browse the shop). |
 | Sold | PDP, cards | "Sold" chip, disabled "Sold out" button, similar items stay prominent; the page never 404s. |
 
 Button icons sit in an `inline-flex` wrapper (`AnimatedIcon`) so they centre on the label's line in every size.

@@ -9,6 +9,8 @@ export interface CollapsibleRowProps {
   /** Row label, e.g. "Add a note for delivery". */
   label: string
   icon?: ReactNode
+  /** Let a long label wrap (FAQ questions) instead of truncating it. */
+  wrapLabel?: boolean
   open: boolean
   onOpenChange: (open: boolean) => void
   children: ReactNode
@@ -16,7 +18,7 @@ export interface CollapsibleRowProps {
 }
 
 /** Accordion row: a full-width toggle (icon, label, chevron) that reveals its content. Closed content is `inert`. */
-export function CollapsibleRow({ label, icon, open, onOpenChange, children, className }: CollapsibleRowProps) {
+export function CollapsibleRow({ label, icon, wrapLabel = false, open, onOpenChange, children, className }: CollapsibleRowProps) {
   const panelId = useId()
   return (
     <GlassCard variant={GlassCardVariant.Soft} className={cn('rounded-[20px]', className)}>
@@ -28,7 +30,7 @@ export function CollapsibleRow({ label, icon, open, onOpenChange, children, clas
         className="flex min-h-[54px] w-full cursor-pointer items-center gap-3 px-4 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
       >
         {icon && <span className="shrink-0 text-ink/70">{icon}</span>}
-        <Typography as="span" variant={TypographyVariant.BodySm} className="min-w-0 flex-1 truncate font-sans font-semibold">
+        <Typography as="span" variant={TypographyVariant.BodySm} className={cn('min-w-0 flex-1 font-sans font-semibold', wrapLabel ? 'py-3' : 'truncate')}>
           {label}
         </Typography>
         <ChevronDownIcon
