@@ -13,7 +13,7 @@ export interface FaqListProps {
 export function FaqList({ items }: FaqListProps) {
   const [openId, setOpenId] = useState<string | null>(null)
   return (
-    <ul className="border-t border-ink/9">
+    <ul className="border-t border-ink/9 [&>li:last-child>div]:border-b-0">
       {items.map((item) => (
         <li key={item.id}>
           <CollapsibleRow

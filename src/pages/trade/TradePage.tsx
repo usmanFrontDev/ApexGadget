@@ -6,7 +6,7 @@ import { Typography } from '@/components/ui/Typography'
 import { PAGE_BANNERS } from '@/constants/images'
 import { ROUTES } from '@/constants/routes'
 import { TRADE_IN_CONTENT, TRADE_IN_FIRST_FIELD_ID, TRADE_IN_FORM_ID } from '@/constants/trade'
-import { IconAnimation, PageBannerTone, TypographyAlign, TypographyTone, TypographyVariant } from '@/constants/ui'
+import { IconAnimation, TypographyAlign, TypographyTone, TypographyVariant } from '@/constants/ui'
 import { useSeo } from '@/hooks/useSeo'
 import { TradeInSection } from '@/sections/TradeInSection'
 
@@ -30,16 +30,14 @@ export default function TradePage() {
   return (
     <Container className="pt-4 sm:pt-6">
       <PageBanner
-        eyebrow={TRADE_IN_CONTENT.eyebrow}
+        breadcrumb={[{ label: 'Home', to: ROUTES.home }, { label: TRADE_IN_CONTENT.breadcrumb }]}
         title={TRADE_IN_CONTENT.title}
         lead={TRADE_IN_CONTENT.lead}
         image={PAGE_BANNERS.tradeIn.src}
         imageWidth={PAGE_BANNERS.tradeIn.width}
         imageHeight={PAGE_BANNERS.tradeIn.height}
-        tone={PageBannerTone.Dark}
-        artPositionClassName="object-[90%_center]"
         mobileContent={
-          <ol className="mx-auto mt-6 flex max-w-[360px] flex-col gap-2.5 text-left">
+          <ol className="mt-6 flex max-w-[420px] flex-col gap-2.5 text-left">
             {TRADE_IN_CONTENT.steps.map((step) => (
               <li key={step.number} className="flex items-center gap-3 rounded-full bg-surface/80 py-2 pl-2 pr-5 shadow-ring">
                 <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary/10 text-[13px] font-bold text-primary shadow-ring-primary">
@@ -70,7 +68,6 @@ export default function TradePage() {
             icon={<ArrowUpRightIcon />}
             iconAnimation={IconAnimation.PointRight}
             blockOnMobile
-            className="sm:mx-auto"
           >
             {TRADE_IN_CONTENT.getStarted}
           </Button>

@@ -33,5 +33,4 @@ export const THEME_COLORS: Record<ResolvedTheme, string> = {
 
 export const THEME_CONTENT = {
   toggle: 'Dark mode',
-  menuToggle: 'Dark mode',
 } as const

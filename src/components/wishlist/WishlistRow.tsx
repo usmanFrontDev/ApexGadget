@@ -5,17 +5,7 @@ import { Chip } from '@/components/ui/Chip'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Typography } from '@/components/ui/Typography'
 import { WISHLIST_CONTENT } from '@/constants/wishlist'
-import {
-  ButtonSize,
-  ButtonVariant,
-  ChipSize,
-  ChipVariant,
-  GlassCardVariant,
-  IconAnimation,
-  IconPosition,
-  TypographyTone,
-  TypographyVariant,
-} from '@/constants/ui'
+import { BUTTON_ICON_PX, ButtonSize, ButtonVariant, ChipSize, ChipVariant, GlassCardVariant, IconAnimation, IconPosition, TypographyTone, TypographyVariant } from '@/constants/ui'
 import { cn } from '@/lib/cn'
 import { labelFor } from '@/lib/filterLabels'
 import { formatPrice } from '@/lib/format'
@@ -28,7 +18,7 @@ export interface WishlistRowProps {
 }
 
 /**
- * A saved product as a list row: picture, details, and a right column with the price over the two buttons (stacked on phones).
+ * A saved product as a list row: picture, details, and a right column with the price over the two buttons. Phones: picture left, details right, only "Remove" under them; the whole card opens the product page (stretched title link).
  * Everything in the row is a saved item, so there is no heart: "Remove" takes it out.
  */
 export function WishlistRow({ product, onRemove }: WishlistRowProps) {
@@ -40,7 +30,7 @@ export function WishlistRow({ product, onRemove }: WishlistRowProps) {
     <GlassCard
       as="article"
       variant={GlassCardVariant.Soft}
-      className="group grid grid-cols-[92px_minmax(0,1fr)] items-center gap-x-4 gap-y-3 rounded-[18px] p-3 sm:grid-cols-[132px_minmax(0,1fr)_auto] sm:gap-x-6 sm:p-4"
+      className="group grid relative grid grid-cols-[92px_minmax(0,1fr)] items-center gap-x-4 gap-y-3 rounded-[18px] p-3 sm:grid-cols-[132px_minmax(0,1fr)_auto] sm:gap-x-6 sm:p-4"
     >
       <Link
         to={to}
@@ -75,12 +65,12 @@ export function WishlistRow({ product, onRemove }: WishlistRowProps) {
         <Typography variant={TypographyVariant.CardTitle} className="line-clamp-2">
           <Link
             to={to}
-            className="transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="transition-colors after:absolute after:inset-0 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             {title}
           </Link>
         </Typography>
-        <Typography variant={TypographyVariant.BodySm} tone={TypographyTone.Muted} className="mt-0.5 line-clamp-1">
+        <Typography variant={TypographyVariant.BodySm} tone={TypographyTone.Muted} className="mt-0.5 line-clamp-2 sm:line-clamp-1">
           {[subtitle, ...meta].filter(Boolean).join(' · ')}
         </Typography>
         {/* phones: the price sits under the details */}
@@ -90,31 +80,33 @@ export function WishlistRow({ product, onRemove }: WishlistRowProps) {
       </div>
 
       {/* sm+: price on top, the two buttons under it (a narrow right column leaves the room to the details). */}
-      <div className="col-span-2 flex flex-col gap-3 sm:col-span-1 sm:items-end">
+      <div className="relative z-10 col-span-2 flex flex-col gap-3 sm:col-span-1 sm:items-end">
         <Typography variant={TypographyVariant.Price} className="hidden whitespace-nowrap sm:block">
           {formatPrice(priceAmount, currencyCode)}
         </Typography>
-        <div className="flex items-center justify-between gap-3 sm:justify-end">
-        <Button
-          to={to}
-          size={ButtonSize.Xs}
-          icon={<ArrowUpRightIcon width={12} height={12} />}
-          iconAnimation={IconAnimation.PointRight}
-          className="shadow-primary-soft"
-        >
-          {WISHLIST_CONTENT.viewDetails}
-        </Button>
-        <Button
-          type="button"
-          variant={ButtonVariant.Secondary}
-          size={ButtonSize.Xs}
-          icon={<TrashIcon width={14} height={14} />}
-          iconPosition={IconPosition.Start}
-          onClick={onRemove}
-          aria-label={`Remove ${title} from favorites`}
-        >
-          {WISHLIST_CONTENT.remove}
-        </Button>
+        <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-end sm:gap-3">
+          <Button
+            to={to}
+            size={ButtonSize.Xs}
+            icon={<ArrowUpRightIcon />}
+            iconAnimation={IconAnimation.PointRight}
+            className="shadow-primary-soft max-sm:hidden"
+          >
+            {WISHLIST_CONTENT.viewDetails}
+          </Button>
+          <Button
+            type="button"
+            variant={ButtonVariant.Secondary}
+            size={ButtonSize.Xs}
+            icon={<TrashIcon width={BUTTON_ICON_PX} height={BUTTON_ICON_PX} />}
+            iconPosition={IconPosition.Start}
+            blockOnMobile
+            className="max-sm:w-full"
+            onClick={onRemove}
+            aria-label={`Remove ${title} from favorites`}
+          >
+            {WISHLIST_CONTENT.remove}
+          </Button>
         </div>
       </div>
     </GlassCard>

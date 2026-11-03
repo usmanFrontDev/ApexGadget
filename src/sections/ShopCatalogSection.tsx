@@ -11,14 +11,7 @@ import { SelectMenu } from '@/components/ui/SelectMenu'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { DESKTOP_FILTERS_QUERY } from '@/constants/shop'
 import { Typography } from '@/components/ui/Typography'
-import {
-  ButtonSize,
-  ButtonVariant,
-  GlassCardVariant,
-  IconPosition,
-  TypographyTone,
-  TypographyVariant,
-} from '@/constants/ui'
+import { BUTTON_ICON_PX, ButtonSize, ButtonVariant, GlassCardVariant, IconPosition, TypographyTone, TypographyVariant } from '@/constants/ui'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { getSortOptions, type ShopFiltersState } from '@/hooks/useShopFilters'
 import { useShopProducts } from '@/hooks/useShopProducts'
@@ -192,7 +185,7 @@ export function ShopCatalogSection({ shop }: ShopCatalogSectionProps) {
               <Button
                 variant={ButtonVariant.Secondary}
                 size={ButtonSize.Sm}
-                icon={<SlidersIcon />}
+                icon={<SlidersIcon width={BUTTON_ICON_PX} height={BUTTON_ICON_PX} />}
                 iconPosition={IconPosition.Start}
                 className="h-10"
                 onClick={() => setDrawerOpen(true)}

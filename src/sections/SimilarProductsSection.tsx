@@ -33,7 +33,7 @@ export function SimilarProductsSection({ handle, model }: SimilarProductsSection
             size={ButtonSize.Sm}
             icon={<ArrowUpRightIcon />}
             iconAnimation={IconAnimation.PointRight}
-            className="max-sm:w-full"
+            blockOnMobile
           >
             {copy.action}
           </Button>

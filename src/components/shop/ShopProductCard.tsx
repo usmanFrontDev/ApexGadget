@@ -33,9 +33,9 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
     <GlassCard
       as="article"
       variant={GlassCardVariant.Soft}
-      className="group flex h-full flex-col rounded-[18px] p-[15px]"
+      className="group flex h-full flex-col rounded-[18px] p-3 max-sm:mx-auto max-sm:w-full max-sm:max-w-[320px] sm:p-[15px]"
     >
-      <div className="relative h-[170px] overflow-hidden rounded-[16px]">
+      <div className="relative h-[190px] overflow-hidden rounded-[16px] sm:h-[170px]">
         {image ? (
           <>
             <span
@@ -47,7 +47,7 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
               alt={title}
               loading="lazy"
               className={cn(
-                'relative size-full object-contain px-4 pb-2 pt-8 transition-transform duration-300 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100',
+                'relative size-full object-contain px-4 pb-2 pt-6 transition-transform sm:pt-8 duration-300 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100',
                 soldOut && 'opacity-50 grayscale',
               )}
             />
@@ -104,7 +104,7 @@ export function ShopProductCard({ product }: ShopProductCardProps) {
         to={to}
         size={ButtonSize.Xs}
         fullWidth
-        icon={<ArrowUpRightIcon width={12} height={12} />}
+        icon={<ArrowUpRightIcon />}
         iconAnimation={IconAnimation.PointRight}
         className="mt-3 shadow-primary-soft"
       >

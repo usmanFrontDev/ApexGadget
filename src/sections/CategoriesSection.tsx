@@ -23,7 +23,7 @@ export function CategoriesSection() {
             size={ButtonSize.Sm}
             icon={<ArrowUpRightIcon />}
             iconAnimation={IconAnimation.PointRight}
-            className="max-sm:w-full"
+            blockOnMobile
           >
             All categories
           </Button>

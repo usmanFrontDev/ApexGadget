@@ -22,7 +22,7 @@ export function BestsellersSection() {
             size={ButtonSize.Sm}
             icon={<ArrowUpRightIcon />}
             iconAnimation={IconAnimation.PointRight}
-            className="max-sm:w-full"
+            blockOnMobile
           >
             View all
           </Button>

@@ -1,40 +1,62 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { BagIcon, CloseIcon, HeartIcon, MenuIcon, SwapIcon } from '@/components/icons'
 import { Logo } from '@/components/layout/Logo'
 import { ThemeToggle } from '@/components/layout/ThemeToggle'
+import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { IconButton } from '@/components/ui/IconButton'
 import { NAV_ITEMS } from '@/constants/navigation'
 import { ROUTES } from '@/constants/routes'
-import { THEME_CONTENT } from '@/constants/theme'
+import { BUTTON_ICON_PX, ButtonIconStyle, IconPosition } from '@/constants/ui'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { cn } from '@/lib/cn'
 import { useCartStore } from '@/store/useCartStore'
 import { useWishlistCount } from '@/store/useWishlistStore'
 
 export interface HeaderProps {
   cartCount?: number
-  userInitials?: string
 }
+
+/** Round header buttons: 44px touch targets, 40px on the narrowest phones so the bar still fits at 320px. */
+const barButtonClasses = 'max-[360px]:size-10'
 
 const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
   cn('text-sm font-semibold transition-colors hover:text-primary', isActive ? 'text-primary' : 'text-ink')
 
-export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
-  const [menuOpen, setMenuOpen] = useState(false)
+export function Header({ cartCount = 0 }: HeaderProps) {
+  const [menuRequested, setMenuRequested] = useState(false)
+  const isDesktop = useMediaQuery('(min-width: 1024px)')
+  // The full-screen menu only exists below lg: growing the window closes it.
+  const menuOpen = menuRequested && !isDesktop
   const wishlistCount = useWishlistCount()
   const openCartDrawer = useCartStore((state) => state.openDrawer)
   const onCartPage = useLocation().pathname === ROUTES.cart
-  const closeMenu = () => setMenuOpen(false)
+  const closeMenu = () => setMenuRequested(false)
+
+  // Full-screen menu: no page scroll behind it, Esc closes it.
+  useEffect(() => {
+    if (!menuOpen) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuRequested(false)
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [menuOpen])
 
   return (
     <header className="sticky top-0 z-50 pt-3 sm:pt-4">
       <Container>
         <div className="relative">
-          <div className="flex h-16 items-center gap-3 rounded-full bg-white/5 pl-[22px] pr-3 shadow-header backdrop-blur-[18px] lg:h-[84px] lg:pr-[22px]">
+          <div className="relative z-10 flex h-16 items-center gap-3 rounded-full bg-white/5 pl-4 pr-2 shadow-header backdrop-blur-[18px] sm:pl-[22px] sm:pr-3 lg:h-[84px] lg:pr-[22px]">
             <Link to={ROUTES.home} aria-label="Apex Gadgets — home" className="shrink-0">
-              <Logo className="h-8" />
+              <Logo className="h-7 sm:h-8" />
             </Link>
 
             <nav aria-label="Primary" className="ml-[60px] hidden items-center gap-[65px] lg:flex">
@@ -45,7 +67,7 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
               ))}
             </nav>
 
-            <div className="ml-auto flex items-center gap-2.5 sm:gap-3.5">
+            <div className="ml-auto flex items-center gap-2 sm:gap-3.5">
               <Link
                 to={ROUTES.trade}
                 className="hidden h-[34px] items-center gap-2 rounded-full bg-primary/9 pl-3 pr-3.5 text-xs font-bold tracking-[0.2px] text-primary shadow-ring-primary transition hover:bg-primary/14 lg:inline-flex"
@@ -54,13 +76,13 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
                 Get a Trade-in Quote
               </Link>
 
-              {/* From sm; on phones the switch is in the menu (no room in the bar). */}
-              <ThemeToggle className="max-sm:hidden" />
+              <ThemeToggle className={barButtonClasses} />
 
               <span className="relative inline-flex">
                 <IconButton
                   to={ROUTES.wishlist}
                   label={wishlistCount > 0 ? `Favorites, ${wishlistCount} saved` : 'Favorites'}
+                  className={barButtonClasses}
                 >
                   <HeartIcon />
                 </IconButton>
@@ -76,6 +98,7 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
                 <IconButton
                   label={`Cart, ${cartCount} items`}
                   data-cart-trigger=""
+                  className={barButtonClasses}
                   {...(onCartPage ? { to: ROUTES.cart, 'aria-current': 'page' as const } : { onClick: openCartDrawer })}
                 >
                   <BagIcon />
@@ -87,23 +110,13 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
                 )}
               </span>
 
-              <button
-                type="button"
-                aria-label="Account"
-                className="inline-flex h-12 items-center gap-3 rounded-full bg-surface/92 pl-1.5 pr-2 text-sm font-semibold text-ink shadow-ring transition hover:bg-surface sm:pl-[19px]"
-              >
-                <span className="hidden sm:inline">Account</span>
-                <span className="grid size-8 place-items-center rounded-full bg-primary text-xs font-bold text-white">
-                  {userInitials}
-                </span>
-              </button>
 
               <IconButton
                 label={menuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
-                onClick={() => setMenuOpen((open) => !open)}
-                className="lg:hidden"
+                onClick={() => setMenuRequested((open) => !open)}
+                className={cn('lg:hidden', barButtonClasses)}
               >
                 {menuOpen ? <CloseIcon /> : <MenuIcon />}
               </IconButton>
@@ -115,33 +128,43 @@ export function Header({ cartCount = 0, userInitials = '' }: HeaderProps) {
               <motion.nav
                 id="mobile-menu"
                 aria-label="Mobile"
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="absolute inset-x-0 top-full mt-2 flex flex-col gap-1 rounded-[28px] bg-surface/90 p-3 shadow-glass-hero backdrop-blur-[18px] lg:hidden"
+                className="fixed inset-0 z-0 overflow-y-auto overscroll-contain bg-canvas/95 px-3 pb-[max(2rem,env(safe-area-inset-bottom))] pt-[92px] backdrop-blur-[24px] sm:px-6 sm:pt-[100px]"
               >
-                {NAV_ITEMS.map((item) => (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    onClick={closeMenu}
-                    className={(state) => cn(navLinkClasses(state), 'rounded-2xl px-4 py-3 text-base')}
-                  >
-                    {item.label}
-                  </NavLink>
-                ))}
-                <Link
-                  to={ROUTES.trade}
-                  onClick={closeMenu}
-                  className="mt-1 rounded-2xl bg-primary/9 px-4 py-3 text-sm font-bold text-primary"
-                >
-                  Get a Trade-in Quote
-                </Link>
-                <div className="mt-1 flex items-center justify-between rounded-2xl px-4 py-1 sm:hidden">
-                  <span className="text-base font-semibold text-ink">{THEME_CONTENT.menuToggle}</span>
-                  <ThemeToggle />
-                </div>
+                <ul className="mx-auto flex min-h-full max-w-[520px] flex-col gap-1">
+                  {NAV_ITEMS.map((item, index) => (
+                    <motion.li
+                      key={item.to}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.25, delay: 0.04 * index }}
+                    >
+                      <NavLink
+                        to={item.to}
+                        onClick={closeMenu}
+                        className={(state) => cn(navLinkClasses(state), 'block rounded-2xl px-4 py-4 text-2xl font-bold')}
+                      >
+                        {item.label}
+                      </NavLink>
+                    </motion.li>
+                  ))}
+                  <li className="mt-4">
+                    <Button
+                      to={ROUTES.trade}
+                      onClick={closeMenu}
+                      icon={<SwapIcon width={BUTTON_ICON_PX} height={BUTTON_ICON_PX} />}
+                      iconStyle={ButtonIconStyle.Plain}
+                      iconPosition={IconPosition.Start}
+                      blockOnMobile
+                      className="sm:mx-auto sm:flex sm:w-[320px]"
+                    >
+                      Get a Trade-in Quote
+                    </Button>
+                  </li>
+                </ul>
               </motion.nav>
             )}
           </AnimatePresence>

@@ -4,7 +4,7 @@ import { CartLiveRegion } from '@/components/cart/CartLiveRegion'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
-import { MOCK_USER_INITIALS } from '@/constants/mock'
+import { WhatsAppFloat } from '@/components/layout/WhatsAppFloat'
 import { useCartCount } from '@/hooks/useCart'
 import { NewsletterSection } from '@/sections/NewsletterSection'
 
@@ -20,13 +20,14 @@ export function RootLayout() {
       </div>
 
       <ScrollToTop />
-      <Header cartCount={cartCount} userInitials={MOCK_USER_INITIALS} />
+      <Header cartCount={cartCount} />
       <main>
         <Outlet />
       </main>
       <NewsletterSection />
       <Footer />
       <CartDrawer />
+      <WhatsAppFloat />
       <CartLiveRegion />
     </div>
   )
