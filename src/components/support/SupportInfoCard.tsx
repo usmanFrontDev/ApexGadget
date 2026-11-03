@@ -27,9 +27,8 @@ export function SupportInfoCard({ id, icon, title, text, linkLabel, image, onOpe
       data-hover-scope=""
       className="group h-full scroll-mt-28 rounded-[24px] bg-gradient-to-br from-white/90 via-white/65 to-primary/10"
     >
-      {/* Premium glass: a blush glow behind the picture (bottom right) and a faint one at the top left. */}
+      {/* Premium glass: one blush glow behind the picture, bottom right. */}
       <GlassGlow className="-bottom-20 -right-16 size-[320px]" />
-      <GlassGlow className="-left-24 -top-24 size-[220px] opacity-40" />
       <div id={id} className="absolute -top-28" aria-hidden="true" />
       <div className="relative flex h-full min-h-[200px] flex-col p-5 sm:p-6">
         <span aria-hidden="true" className="grid size-11 place-items-center rounded-full bg-white/70 text-primary shadow-ring-primary backdrop-blur-md">

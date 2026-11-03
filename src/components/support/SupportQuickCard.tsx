@@ -49,7 +49,7 @@ export function SupportQuickCard({ icon, title, text, href, target, onClick }: S
       data-hover-scope=""
       className="group h-full rounded-[20px] bg-gradient-to-br from-white/90 via-white/65 to-primary/8"
     >
-      <GlassGlow className="-left-10 -top-12 size-[170px]" />
+      <GlassGlow className="-bottom-16 -right-12 size-[190px] opacity-50" />
       {interactive ? (
         <ActionElement
           href={href}
