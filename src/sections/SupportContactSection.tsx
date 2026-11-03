@@ -30,8 +30,10 @@ export function SupportContactSection() {
             </div>
           </div>
 
-          <div className="hidden flex-col items-center justify-center border-l border-ink/9 px-8 py-10 text-center lg:flex">
-            <img src={supportCardImage} alt="" width={1153} height={1364} loading="lazy" className="h-auto w-full max-w-[300px]" />
+          <div className="relative hidden flex-col items-center justify-center px-8 py-10 text-center lg:flex">
+            {/* Divider that stops short of the card's top and bottom edges (as in the design). */}
+            <span aria-hidden="true" className="absolute inset-y-8 left-0 w-px bg-ink/9" />
+            <img src={supportCardImage} alt="" width={1153} height={1364} loading="lazy" className="h-auto w-full max-w-[300px] mix-blend-multiply" />
             <Typography as="p" variant={TypographyVariant.Subtitle} className="-mt-8">
               {contact.sideTitle}
             </Typography>

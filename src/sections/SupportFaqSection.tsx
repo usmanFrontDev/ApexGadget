@@ -88,7 +88,10 @@ export function SupportFaqSection() {
               />
             </div>
           </div>
-          <div className="min-w-0 lg:border-l lg:border-ink/9 lg:p-8">{list}</div>
+          <div className="relative min-w-0 lg:p-8">
+            <span aria-hidden="true" className="absolute inset-y-8 left-0 hidden w-px bg-ink/9 lg:block" />
+            {list}
+          </div>
         </div>
       </GlassCard>
     </section>
