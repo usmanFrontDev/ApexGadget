@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { ArrowRightIcon } from '@/components/icons'
 import { GlassCard } from '@/components/ui/GlassCard'
+import { GlassGlow } from '@/components/ui/GlassGlow'
 import { Typography } from '@/components/ui/Typography'
 import { GlassCardVariant, IconAnimation, TypographyTone, TypographyVariant } from '@/constants/ui'
 import { AnimatedIcon } from '@/components/ui/AnimatedIcon'
@@ -20,10 +21,18 @@ export interface SupportInfoCardProps {
 /** Info card: badge, title, text, a red link that opens the full text, and a picture on the right. */
 export function SupportInfoCard({ id, icon, title, text, linkLabel, image, onOpen }: SupportInfoCardProps) {
   return (
-    <GlassCard as="article" variant={GlassCardVariant.Soft} data-hover-scope="" className="h-full scroll-mt-28 rounded-[24px]">
+    <GlassCard
+      as="article"
+      variant={GlassCardVariant.Promo}
+      data-hover-scope=""
+      className="group h-full scroll-mt-28 rounded-[24px] bg-gradient-to-br from-white/90 via-white/65 to-primary/10"
+    >
+      {/* Premium glass: a blush glow behind the picture (bottom right) and a faint one at the top left. */}
+      <GlassGlow className="-bottom-20 -right-16 size-[320px]" />
+      <GlassGlow className="-left-24 -top-24 size-[220px] opacity-40" />
       <div id={id} className="absolute -top-28" aria-hidden="true" />
       <div className="relative flex h-full min-h-[200px] flex-col p-5 sm:p-6">
-        <span aria-hidden="true" className="grid size-11 place-items-center rounded-full bg-primary/10 text-primary shadow-ring-primary">
+        <span aria-hidden="true" className="grid size-11 place-items-center rounded-full bg-white/70 text-primary shadow-ring-primary backdrop-blur-md">
           {icon}
         </span>
         <div className="mt-4 max-w-[62%] sm:max-w-[58%]">
@@ -49,7 +58,7 @@ export function SupportInfoCard({ id, icon, title, text, linkLabel, image, onOpe
           src={image}
           alt=""
           loading="lazy"
-          className="pointer-events-none absolute bottom-3 right-3 h-[62%] max-h-[150px] w-auto max-w-[40%] object-contain"
+          className="pointer-events-none absolute bottom-3 right-3 h-[62%] max-h-[150px] w-auto max-w-[40%] object-contain drop-shadow-[0_14px_18px_rgb(20_20_22/0.18)]"
         />
       </div>
     </GlassCard>

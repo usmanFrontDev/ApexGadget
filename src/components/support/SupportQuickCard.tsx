@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { ArrowRightIcon } from '@/components/icons'
 import { ActionElement } from '@/components/ui/ActionElement'
 import { GlassCard } from '@/components/ui/GlassCard'
+import { GlassGlow } from '@/components/ui/GlassGlow'
 import { IconCircle } from '@/components/ui/IconCircle'
 import { Typography } from '@/components/ui/Typography'
 import { GlassCardVariant, IconAnimation, TypographyTone, TypographyVariant } from '@/constants/ui'
@@ -21,7 +22,7 @@ export function SupportQuickCard({ icon, title, text, href, target, onClick }: S
   const interactive = Boolean(href || onClick)
   const body = (
     <>
-      <span aria-hidden="true" className="grid size-11 place-items-center rounded-full bg-primary/10 text-primary shadow-ring-primary">
+      <span aria-hidden="true" className="relative grid size-11 place-items-center rounded-full bg-white/70 text-primary shadow-ring-primary backdrop-blur-md">
         {icon}
       </span>
       <div className="mt-4 flex items-end justify-between gap-3">
@@ -34,7 +35,7 @@ export function SupportQuickCard({ icon, title, text, href, target, onClick }: S
           </Typography>
         </div>
         {interactive && (
-          <IconCircle iconAnimation={IconAnimation.NudgeRight} className="size-9 shrink-0 text-ink shadow-ring">
+          <IconCircle iconAnimation={IconAnimation.NudgeRight} className="relative size-9 shrink-0 text-ink shadow-ring">
             <ArrowRightIcon width={15} height={15} />
           </IconCircle>
         )}
@@ -43,19 +44,24 @@ export function SupportQuickCard({ icon, title, text, href, target, onClick }: S
   )
 
   return (
-    <GlassCard variant={GlassCardVariant.Soft} className="h-full rounded-[20px]" data-hover-scope="">
+    <GlassCard
+      variant={GlassCardVariant.Promo}
+      data-hover-scope=""
+      className="group h-full rounded-[20px] bg-gradient-to-br from-white/90 via-white/65 to-primary/8"
+    >
+      <GlassGlow className="-left-10 -top-12 size-[170px]" />
       {interactive ? (
         <ActionElement
           href={href}
           target={target}
           rel={target === '_blank' ? 'noopener noreferrer' : undefined}
           onClick={onClick}
-          className="block h-full w-full cursor-pointer p-5 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
+          className="relative block h-full w-full cursor-pointer p-5 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
         >
           {body}
         </ActionElement>
       ) : (
-        <div className="h-full p-5">{body}</div>
+        <div className="relative h-full p-5">{body}</div>
       )}
     </GlassCard>
   )
