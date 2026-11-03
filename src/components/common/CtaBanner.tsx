@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react'
-import { ActionElement } from '@/components/ui/ActionElement'
+import { Link } from 'react-router-dom'
 import { ArrowUpRightIcon } from '@/components/icons'
 import { IconCircle } from '@/components/ui/IconCircle'
 import { Typography } from '@/components/ui/Typography'
@@ -9,26 +8,17 @@ import { cn } from '@/lib/cn'
 export interface CtaBannerProps {
   title: string
   description: string
-  /** Internal route. */
-  to?: string
-  /** Anchor / external URL (use `target="_blank"` for external). */
-  href?: string
-  target?: string
-  /** Replaces the arrow in the round button (e.g. WhatsApp). */
-  icon?: ReactNode
+  to: string
   /** Optional art on the left (a red phone); without it the banner is text only. */
   image?: string
   className?: string
 }
 
 /** Dark gradient banner, the whole thing is a link (no transforms on the link: stretched-link rule). */
-export function CtaBanner({ title, description, to, href, target, icon, image, className }: CtaBannerProps) {
+export function CtaBanner({ title, description, to, image, className }: CtaBannerProps) {
   return (
-    <ActionElement
+    <Link
       to={to}
-      href={href}
-      target={target}
-      rel={target === '_blank' ? 'noopener noreferrer' : undefined}
       data-hover-scope=""
       className={cn(
         'group relative flex flex-col items-center gap-4 overflow-hidden rounded-[22px] bg-[linear-gradient(135deg,#17070a_0%,#0c0c0e_62%)] px-5 py-6 text-center shadow-banner focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:flex-row sm:gap-6 sm:px-8 sm:py-6 sm:text-left',
@@ -68,8 +58,8 @@ export function CtaBanner({ title, description, to, href, target, icon, image, c
         iconAnimation={IconAnimation.PointRight}
         className="relative size-11 shrink-0 bg-white/10 text-white shadow-ring group-hover:bg-white/20"
       >
-        {icon ?? <ArrowUpRightIcon width={15} height={15} />}
+        <ArrowUpRightIcon width={15} height={15} />
       </IconCircle>
-    </ActionElement>
+    </Link>
   )
 }

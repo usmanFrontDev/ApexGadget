@@ -115,10 +115,6 @@ export const SUPPORT_CONTENT = {
     error: "We couldn't load the questions.",
     retry: 'Try again',
   },
-  cta: {
-    title: 'Jawab nahi mila?',
-    text: 'WhatsApp par poochho — hum madad ke liye yahan hain.',
-  },
   closePanel: 'Close',
   form: {
     name: 'Your Name',

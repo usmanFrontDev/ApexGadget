@@ -18,7 +18,6 @@ import { PageBannerTone } from '@/constants/ui'
 import { useActiveSection } from '@/hooks/useActiveSection'
 import { useSeo } from '@/hooks/useSeo'
 import { SupportContactSection } from '@/sections/SupportContactSection'
-import { SupportCtaSection } from '@/sections/SupportCtaSection'
 import { SupportFaqSection } from '@/sections/SupportFaqSection'
 import { SupportInfoCardsSection } from '@/sections/SupportInfoCardsSection'
 import { SupportQuickHelpSection } from '@/sections/SupportQuickHelpSection'
@@ -72,7 +71,6 @@ export default function SupportPage() {
       <SupportContactSection />
       <SupportInfoCardsSection onOpen={setPanel} />
       <SupportFaqSection />
-      <SupportCtaSection />
 
       <SupportInfoDrawer panel={panel} onClose={() => setPanel(null)} />
     </Container>
