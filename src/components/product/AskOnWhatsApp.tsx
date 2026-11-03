@@ -3,15 +3,7 @@ import { Button } from '@/components/ui/Button'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Typography } from '@/components/ui/Typography'
 import { PRODUCT_CONTENT } from '@/constants/product'
-import {
-  ButtonSize,
-  ButtonVariant,
-  GlassCardVariant,
-  IconPosition,
-  TypographyAlign,
-  TypographyTone,
-  TypographyVariant,
-} from '@/constants/ui'
+import { BUTTON_ICON_PX, ButtonSize, ButtonVariant, GlassCardVariant, IconPosition, TypographyAlign, TypographyTone, TypographyVariant } from '@/constants/ui'
 import { useWhatsAppNumber } from '@/hooks/useWhatsAppNumber'
 import { buildProductInquiryUrl } from '@/lib/productInquiry'
 
@@ -49,9 +41,9 @@ export function AskOnWhatsApp({ title, storage, pageUrl }: AskOnWhatsAppProps) {
           rel="noopener noreferrer"
           variant={ButtonVariant.Secondary}
           size={ButtonSize.Sm}
-          icon={<WhatsAppIcon width={15} height={15} />}
+          icon={<WhatsAppIcon width={BUTTON_ICON_PX} height={BUTTON_ICON_PX} />}
           iconPosition={IconPosition.Start}
-          className="max-sm:w-full"
+          blockOnMobile
         >
           {ask.button}
         </Button>

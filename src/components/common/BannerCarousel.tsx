@@ -38,7 +38,7 @@ export function BannerCarousel({ slides, autoPlayMs, className }: BannerCarousel
         onMouseLeave={() => setPaused(false)}
         onFocus={() => setPaused(true)}
         onBlur={() => setPaused(false)}
-        className="relative aspect-[4/3] overflow-hidden rounded-[22px] bg-[#1a0407] shadow-banner sm:aspect-[1215/531] sm:rounded-[56px]"
+        className="relative aspect-[16/9] overflow-hidden rounded-[22px] bg-[#1a0407] shadow-banner sm:aspect-[1215/531] sm:rounded-[56px]"
       >
         <AnimatePresence initial={false}>
           <motion.img

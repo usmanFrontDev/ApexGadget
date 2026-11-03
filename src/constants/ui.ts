@@ -25,6 +25,9 @@ export const IconPosition = {
 export type IconPosition = (typeof IconPosition)[keyof typeof IconPosition]
 
 /** `Circle` = icon inside a dark round badge, `Plain` = bare icon. */
+/** One size for every non-arrow icon inside a Button's round badge (the arrow icon keeps its own 14px). */
+export const BUTTON_ICON_PX = 18
+
 export const ButtonIconStyle = {
   Circle: 'circle',
   Plain: 'plain',
@@ -124,13 +127,6 @@ export const TypographyAlign = {
   CenterBelowLg: 'center-below-lg',
 } as const
 export type TypographyAlign = (typeof TypographyAlign)[keyof typeof TypographyAlign]
-
-/** Look of the page banner artwork (decides the panel colour behind the phone crop below `lg`). */
-export const PageBannerTone = {
-  Light: 'light',
-  Dark: 'dark',
-} as const
-export type PageBannerTone = (typeof PageBannerTone)[keyof typeof PageBannerTone]
 
 /** Red-tint message boxes: `Unavailable` is announced as an alert, `Error` politely (the parent is a live region). */
 export const NoticeVariant = {

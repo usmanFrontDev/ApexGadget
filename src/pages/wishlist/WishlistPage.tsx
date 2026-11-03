@@ -3,7 +3,6 @@ import { Reveal } from '@/components/common/Reveal'
 import { CtaBanner } from '@/components/common/CtaBanner'
 import { PageBanner } from '@/components/common/PageBanner'
 import { HeartIcon, SearchIcon } from '@/components/icons'
-import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { Button } from '@/components/ui/Button'
 import { Chip } from '@/components/ui/Chip'
 import { Container } from '@/components/ui/Container'
@@ -21,7 +20,6 @@ import {
   ButtonSize,
   ChipSize,
   GlassCardVariant,
-  PageBannerTone,
   TypographyTone,
   TypographyVariant,
 } from '@/constants/ui'
@@ -139,17 +137,14 @@ export default function WishlistPage() {
   return (
     <Container className="pt-4 sm:pt-6">
       <PageBanner
-        breadcrumb={<Breadcrumb items={[{ label: 'Home', to: ROUTES.home }, { label: WISHLIST_CONTENT.breadcrumb }]} />}
-        eyebrow={WISHLIST_CONTENT.eyebrow}
+        breadcrumb={[{ label: 'Home', to: ROUTES.home }, { label: WISHLIST_CONTENT.breadcrumb }]}
         title={WISHLIST_CONTENT.title}
         lead={WISHLIST_CONTENT.lead}
         image={PAGE_BANNERS.wishlist.src}
         imageWidth={PAGE_BANNERS.wishlist.width}
         imageHeight={PAGE_BANNERS.wishlist.height}
-        tone={PageBannerTone.Light}
-        artPositionClassName="object-[84%_center]"
         mobileContent={
-          <div className="mt-5 flex justify-center">
+          <div className="mt-5 flex">
             <Chip size={ChipSize.Lg} icon={<HeartIcon width={15} height={15} className="text-primary" fill="currentColor" />}>
               {WISHLIST_CONTENT.savedItems}: {count}
             </Chip>

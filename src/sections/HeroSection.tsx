@@ -81,7 +81,7 @@ export function HeroSection() {
             {...secondaryCta}
             variant={ButtonVariant.Secondary}
             size={ButtonSize.Lg}
-            className="max-sm:w-full"
+            blockOnMobile
           >
             {secondaryCta.label}
           </Button>

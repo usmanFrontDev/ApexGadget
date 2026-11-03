@@ -1,7 +1,7 @@
 import { HeartIcon } from '@/components/icons'
 import { Button } from '@/components/ui/Button'
 import { IconButton } from '@/components/ui/IconButton'
-import { ButtonSize, ButtonVariant, IconButtonSize, IconPosition } from '@/constants/ui'
+import { BUTTON_ICON_PX, ButtonSize, ButtonVariant, IconButtonSize, IconPosition } from '@/constants/ui'
 import { cn } from '@/lib/cn'
 import { useIsWishlisted, useWishlistStore } from '@/store/useWishlistStore'
 
@@ -14,6 +14,8 @@ export interface WishlistButtonProps {
   label?: { add: string; saved: string }
   /** Size of the labelled button. */
   buttonSize?: ButtonSize
+  /** Labelled button only: 80% wide and centred on phones. */
+  blockOnMobile?: boolean
   className?: string
 }
 
@@ -24,12 +26,13 @@ export function WishlistButton({
   size = IconButtonSize.Sm,
   label,
   buttonSize = ButtonSize.Lg,
+  blockOnMobile = false,
   className,
 }: WishlistButtonProps) {
   const saved = useIsWishlisted(handle)
   const toggle = useWishlistStore((state) => state.toggle)
   const accessibleName = saved ? `Remove ${title} from favorites` : `Add ${title} to favorites`
-  const heart = <HeartIcon width={16} height={16} fill={saved ? 'currentColor' : 'none'} />
+  const heart = <HeartIcon width={BUTTON_ICON_PX} height={BUTTON_ICON_PX} fill={saved ? 'currentColor' : 'none'} />
 
   if (label) {
     return (
@@ -39,6 +42,7 @@ export function WishlistButton({
         size={buttonSize}
         icon={heart}
         iconPosition={IconPosition.Start}
+        blockOnMobile={blockOnMobile}
         aria-label={accessibleName}
         aria-pressed={saved}
         onClick={() => toggle(handle)}

@@ -1,51 +1,34 @@
 import type { ReactNode } from 'react'
-import { Chip } from '@/components/ui/Chip'
-import { GlassCard } from '@/components/ui/GlassCard'
+import { Breadcrumb, type BreadcrumbItem } from '@/components/ui/Breadcrumb'
 import { Typography } from '@/components/ui/Typography'
-import {
-  ChipSize,
-  GlassCardVariant,
-  PageBannerTone,
-  TypographyAlign,
-  TypographyTone,
-  TypographyVariant,
-} from '@/constants/ui'
-import { cn } from '@/lib/cn'
+import { TypographyTone, TypographyVariant } from '@/constants/ui'
 
 export interface PageBannerProps {
-  eyebrow: string
   title: string
   lead: string
-  /** Finished banner artwork (copy included), shown from `lg`. */
+  /** Finished banner artwork (copy included): the same file on every screen size, shown at its own ratio. */
   image: string
   imageWidth: number
   imageHeight: number
-  tone: PageBannerTone
-  /** `object-position` class of the phones crop below `lg`, e.g. `object-[85%_center]`. */
-  artPositionClassName: string
-  /** Breadcrumb above the banner. */
-  breadcrumb?: ReactNode
-  /** Below `lg`, between the lead and the art (e.g. the 3 steps). */
+  breadcrumb: readonly BreadcrumbItem[]
+  /** Below `lg`, between the lead and the banner (e.g. the 3 steps): on desktop the artwork already shows it. */
   mobileContent?: ReactNode
-  /** Below `lg`, under the art (e.g. the "Get Started" button). */
+  /** Below `lg`, under the banner (e.g. the "Get Started" button). */
   mobileAction?: ReactNode
   className?: string
 }
 
 /**
- * Hero banner of the Trade-In and Favorites pages.
- * lg and up: the artwork is the banner; its copy is also in the page as visually hidden text (heading, lead).
- * Below lg: centred glass card with the real heading + lead, optional content, a crop of the phones, optional action.
+ * Start of the Trade-In, Favorites and Support pages, the same pattern as the shop page on every screen size:
+ * breadcrumb, `h1`, lead, then the banner artwork at its natural ratio (never cropped, so any banner uploaded in
+ * Shopify fits).
  */
 export function PageBanner({
-  eyebrow,
   title,
   lead,
   image,
   imageWidth,
   imageHeight,
-  tone,
-  artPositionClassName,
   breadcrumb,
   mobileContent,
   mobileAction,
@@ -53,51 +36,25 @@ export function PageBanner({
 }: PageBannerProps) {
   return (
     <section className={className}>
-      {breadcrumb && <div className="mb-3 sm:mb-4">{breadcrumb}</div>}
+      <Breadcrumb items={breadcrumb} />
 
-      <GlassCard variant={GlassCardVariant.Hero} className="lg:bg-transparent lg:backdrop-blur-none">
-        <img
-          src={image}
-          alt=""
-          width={imageWidth}
-          height={imageHeight}
-          className="hidden h-auto w-full lg:block"
-        />
+      <Typography variant={TypographyVariant.Display} className="mt-5 sm:text-[38px] xl:text-[38px] xl:leading-[1.1]">
+        {title}
+      </Typography>
+      <Typography variant={TypographyVariant.Lead} tone={TypographyTone.Muted} className="mt-2.5 max-w-[460px]">
+        {lead}
+      </Typography>
+      {mobileContent && <div className="lg:hidden">{mobileContent}</div>}
 
-        <div className="px-4 pb-0 pt-6 text-center sm:px-8 sm:pt-8 lg:sr-only">
-          <Chip size={ChipSize.Xs} icon={<span aria-hidden="true" className="size-1.5 rounded-full bg-primary" />}>
-            <span className="font-bold uppercase tracking-[1.2px]">{eyebrow}</span>
-          </Chip>
-          <Typography variant={TypographyVariant.Display} align={TypographyAlign.Center} className="mt-4 text-balance">
-            {title}
-          </Typography>
-          <Typography
-            variant={TypographyVariant.Lead}
-            tone={TypographyTone.Muted}
-            align={TypographyAlign.Center}
-            className="mx-auto mt-3 max-w-[480px]"
-          >
-            {lead}
-          </Typography>
-          {mobileContent}
-        </div>
+      <img
+        src={image}
+        alt=""
+        width={imageWidth}
+        height={imageHeight}
+        className="mt-6 block h-auto w-full rounded-[16px] shadow-[0_18px_40px_rgb(20_20_22/0.18)]"
+      />
 
-        <div className="relative mx-3 mb-3 mt-5 overflow-hidden rounded-[20px] sm:mx-auto sm:mb-6 sm:w-full sm:max-w-[560px] lg:hidden">
-          <img
-            src={image}
-            alt=""
-            width={imageWidth}
-            height={imageHeight}
-            className={cn(
-              'block aspect-[4/3] w-full object-cover',
-              tone === PageBannerTone.Dark ? 'bg-ink-deep' : 'bg-canvas',
-              artPositionClassName,
-            )}
-          />
-        </div>
-
-        {mobileAction && <div className="flex flex-col items-stretch px-4 pb-4 sm:items-center sm:px-8 sm:pb-6 lg:hidden">{mobileAction}</div>}
-      </GlassCard>
+      {mobileAction && <div className="mt-5 flex flex-col items-stretch sm:items-center lg:hidden">{mobileAction}</div>}
     </section>
   )
 }

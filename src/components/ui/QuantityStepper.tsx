@@ -20,10 +20,10 @@ export interface QuantityStepperProps {
   className?: string
 }
 
-const sizeClasses: Record<QuantityStepperSize, { root: string; button: string; value: string }> = {
-  [QuantityStepperSize.Md]: { root: 'h-[52px] gap-1 px-1.5', button: 'size-10', value: 'min-w-8 text-[14.5px]' },
-  [QuantityStepperSize.Sm]: { root: 'h-[42px] gap-0.5 px-1', button: 'size-9', value: 'min-w-7 text-[14px]' },
-  [QuantityStepperSize.Xs]: { root: 'h-[38px] gap-0 px-0.5', button: 'size-[34px]', value: 'min-w-6 text-[13.5px]' },
+const sizeClasses: Record<QuantityStepperSize, { root: string; button: string; value: string; trash: number }> = {
+  [QuantityStepperSize.Md]: { root: 'h-[52px] gap-1 px-1.5', button: 'size-10', value: 'min-w-8 text-[14.5px]', trash: 20 },
+  [QuantityStepperSize.Sm]: { root: 'h-[42px] gap-0.5 px-1', button: 'size-9', value: 'min-w-7 text-[14px]', trash: 18 },
+  [QuantityStepperSize.Xs]: { root: 'h-[38px] gap-0 px-0.5', button: 'size-[34px]', value: 'min-w-6 text-[13.5px]', trash: 17 },
 }
 
 const stepButton =
@@ -55,7 +55,7 @@ export function QuantityStepper({
     >
       {removes ? (
         <button type="button" aria-label={removeLabel ?? 'Remove'} disabled={disabled} onClick={onRemove} className={cn(stepButton, sizing.button)}>
-          <TrashIcon width={15} height={15} />
+          <TrashIcon width={sizing.trash} height={sizing.trash} />
         </button>
       ) : (
         <button

@@ -22,15 +22,7 @@ import {
   TRADE_IN_STEPS,
   TradeInStep,
 } from '@/constants/trade'
-import {
-  ButtonSize,
-  ButtonVariant,
-  GlassCardVariant,
-  IconAnimation,
-  IconPosition,
-  TypographyTone,
-  TypographyVariant,
-} from '@/constants/ui'
+import { BUTTON_ICON_PX, ButtonSize, ButtonVariant, GlassCardVariant, IconAnimation, IconPosition, TypographyTone, TypographyVariant } from '@/constants/ui'
 import { clearTradeInDraft, loadTradeInDraft, useTradeInDraft } from '@/hooks/useTradeInDraft'
 import { useTradeInSettings } from '@/hooks/useTradeInSettings'
 import { TRADE_IN_STEP_FIELDS, tradeInSchema, type TradeInValues } from '@/lib/schemas/tradeIn.schema'
@@ -222,7 +214,7 @@ export function TradeInSection() {
                       variant={ButtonVariant.Secondary}
                       size={ButtonSize.Lg}
                       onClick={() => goToStep((step - 1) as TradeInStep)}
-                      className="max-sm:w-full"
+                      blockOnMobile
                     >
                       {buttons.back}
                     </Button>
@@ -231,10 +223,10 @@ export function TradeInSection() {
                     type="button"
                     variant={ButtonVariant.Secondary}
                     size={ButtonSize.Lg}
-                    icon={<ReturnIcon width={16} height={16} />}
+                    icon={<ReturnIcon width={BUTTON_ICON_PX} height={BUTTON_ICON_PX} />}
                     iconPosition={IconPosition.Start}
                     onClick={clearAll}
-                    className="max-sm:w-full"
+                    blockOnMobile
                   >
                     {buttons.clear}
                   </Button>
@@ -244,7 +236,7 @@ export function TradeInSection() {
                   <Button
                     type="submit"
                     size={ButtonSize.Lg}
-                    icon={<WhatsAppIcon width={17} height={17} />}
+                    icon={<WhatsAppIcon width={BUTTON_ICON_PX} height={BUTTON_ICON_PX} />}
                     disabled={settings.isPending || numberMissing || form.formState.isSubmitting}
                     blockOnMobile
                   >

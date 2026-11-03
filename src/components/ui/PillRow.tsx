@@ -7,7 +7,7 @@ export interface PillRowProps {
 }
 
 /**
- * Horizontally scrolling row of pills (shop quick filters, Support section tabs). The padding (offset by negative
+ * Horizontally scrolling row of pills (shop quick filters). The padding (offset by negative
  * margins) leaves room for the active pill's shadow, which the scroll container would otherwise clip into a visible box.
  */
 export function PillRow({ label, children }: PillRowProps) {

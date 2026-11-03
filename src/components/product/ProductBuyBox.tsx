@@ -164,7 +164,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
             </Button>
           ) : line ? (
             // Added: the button turns into the quantity control, like on the product cards (trash at 1).
-            <CartQuantityControl line={line} removable className="max-sm:w-full max-sm:justify-between" />
+            <CartQuantityControl line={line} removable className="max-sm:mx-auto max-sm:w-4/5 max-sm:justify-between" />
           ) : (
             <Button
               type="button"
@@ -183,7 +183,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
             title={product.title}
             label={PRODUCT_CONTENT.favorite}
             buttonSize={ButtonSize.Lg}
-            className="max-sm:w-full max-sm:justify-center"
+            blockOnMobile
           />
         </div>
 

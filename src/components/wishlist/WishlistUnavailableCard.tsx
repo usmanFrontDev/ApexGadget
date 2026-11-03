@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/Button'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Typography } from '@/components/ui/Typography'
 import { WISHLIST_CONTENT } from '@/constants/wishlist'
-import { ButtonSize, ButtonVariant, GlassCardVariant, IconPosition, TypographyTone, TypographyVariant } from '@/constants/ui'
+import { BUTTON_ICON_PX, ButtonSize, ButtonVariant, GlassCardVariant, IconPosition, TypographyTone, TypographyVariant } from '@/constants/ui'
 
 export interface WishlistUnavailableCardProps {
   onRemove: () => void
@@ -27,7 +27,7 @@ export function WishlistUnavailableCard({ onRemove }: WishlistUnavailableCardPro
         type="button"
         variant={ButtonVariant.Secondary}
         size={ButtonSize.Xs}
-        icon={<TrashIcon width={14} height={14} />}
+        icon={<TrashIcon width={BUTTON_ICON_PX} height={BUTTON_ICON_PX} />}
         iconPosition={IconPosition.Start}
         onClick={onRemove}
         className="max-sm:w-full"

@@ -5,7 +5,7 @@ import { Typography } from '@/components/ui/Typography'
 import { PAGE_BANNERS } from '@/constants/images'
 import { ROUTES } from '@/constants/routes'
 import { TRADE_IN_CONTENT } from '@/constants/trade'
-import { ButtonSize, ButtonVariant, TypographyAlign, TypographyTone, TypographyVariant } from '@/constants/ui'
+import { BUTTON_ICON_PX, ButtonSize, ButtonVariant, TypographyAlign, TypographyTone, TypographyVariant } from '@/constants/ui'
 
 export interface TradeInSuccessProps {
   /** Focus target: the heading. */
@@ -44,7 +44,7 @@ export function TradeInSuccess({ whatsAppUrl, headingRef }: TradeInSuccessProps)
             target="_blank"
             rel="noopener noreferrer"
             size={ButtonSize.Lg}
-            icon={<WhatsAppIcon width={17} height={17} />}
+            icon={<WhatsAppIcon width={BUTTON_ICON_PX} height={BUTTON_ICON_PX} />}
             blockOnMobile
           >
             {success.open}

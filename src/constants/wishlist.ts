@@ -20,7 +20,6 @@ export const WISHLIST_SORT_OPTIONS: readonly { value: WishlistSort; label: strin
 
 export const WISHLIST_CONTENT = {
   breadcrumb: 'Favorites',
-  eyebrow: 'Favorites',
   title: 'Your Favorites',
   lead: "Save the iPhones you love. Compare, return anytime, and make it yours when you're ready.",
   savedItems: 'Saved items',

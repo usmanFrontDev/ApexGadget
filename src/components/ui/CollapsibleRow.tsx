@@ -45,7 +45,7 @@ export function CollapsibleRow({
         onClick={() => onOpenChange(!open)}
         className={cn(
           'flex w-full cursor-pointer items-center gap-3 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
-          plain ? 'min-h-[52px] px-1' : 'min-h-[54px] px-4',
+          plain ? 'min-h-[52px] px-1' : 'min-h-[54px] rounded-[20px] px-4',
         )}
       >
         {icon && <span className="shrink-0 text-ink/70">{icon}</span>}

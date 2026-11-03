@@ -147,7 +147,7 @@ export const DEFAULT_TRADE_IN_TEMPLATE = [
 export const MOCK_WHATSAPP_NUMBER = '923357413642'
 
 export const TRADE_IN_CONTENT = {
-  eyebrow: 'Trade-in',
+  breadcrumb: 'Trade-in',
   title: 'Trade in your iPhone. Get an offer on WhatsApp.',
   lead: "It's quick, easy and secure. Tell us about your device and we'll send you a fair offer — no obligation.",
   getStarted: 'Get Started',

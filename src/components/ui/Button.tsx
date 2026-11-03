@@ -21,13 +21,16 @@ export interface ButtonProps extends ActionElementProps {
   iconStyle?: ButtonIconStyle
   /** Hover animation for the icon. Default: none. */
   iconAnimation?: IconAnimation
-  /** Stretch to the container; label and icon sit at opposite edges. */
+  /** Stretch to the container (inside a card: also 100% on phones); label and icon sit at opposite edges. */
   fullWidth?: boolean
-  /** Phones only (< sm): full width, label centred, icon pinned to the right edge. */
+  /** Phones only (< sm): 80% wide and centred, label centred, icon pinned to the right edge. */
   blockOnMobile?: boolean
-  /** All sizes: full width, label centred, icon pinned to the edge (checkout buttons). */
+  /** Full width (80% on phones), label centred, icon pinned to the edge (checkout buttons). */
   block?: boolean
 }
+
+/** Phones: a block button is 80% wide and centred. Buttons INSIDE a card override it with `max-sm:w-full`. */
+const PHONE_WIDTH = 'max-sm:flex max-sm:w-4/5 max-sm:mx-auto'
 
 const variantClasses: Record<ButtonVariant, string> = {
   [ButtonVariant.Primary]: 'bg-primary font-bold text-white shadow-primary hover:brightness-110',
@@ -37,7 +40,13 @@ const variantClasses: Record<ButtonVariant, string> = {
 
 const defaultIconStyle: Record<ButtonVariant, ButtonIconStyle> = {
   [ButtonVariant.Primary]: ButtonIconStyle.Circle,
-  [ButtonVariant.Secondary]: ButtonIconStyle.Plain,
+  // Secondary icons sit in an outlined round badge, the counterpart of the dark badge of Primary.
+  [ButtonVariant.Secondary]: ButtonIconStyle.Circle,
+}
+
+const circleClasses: Record<ButtonVariant, string> = {
+  [ButtonVariant.Primary]: 'bg-ink-deep text-white',
+  [ButtonVariant.Secondary]: 'shadow-ring',
 }
 
 interface SizeConfig {
@@ -102,7 +111,7 @@ export function Button({
         blockOnMobile &&
           cn('max-sm:absolute max-sm:inset-y-0 max-sm:my-auto', iconAtStart ? 'max-sm:left-2' : 'max-sm:right-2'),
         block && cn('absolute inset-y-0 my-auto', iconAtStart ? 'left-2' : 'right-2'),
-        hasCircle && cn('rounded-full bg-ink-deep text-white', sizing.circle),
+        hasCircle && cn('rounded-full', circleClasses[variant], sizing.circle),
       )}
     >
       <AnimatedIcon animation={iconAnimation}>{icon}</AnimatedIcon>
@@ -120,12 +129,12 @@ export function Button({
       className={cn(
         'inline-flex shrink-0 items-center whitespace-nowrap rounded-full transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60 aria-disabled:cursor-not-allowed aria-disabled:opacity-60',
         fullWidth ? 'w-full justify-between' : 'justify-center',
-        blockOnMobile && 'max-sm:relative max-sm:w-full max-sm:justify-center max-sm:px-14',
+        blockOnMobile && cn(PHONE_WIDTH, 'max-sm:relative max-sm:justify-center max-sm:px-14'),
         hasCircle ? 'gap-[13px]' : 'gap-2',
         sizing.root,
         padding,
         variantClasses[variant],
-        block && 'relative w-full justify-center px-14',
+        block && cn('relative w-full justify-center px-14', PHONE_WIDTH),
         className,
       )}
     >

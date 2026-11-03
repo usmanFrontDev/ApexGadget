@@ -14,7 +14,7 @@ export interface StickyCheckoutBarProps {
   visible: boolean
 }
 
-/** Phones and tablets: total + Checkout pinned to the bottom (safe-area aware). */
+/** Phones and tablets: total over the Checkout button, pinned to the bottom (safe-area aware). */
 export function StickyCheckoutBar({ cart, visible }: StickyCheckoutBarProps) {
   const totals = getCartTotals(cart)
   return (
@@ -25,17 +25,17 @@ export function StickyCheckoutBar({ cart, visible }: StickyCheckoutBarProps) {
           animate={{ y: 0 }}
           exit={{ y: '100%' }}
           transition={{ type: 'spring', stiffness: 380, damping: 40 }}
-          className="fixed inset-x-0 bottom-0 z-40 flex items-start justify-between gap-3 rounded-t-[24px] bg-surface/92 px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-header backdrop-blur-[18px] sm:px-6 lg:hidden"
+          className="fixed inset-x-0 bottom-0 z-40 flex flex-col gap-2.5 rounded-t-[24px] bg-surface/92 px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-header backdrop-blur-[18px] sm:px-6 lg:hidden"
         >
-          <div className="min-w-0 pt-0.5">
-            <Typography variant={TypographyVariant.Caption} tone={TypographyTone.Muted}>
+          <div className="flex min-w-0 items-baseline justify-between gap-3 px-1">
+            <Typography variant={TypographyVariant.Caption} tone={TypographyTone.Muted} className="whitespace-nowrap">
               {CART_CONTENT.summary.totalWithCount.replace('{count}', formatItemCount(totals.itemCount))}
             </Typography>
             <Typography variant={TypographyVariant.Price} className="truncate">
               {formatPrice(totals.total, totals.currencyCode)}
             </Typography>
           </div>
-          <CheckoutButton cart={cart} size={ButtonSize.Md} className="w-[170px] shrink-0 sm:w-[200px]" />
+          <CheckoutButton cart={cart} size={ButtonSize.Md} />
         </motion.div>
       )}
     </AnimatePresence>

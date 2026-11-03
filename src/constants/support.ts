@@ -15,17 +15,6 @@ export type SupportSectionId = (typeof SupportSectionId)[keyof typeof SupportSec
 /** `/support#warranty`: the footer links point at the Support sections (shipping / warranty / payments open their panel). */
 export const supportPath = (section: SupportSectionId) => `${ROUTES.support}#${section}`
 
-export const SupportIconKey = { Headset: 'headset', Truck: 'truck', Shield: 'shield', Help: 'help' } as const
-export type SupportIconKey = (typeof SupportIconKey)[keyof typeof SupportIconKey]
-
-/** Section tabs under the banner. */
-export const SUPPORT_TABS: readonly { id: SupportSectionId; label: string; icon: SupportIconKey }[] = [
-  { id: SupportSectionId.Contact, label: 'Contact us', icon: SupportIconKey.Headset },
-  { id: SupportSectionId.Shipping, label: 'Shipping & returns', icon: SupportIconKey.Truck },
-  { id: SupportSectionId.Warranty, label: 'Warranty', icon: SupportIconKey.Shield },
-  { id: SupportSectionId.Faq, label: 'FAQs', icon: SupportIconKey.Help },
-]
-
 /** Sections whose card opens a side panel with the full text. */
 export const SUPPORT_PANEL_IDS = [SupportSectionId.Shipping, SupportSectionId.Warranty, SupportSectionId.Payments] as const
 export type SupportPanelId = (typeof SUPPORT_PANEL_IDS)[number]
@@ -53,6 +42,9 @@ export const CONTACT_PHONE_PATTERN = /^[0-9+\-\s()]{7,20}$/
 /** Pre-filled WhatsApp text of the Support page. */
 export const SUPPORT_WHATSAPP_MESSAGE = 'Hi Apex Gadgets, I need some help.'
 
+/** Accessible name of the floating WhatsApp button. */
+export const WHATSAPP_FLOAT_LABEL = 'Chat with us on WhatsApp'
+
 /**
  * Pictures of the three info cards: DUMMIES (existing product art) until the client's final images arrive
  * (delivery box, warranty phone, payment logos): replace the imports above.
@@ -67,7 +59,6 @@ export const SUPPORT_CONTENT = {
   breadcrumb: 'Support',
   /** Also the text of the banner artwork. */
   banner: {
-    eyebrow: 'Support',
     title: 'How can we help?',
     lead: "Get quick support for your order, warranty, returns and more — we're here to help.",
   },
