@@ -23,7 +23,11 @@ export function SupportTabs({ active, onSelect }: SupportTabsProps) {
       {SUPPORT_TABS.map((tab) => {
         const Icon = ICONS[tab.icon]
         return (
-          <FilterChip key={tab.id} toggle={false} selected={active === tab.id} icon={<Icon width={16} height={16} />} onClick={() => onSelect(tab.id)}>
+          <FilterChip key={tab.id} toggle={false} selected={active === tab.id} icon={<Icon width={16} height={16} />} onClick={(event) => {
+              // A mouse click must not leave the keyboard focus ring on the pill (keyboard users keep their focus).
+              if (event.detail > 0) event.currentTarget.blur()
+              onSelect(tab.id)
+            }}>
             {tab.label}
           </FilterChip>
         )

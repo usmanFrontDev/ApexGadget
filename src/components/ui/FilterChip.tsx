@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { MouseEvent, ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 
 export interface FilterChipProps {
@@ -8,7 +8,7 @@ export interface FilterChipProps {
   icon?: ReactNode
   /** `false` = navigation pill (`aria-current`) instead of a toggle (`aria-pressed`). */
   toggle?: boolean
-  onClick?: () => void
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void
   className?: string
 }
 
